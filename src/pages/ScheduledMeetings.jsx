@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import API_ENDPOINTS from "../config";
 import './ScheduledMeetings.css';
 
 
@@ -12,7 +13,7 @@ const ScheduledMeetings = () => {
 
   const fetchMeetings = () => {
     setLoading(true);
-    axios.get("http://localhost:3000/api/schedules")
+    axios.get(API_ENDPOINTS.SCHEDULES.GET_ALL)
       .then(res => {
         setMeetings(res.data);
         setLoading(false);
@@ -31,7 +32,7 @@ const ScheduledMeetings = () => {
   }, []);
 
   const handleComplete = async (id) => {
-    await axios.patch(`http://localhost:3000/api/schedules/${id}/complete`);
+    await axios.patch(API_ENDPOINTS.SCHEDULES.COMPLETE(id));
     fetchMeetings();
   };
 

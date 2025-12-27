@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import "./Event.css";
 
 function Event() {
@@ -11,7 +12,7 @@ function Event() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/orders');
+        const response = await axios.get(API_ENDPOINTS.ORDERS.GET_ALL);
         console.log('Orders fetched:', response.data);
         setOrders(response.data || []);
       } catch (error) {

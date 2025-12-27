@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_ENDPOINTS from "../config";
 
 import ScheduleMeetingModal from "../components/ScheduleMeetingModal";
 
@@ -15,7 +16,7 @@ const EnquiriesTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/enquiries")
+    axios.get(API_ENDPOINTS.ENQUIRIES.GET_ALL)
       .then(res => {
         setEnquiries(res.data);
         setLoading(false);
@@ -38,7 +39,7 @@ const EnquiriesTable = () => {
 
   const handleSaveSchedule = async (scheduleData) => {
     try {
-      await axios.post("http://localhost:3000/api/schedules", scheduleData);
+      await axios.post(API_ENDPOINTS.SCHEDULES.CREATE, scheduleData);
       alert(`Meeting scheduled for ${scheduleData.customerName} on ${scheduleData.date} at ${scheduleData.time} in ${scheduleData.place}`);
       // Optionally, trigger a custom event to notify ScheduledMeetings to refresh
       window.dispatchEvent(new Event('scheduledMeetingAdded'));

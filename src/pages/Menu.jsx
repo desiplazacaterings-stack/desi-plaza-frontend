@@ -2,6 +2,7 @@
 import menuData from "../data/menu.json";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import "./Menu.css";
 
 export default function Menu() {
@@ -14,7 +15,7 @@ export default function Menu() {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/items');
+        const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
         console.log('Menu data fetched:', response.data);
         if (response.data && Array.isArray(response.data)) {
           setMenuItems(response.data);

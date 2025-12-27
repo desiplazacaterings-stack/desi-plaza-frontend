@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_ENDPOINTS from "../config";
 
 let quotationSerial = 1;
 
@@ -58,7 +59,7 @@ function Quotation() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/items");
+        const res = await fetch(API_ENDPOINTS.ITEMS.GET_ALL);
         const data = await res.json();
         setMenuItems(data);
       } catch (err) {
@@ -264,7 +265,7 @@ function Quotation() {
       })),
       total: addedItems.reduce((sum, item) => sum + item.price * item.qty, 0)
     };
-    axios.post("http://localhost:3000/api/quotations", data)
+    axios.post(API_ENDPOINTS.QUOTATIONS.CREATE, data)
       .then(res => {
         alert("Quotation saved successfully!");
         navigate("/quotations");

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import "./InstantOrder.css";
 
 function InstantOrder() {
@@ -23,7 +24,7 @@ function InstantOrder() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/items");
+        const res = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
         setMenuItems(res.data);
       } catch (err) {
         console.error("Error fetching menu:", err);
@@ -96,7 +97,7 @@ function InstantOrder() {
     };
 
     try {
-      await axios.post("http://localhost:3000/api/orders", orderData);
+      await axios.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
       alert("✅ Order submitted");
 
       // Reset

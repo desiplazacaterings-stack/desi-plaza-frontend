@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEnquiry } from "../context/EnquiryContext.jsx";
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import "./Enquiry.css";
 
 function Enquiry() {
@@ -35,7 +36,7 @@ function Enquiry() {
       // Log form data before sending to backend
       console.log('Form data before submit:', form);
       // Send to backend
-      axios.post('http://localhost:3000/api/enquiries', form)
+      axios.post(API_ENDPOINTS.ENQUIRIES.CREATE, form)
         .then((res) => {
           console.log('Enquiry submitted:', res.data);
           // Move to Enquiries table view

@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import API_ENDPOINTS from "../config";
+
   // Print KOT for a single order (placeholder)
   const kotPrintOrder = (order) => {
     const printWindow = window.open('', '', 'width=800,height=900');
@@ -51,8 +55,6 @@
     printWindow.print();
     printWindow.close();
   };
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function InstantOrderDetails() {
     // Responsive styles for mobile view
@@ -90,7 +92,7 @@ function InstantOrderDetails() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/orders');
+      const response = await axios.get(API_ENDPOINTS.ORDERS.GET_ALL);
       // Filter for instant orders
       const instantOrders = response.data.filter(order => order.orderType === 'Instant');
       setOrders(instantOrders);

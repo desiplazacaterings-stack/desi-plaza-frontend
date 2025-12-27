@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_ENDPOINTS from "../config";
 
 const ViewQuotations = () => {
   const [quotations, setQuotations] = useState([]);
@@ -10,7 +11,7 @@ const ViewQuotations = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    axios.get("http://localhost:3000/api/quotations")
+    axios.get(API_ENDPOINTS.QUOTATIONS.GET_ALL)
       .then(res => {
         // Filter out confirmed quotations
         const pendingQuotations = res.data.filter(q => q.status !== 'Confirmed');
@@ -58,9 +59,9 @@ const ViewQuotations = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:3000/api/orders', orderData);
+      const res = await axios.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
       // Update quotation status to Confirmed
-      await axios.patch(`http://localhost:3000/api/quotations/${quotation._id}`, { status: 'Confirmed' });
+      await axios.patch(API_ENDPOINTS.QUOTATIONS.UPDATE(quotation._id), { status: 'Confirmed' });
       // Remove the quotation from the list after confirming
       setQuotations(quotations.filter(q => q._id !== quotation._id));
       // Navigate to /confirm and pass both order and quotation details

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import API_ENDPOINTS from "../config";
 
 function QuotationsTable() {
   const [quotations, setQuotations] = useState([]);
   useEffect(() => {
     // Fetch quotations from backend
-    fetch("http://localhost:3000/api/quotations")
+    fetch(API_ENDPOINTS.QUOTATIONS.GET_ALL)
       .then(res => res.json())
       .then(data => setQuotations(data))
       .catch(err => console.error("Error fetching quotations:", err));
