@@ -1,0 +1,379 @@
+/* Home Page Styles */
+
+.home-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SERVICES SECTION */
+.services-section {
+  margin-bottom: 48px;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(245, 186, 74, 0.08) 0%, rgba(255, 199, 87, 0.08) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(245, 186, 74, 0.2);
+}
+
+.services-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 0;
+}
+
+.service-card {
+  background: white;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  text-align: center;
+  border-top: 4px solid var(--primary-color);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.service-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.service-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+.service-card p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ACTION SECTION */
+.action-section {
+  margin-bottom: 40px;
+}
+
+.action-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.home-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 0;
+}
+
+.home-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  font-family: inherit;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.home-btn:hover::before {
+  left: 100%;
+}
+
+.home-btn:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(245, 186, 74, 0.3);
+}
+
+.home-btn:active {
+  transform: translateY(-3px);
+}
+
+.order-btn {
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #232a36;
+}
+
+.enquiry-btn {
+  background: linear-gradient(135deg, #667bc6 0%, #7d8fc7 100%);
+  color: white;
+}
+
+.menu-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-icon {
+  font-size: 2.5rem;
+  display: block;
+}
+
+.btn-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: block;
+}
+
+.btn-desc {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.9;
+  display: block;
+}
+
+/* CONTENT SECTION */
+.content-section {
+  margin-top: 32px;
+  padding: 20px 0;
+}
+
+.divider {
+  margin: 40px 0;
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--primary-color) 20%, var(--primary-color) 80%, transparent);
+  opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .services-section {
+    padding: 32px 24px;
+    margin-bottom: 40px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .action-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .home-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .home-btn {
+    padding: 24px 20px;
+    min-height: 180px;
+    gap: 10px;
+  }
+
+  .btn-icon {
+    font-size: 2rem;
+  }
+
+  .btn-label {
+    font-size: 1rem;
+  }
+
+  .btn-desc {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 16px;
+  }
+
+  .services-section {
+    padding: 24px 16px;
+    margin-bottom: 32px;
+  }
+
+  .services-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .service-card {
+    padding: 24px 20px;
+  }
+
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .service-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .action-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  .home-buttons {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .home-btn {
+    padding: 20px 16px;
+    min-height: 160px;
+    gap: 8px;
+  }
+
+  .btn-icon {
+    font-size: 1.8rem;
+  }
+
+  .btn-label {
+    font-size: 0.95rem;
+  }
+
+  .btn-desc {
+    font-size: 0.75rem;
+  }
+
+  .divider {
+    margin: 24px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 12px;
+  }
+
+  .services-section {
+    padding: 16px 12px;
+    margin-bottom: 24px;
+  }
+
+  .services-section h2,
+  .action-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .service-icon {
+    font-size: 2rem;
+  }
+
+  .service-card h3 {
+    font-size: 1rem;
+  }
+
+  .btn-icon {
+    font-size: 1.5rem;
+  }
+
+  .btn-label {
+    font-size: 0.9rem;
+  }
+
+  .btn-desc {
+    font-size: 0.7rem;
+  }
+}
+
+  .home-buttons {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 24px 16px;
+  }
+
+  .home-buttons button {
+    padding: 18px 20px;
+    min-height: 65px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .divider {
+    margin: 28px 0;
+  }
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 24px 12px;
+  }
+
+  .home-buttons {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  .home-buttons button {
+    padding: 16px 16px;
+    min-height: 60px;
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .divider {
+    margin: 20px 0;
+  }
+}

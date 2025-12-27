@@ -1,0 +1,76 @@
+/* Confirm Page Styles */
+
+.confirm-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  font-family: inherit;
+  text-align: center;
+  color: var(--text-primary);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.confirm-container h2 {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.confirm-container p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.confirm-container button {
+  margin-top: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .confirm-container {
+    padding: 24px 16px;
+    margin: 24px auto;
+  }
+
+  .confirm-container h2 {
+    font-size: 24px;
+  }
+
+  .confirm-container p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirm-container {
+    padding: 16px 12px;
+    margin: 16px auto;
+    border-radius: 8px;
+  }
+
+  .confirm-container h2 {
+    font-size: 20px;
+  }
+
+  .confirm-container p {
+    font-size: 14px;
+  }
+}
