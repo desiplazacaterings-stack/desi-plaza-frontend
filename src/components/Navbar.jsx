@@ -38,6 +38,16 @@ function Navbar() {
     navigate('/');
   };
 
+  const handleProtectedNavigation = (path) => {
+    if (!userRole) {
+      // Not logged in, redirect to login
+      navigate('/login');
+    } else {
+      // Logged in, navigate to the path
+      navigate(path);
+    }
+  };
+
   return (
     <>
       <button 
@@ -65,55 +75,74 @@ function Navbar() {
             <span className="nav-label">Home</span>
           </NavLink>
           
-          <NavLink 
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            to="/instantorders" 
-            onClick={() => setIsOpen(false)}
-            title="Instant Orders"
-          >
-            <span className="nav-icon">📋</span>
-            <span className="nav-label">Instant Orders</span>
-          </NavLink>
-          
-          <NavLink 
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            to="/enquiries" 
-            onClick={() => setIsOpen(false)}
-            title="View Enquiries"
-          >
-            <span className="nav-icon">🔍</span>
-            <span className="nav-label">Enquiries</span>
-          </NavLink>
-          
-          <NavLink 
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            to="/quotations" 
-            onClick={() => setIsOpen(false)}
-            title="View Quotations"
-          >
-            <span className="nav-icon">💼</span>
-            <span className="nav-label">Quotations</span>
-          </NavLink>
-          
-          <NavLink 
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            to="/scheduled-meetings" 
-            onClick={() => setIsOpen(false)}
-            title="Scheduled Meetings"
-          >
-            <span className="nav-icon">📅</span>
-            <span className="nav-label">Meetings</span>
-          </NavLink>
+          {userRole && (
+            <>
+              <button
+                className="sidebar-link protected-link"
+                onClick={() => {
+                  handleProtectedNavigation("/instantorders");
+                  setIsOpen(false);
+                }}
+                title={userRole ? "Instant Orders" : "Login to view instant orders"}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                <span className="nav-icon">📋</span>
+                <span className="nav-label">Instant Orders</span>
+              </button>
+              
+              <button
+                className="sidebar-link protected-link"
+                onClick={() => {
+                  handleProtectedNavigation("/enquiries");
+                  setIsOpen(false);
+                }}
+                title={userRole ? "View Enquiries" : "Login to view enquiries"}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                <span className="nav-icon">🔍</span>
+                <span className="nav-label">Enquiries</span>
+              </button>
+              
+              <button
+                className="sidebar-link protected-link"
+                onClick={() => {
+                  handleProtectedNavigation("/quotations");
+                  setIsOpen(false);
+                }}
+                title={userRole ? "View Quotations" : "Login to view quotations"}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                <span className="nav-icon">💼</span>
+                <span className="nav-label">Quotations</span>
+              </button>
+              
+              <button
+                className="sidebar-link protected-link"
+                onClick={() => {
+                  handleProtectedNavigation("/scheduled-meetings");
+                  setIsOpen(false);
+                }}
+                title={userRole ? "Scheduled Meetings" : "Login to view meetings"}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                <span className="nav-icon">📅</span>
+                <span className="nav-label">Meetings</span>
+              </button>
 
-          <NavLink 
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            to="/reports" 
-            onClick={() => setIsOpen(false)}
-            title="Business Reports"
-          >
-            <span className="nav-icon">📊</span>
-            <span className="nav-label">Reports</span>
-          </NavLink>
+              <button
+                className="sidebar-link protected-link"
+                onClick={() => {
+                  handleProtectedNavigation("/reports");
+                  setIsOpen(false);
+                }}
+                title={userRole ? "Business Reports" : "Login to view reports"}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+              >
+                <span className="nav-icon">📊</span>
+                <span className="nav-label">Reports</span>
+              </button>
+            </>
+          )}
           
           {userRole === 'admin' && (
             <NavLink 
