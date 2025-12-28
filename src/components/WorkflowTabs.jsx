@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const tabs = [
   { path: "/", label: "🏠 Home" },
@@ -11,6 +12,26 @@ const tabs = [
 ];
 
 function WorkflowTabs() {
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    // Get user role from localStorage (from login)
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
+
+  // Only show workflow tabs for admin/staff, not for public users
+  if (!userRole || (userRole !== 'admin' && userRole !== 'staff')) {
+    return null;
+  }
+
   return (
     <div className="workflow-tabs" style={{ display: 'flex', gap: '10px', margin: '20px 0', flexWrap: 'wrap' }}>
       {tabs.map(tab => (
