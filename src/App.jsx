@@ -152,8 +152,16 @@ function App() {
             {/* Customer Page */}
             <Route path="/customer" element={<CustomerPage />} />
 
-            {/* 🚀 INSTANT ORDER / KOT MODE (NO WORKFLOW TABS) */}
-            <Route path="/instantorder" element={<InstantOrder />} />
+            {/* 🚀 INSTANT ORDER / KOT MODE */}
+            <Route 
+              path="/instantorder" 
+              element={
+                <>
+                  <WorkflowTabs />
+                  <InstantOrder />
+                </>
+              } 
+            />
             <Route path="/instantorderdetails" element={<InstantOrderDetails />} />
             <Route
               path="/instantorders"

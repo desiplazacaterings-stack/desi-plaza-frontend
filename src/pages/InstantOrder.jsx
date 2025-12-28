@@ -6,6 +6,7 @@ import "./InstantOrder.css";
 
 function InstantOrder() {
   const navigate = useNavigate();
+  const [userRole, setUserRole] = useState(null);
   const [selectedItem, setSelectedItem] = useState("");
   const [menuSearch, setMenuSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -49,6 +50,22 @@ function InstantOrder() {
       item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
     )
     .sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+  /* 🔹 Check authentication on mount */
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      navigate('/login');
+      return;
+    }
+    try {
+      const user = JSON.parse(userData);
+      setUserRole(user.role);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      navigate('/login');
+    }
+  }, [navigate]);
 
   /* 🔹 Hide dropdown on outside click */
   useEffect(() => {
