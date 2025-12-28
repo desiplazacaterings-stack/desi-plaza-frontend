@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InstantOrder from "./InstantOrder";
 import Enquiry from "./Enquiry";
 import Menu from "./Menu";
@@ -6,7 +6,25 @@ import "../App.css";
 import "./Home.css";
 
 function Home() {
-  const [activeSection, setActiveSection] = useState("enquiry");
+  const [activeSection, setActiveSection] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    // Get user role from localStorage (from login)
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
+
+  // For public users, show default enquiry view
+  const showDefaultEnquiry = !userRole && activeSection === "enquiry";
+  const showDefaultMenu = !userRole && activeSection === "menu";
 
   const services = [
     {
@@ -28,18 +46,73 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* CONDITIONAL RENDERING - Show Enquiry by default */}
-      <section className="content-section">
-        {activeSection === "enquiry" && <Enquiry />}
-      </section>
+      {/* PUBLIC VIEW - Show buttons for logged-out users */}
+      {!userRole && activeSection === null && (
+        <section className="action-section">
+          <h2>Welcome to Desi Plaza Caterings</h2>
+          <p className="welcome-subtitle">Plan your perfect event with us</p>
+          
+          <div className="home-buttons">
+            <button 
+              className="home-btn enquiry-btn-large"
+              onClick={() => setActiveSection("enquiry")}
+            >
+              <span className="btn-icon">📋</span>
+              <span className="btn-label">Customer Enquiry</span>
+              <span className="btn-desc">Tell us about your event</span>
+            </button>
 
-      {/* MENU ITEMS - Show without prices */}
-      <section className="menu-preview-section">
-        <h2>Browse Our Menu</h2>
-        <Menu hidePrice={true} />
-      </section>
+            <button 
+              className="home-btn menu-btn-large"
+              onClick={() => setActiveSection("menu")}
+            >
+              <span className="btn-icon">🍽️</span>
+              <span className="btn-label">View Menu</span>
+              <span className="btn-desc">Browse our delicious offerings</span>
+            </button>
+          </div>
 
-      {/* SERVICES SHOWCASE */}
+          <button 
+            className="back-btn"
+            onClick={() => setActiveSection(null)}
+            style={{ display: 'none' }}
+          >
+            ← Back
+          </button>
+        </section>
+      )}
+
+      {/* CONDITIONAL RENDERING - Show selected section */}
+      {activeSection === "enquiry" && (
+        <>
+          <button 
+            className="back-btn"
+            onClick={() => setActiveSection(null)}
+          >
+            ← Back to Home
+          </button>
+          <section className="content-section">
+            <Enquiry />
+          </section>
+        </>
+      )}
+
+      {activeSection === "menu" && (
+        <>
+          <button 
+            className="back-btn"
+            onClick={() => setActiveSection(null)}
+          >
+            ← Back to Home
+          </button>
+          <section className="menu-preview-section">
+            <h2>Browse Our Menu</h2>
+            <Menu hidePrice={true} />
+          </section>
+        </>
+      )}
+
+      {/* SERVICES SHOWCASE - Always visible */}
       <section className="services-section">
         <h2>Our Services</h2>
         <div className="services-grid">
