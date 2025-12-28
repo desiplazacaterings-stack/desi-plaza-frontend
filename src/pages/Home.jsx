@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import InstantOrder from "./InstantOrder";
 import Enquiry from "./Enquiry";
 import Menu from "./Menu";
@@ -6,6 +7,7 @@ import "../App.css";
 import "./Home.css";
 
 function Home() {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState(null);
   const [userRole, setUserRole] = useState(null);
 
@@ -46,6 +48,43 @@ function Home() {
 
   return (
     <div className="home-container">
+      {/* LOGGED-IN USER VIEW - Show action buttons for logged-in users */}
+      {userRole && activeSection === null && (
+        <section className="action-section">
+          <h2>Welcome Back</h2>
+          <p className="welcome-subtitle">What would you like to do?</p>
+          
+          <div className="home-buttons">
+            <button 
+              className="home-btn instant-order-btn-large"
+              onClick={() => navigate("/instantorder")}
+            >
+              <span className="btn-icon">🧾</span>
+              <span className="btn-label">Create Instant Order</span>
+              <span className="btn-desc">Quick order and KOT</span>
+            </button>
+
+            <button 
+              className="home-btn enquiry-btn-large"
+              onClick={() => setActiveSection("enquiry")}
+            >
+              <span className="btn-icon">📋</span>
+              <span className="btn-label">New Enquiry</span>
+              <span className="btn-desc">Send us an enquiry</span>
+            </button>
+
+            <button 
+              className="home-btn menu-btn-large"
+              onClick={() => setActiveSection("menu")}
+            >
+              <span className="btn-icon">🍽️</span>
+              <span className="btn-label">View Menu</span>
+              <span className="btn-desc">Browse our offerings</span>
+            </button>
+          </div>
+        </section>
+      )}
+
       {/* PUBLIC VIEW - Show buttons for logged-out users */}
       {!userRole && activeSection === null && (
         <section className="action-section">

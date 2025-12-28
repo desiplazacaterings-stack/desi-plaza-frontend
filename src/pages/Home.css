@@ -152,12 +152,17 @@
   color: #232a36;
 }
 
-.enquiry-btn {
+.instant-order-btn-large {
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #232a36;
+}
+
+.enquiry-btn-large {
   background: linear-gradient(135deg, #667bc6 0%, #7d8fc7 100%);
   color: white;
 }
 
-.menu-btn {
+.menu-btn-large {
   background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
   color: white;
 }
