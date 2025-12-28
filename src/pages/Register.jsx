@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_ENDPOINTS from '../config';
 import './Auth.css';
 
 function Register() {
@@ -15,7 +16,6 @@ function Register() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +52,7 @@ function Register() {
     }
 
     try {
-      const response = await axios.post(`${API_BASE}/api/auth/register`, {
+      const response = await axios.post(API_ENDPOINTS.AUTH.REGISTER, {
         name: formData.name,
         email: formData.email,
         password: formData.password,

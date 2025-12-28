@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_ENDPOINTS from '../config';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -16,7 +17,6 @@ function AdminDashboard() {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
   const token = localStorage.getItem('token');
 
   // Fetch users
@@ -28,7 +28,7 @@ function AdminDashboard() {
       if (filterRole) params.append('role', filterRole);
       if (filterStatus) params.append('status', filterStatus);
 
-      const response = await axios.get(`${API_BASE}/api/admin/users?${params}`, {
+      const response = await axios.get(`${API_ENDPOINTS.AUTH.BASE}/admin/users?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data.data.users);
@@ -42,7 +42,7 @@ function AdminDashboard() {
   // Fetch statistics
   const fetchStatistics = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/api/admin/statistics/users`, {
+      const response = await axios.get(`${API_ENDPOINTS.AUTH.BASE}/admin/statistics/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStatistics(response.data.data.statistics);
@@ -71,7 +71,7 @@ function AdminDashboard() {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE}/api/admin/users`, formData, {
+      await axios.post(`${API_ENDPOINTS.AUTH.BASE}/admin/users`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('User created successfully');
@@ -87,7 +87,7 @@ function AdminDashboard() {
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`${API_BASE}/api/admin/users/${selectedUser._id}`, formData, {
+      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${selectedUser._id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('User updated successfully');
@@ -104,7 +104,7 @@ function AdminDashboard() {
   const handleDeleteUser = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`${API_BASE}/api/admin/users/${id}`, {
+        await axios.delete(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMessage('User deleted successfully');
@@ -118,7 +118,7 @@ function AdminDashboard() {
   // Change user status
   const handleChangeStatus = async (id, newStatus) => {
     try {
-      await axios.patch(`${API_BASE}/api/admin/users/${id}/status`, { status: newStatus }, {
+      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}/status`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(`User status changed to ${newStatus}`);
@@ -131,7 +131,7 @@ function AdminDashboard() {
   // Change user role
   const handleChangeRole = async (id, newRole) => {
     try {
-      await axios.patch(`${API_BASE}/api/admin/users/${id}/role`, { role: newRole }, {
+      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}/role`, { role: newRole }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(`User role changed to ${newRole}`);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_ENDPOINTS from '../config';
 import './Reports.css';
 
 function Reports() {
@@ -27,7 +28,6 @@ function Reports() {
   const [message, setMessage] = useState('');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
   const token = localStorage.getItem('token');
 
   // Fetch report data
@@ -37,7 +37,7 @@ function Reports() {
     try {
       // Get all orders
       const response = await axios.get(
-        `${API_BASE}/api/orders`,
+        API_ENDPOINTS.ORDERS.GET_ALL,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
