@@ -120,7 +120,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: inherit;
   min-height: 100px;
-  width: 140px;
+  width: 150px;
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
 }
