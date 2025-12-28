@@ -58,7 +58,7 @@ function Home() {
               onClick={() => setActiveSection("enquiry")}
             >
               <span className="btn-icon">📋</span>
-              <span className="btn-label">Customer Enquiry</span>
+              <span className="btn-label">Enquiry</span>
               <span className="btn-desc">Tell us about your event</span>
             </button>
 

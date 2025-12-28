@@ -51,7 +51,7 @@ function Enquiry() {
 
   return (
     <div className="enquiry-container">
-      <h2>Customer Enquiry</h2>
+      <h2>Enquiry</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
