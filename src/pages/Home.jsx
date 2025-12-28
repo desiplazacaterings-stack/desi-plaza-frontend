@@ -28,20 +28,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* SERVICES SHOWCASE */}
-      <section className="services-section">
-        <h2>Our Services</h2>
-        <div className="services-grid">
-          {services.map((service, index) => (
-            <div key={index} className="service-card">
-              <div className="service-icon">{service.icon}</div>
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ACTION BUTTONS */}
       <section className="action-section">
         <h2>What Would You Like To Do?</h2>
@@ -83,8 +69,23 @@ function Home() {
         {activeSection === "enquiry" && <Enquiry />}
         {activeSection === "menu" && <Menu />}
       </section>
+
+      {/* SERVICES SHOWCASE */}
+      <section className="services-section">
+        <h2>Our Services</h2>
+        <div className="services-grid">
+          {services.map((service, index) => (
+            <div key={index} className="service-card">
+              <div className="service-icon">{service.icon}</div>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
 
 export default Home;
+

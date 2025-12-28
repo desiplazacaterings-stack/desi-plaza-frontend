@@ -6,7 +6,8 @@ const tabs = [
   { path: "/menu", label: "2️⃣ Menu" },
   { path: "/quotation", label: "3️⃣ Quotation" },
   { path: "/confirm", label: "4️⃣ Confirmed Orders" },
-  { path: "/event", label: "5️⃣ Events" }
+  { path: "/event", label: "5️⃣ Events" },
+  { path: "/payments", label: "6️⃣ Payments" }
 ];
 
 function WorkflowTabs() {

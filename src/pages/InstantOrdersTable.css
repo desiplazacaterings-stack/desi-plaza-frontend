@@ -1,0 +1,90 @@
+.instant-orders-table-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.instant-orders-table-container h2 {
+  color: #222;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.instant-orders-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.instant-orders-filters button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: #222;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.instant-orders-filters button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.instant-orders-filters button:hover {
+  opacity: 0.8;
+}
+
+.instant-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.instant-orders-table thead {
+  background: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+}
+
+.instant-orders-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #222;
+}
+
+.instant-orders-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.instant-orders-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.instant-orders-table select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.instant-orders-table button {
+  padding: 6px 12px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.instant-orders-table button:hover {
+  background: #cc0000;
+}

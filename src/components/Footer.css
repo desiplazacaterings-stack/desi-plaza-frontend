@@ -1,0 +1,258 @@
+/* Footer Styles */
+
+.footer {
+  background: linear-gradient(180deg, #2d3d52 0%, #1a2332 100%);
+  color: #e8e8e8;
+  padding: 48px 20px 0;
+  margin-top: 60px;
+  border-top: 2px solid rgba(245, 186, 74, 0.2);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 48px;
+  padding-bottom: 48px;
+}
+
+/* Footer Section Styles */
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f5ba4a;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(245, 186, 74, 0.3);
+}
+
+.footer-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #c8c8c8;
+  margin: 0 0 12px 0;
+}
+
+/* Company Info Section */
+.company-footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.contact-icon {
+  font-size: 1.2em;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.contact-link {
+  color: #e8e8e8;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid transparent;
+}
+
+.contact-link:hover {
+  color: #f5ba4a;
+  border-bottom-color: #f5ba4a;
+}
+
+.contact-link:focus {
+  outline: 2px solid #f5ba4a;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.gstin-info {
+  color: #c8c8c8;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+/* Footer Links */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.footer-link {
+  color: #c8c8c8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  position: relative;
+}
+
+.footer-link:hover {
+  color: #f5ba4a;
+  border-bottom-color: #f5ba4a;
+  transform: translateX(4px);
+}
+
+.footer-link:focus {
+  outline: 2px solid #f5ba4a;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(245, 186, 74, 0.2);
+  padding: 24px 20px;
+  margin-top: 40px;
+}
+
+.footer-bottom-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.footer-legal-link {
+  color: #c8c8c8;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid transparent;
+}
+
+.footer-legal-link:hover {
+  color: #f5ba4a;
+  border-bottom-color: #f5ba4a;
+}
+
+.footer-legal-link:focus {
+  outline: 2px solid #f5ba4a;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.separator {
+  color: #5a5a5a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 16px 0;
+    margin-top: 40px;
+  }
+
+  .footer-container {
+    gap: 32px;
+    padding-bottom: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .footer-heading {
+    font-size: 1rem;
+    margin: 0 0 10px 0;
+  }
+
+  .footer-description {
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer-legal {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 32px 12px 0;
+    margin-top: 32px;
+  }
+
+  .footer-container {
+    gap: 24px;
+    padding-bottom: 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .footer-heading {
+    font-size: 0.95rem;
+  }
+
+  .footer-description {
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom {
+    padding: 16px 12px;
+  }
+
+  .footer-copyright {
+    font-size: 0.85rem;
+  }
+
+  .footer-legal {
+    font-size: 0.85rem;
+  }
+
+  .contact-list li,
+  .footer-links li {
+    font-size: 0.85rem;
+  }
+}

@@ -156,3 +156,123 @@
     font-size: 0.9rem;
   }
 }
+
+/* Enquiries Table Styles */
+.enquiries-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.enquiries-wrapper h2 {
+  color: #232a36;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.enquiries-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  table-layout: fixed;
+}
+
+.enquiries-table thead {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  z-index: 10;
+}
+
+.enquiries-table th {
+  padding: 16px 12px;
+  text-align: left;
+  color: #232a36;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.enquiries-table th:nth-child(1) { width: 10%; }
+.enquiries-table th:nth-child(2) { width: 11%; }
+.enquiries-table th:nth-child(3) { width: 10%; }
+.enquiries-table th:nth-child(4) { width: 9%; }
+.enquiries-table th:nth-child(5) { width: 11%; }
+.enquiries-table th:nth-child(6) { width: 9%; }
+.enquiries-table th:nth-child(7) { width: 7%; text-align: center; }
+.enquiries-table th:nth-child(8) { width: 8%; }
+.enquiries-table th:nth-child(9) { width: 25%; text-align: center; }
+
+.enquiries-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e8e8f0;
+  color: #555;
+  font-size: 13px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.enquiries-table td:nth-child(1) { width: 10%; }
+.enquiries-table td:nth-child(2) { width: 11%; }
+.enquiries-table td:nth-child(3) { width: 10%; }
+.enquiries-table td:nth-child(4) { width: 9%; }
+.enquiries-table td:nth-child(5) { width: 11%; }
+.enquiries-table td:nth-child(6) { width: 9%; }
+.enquiries-table td:nth-child(7) { width: 7%; text-align: center; font-weight: 600; }
+.enquiries-table td:nth-child(8) { width: 8%; }
+.enquiries-table td:nth-child(9) { width: 25%; text-align: center; }
+
+.enquiries-table .actions-cell {
+  text-align: center;
+  white-space: normal;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.action-btn {
+  padding: 8px 12px;
+  margin: 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: normal;
+  display: block;
+  width: 95%;
+  line-height: 1.4;
+  min-height: 32px;
+}
+
+.generate-quotation-btn {
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #232a36;
+  box-shadow: 0 2px 6px rgba(245, 186, 74, 0.2);
+}
+
+.generate-quotation-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 186, 74, 0.3);
+}
+
+.schedule-meeting-btn {
+  background: linear-gradient(135deg, #0084ff 0%, #0066dd 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 132, 255, 0.2);
+}
+
+.schedule-meeting-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 132, 255, 0.3);
+}

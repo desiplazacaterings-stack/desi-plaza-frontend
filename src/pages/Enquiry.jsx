@@ -15,6 +15,7 @@ function Enquiry() {
     email: "",
     eventType: "",
     eventDate: "",
+    eventTime: "",
     location: "",
     guests: "",
     notes: ""
@@ -82,6 +83,7 @@ function Enquiry() {
             name="email"
             value={form.email}
             onChange={handleChange}
+            required
           />
         </div>
 
@@ -108,6 +110,17 @@ function Enquiry() {
             type="date"
             name="eventDate"
             value={form.eventDate}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Event Time</label>
+          <input
+            type="time"
+            name="eventTime"
+            value={form.eventTime}
             onChange={handleChange}
             required
           />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
+import "./Enquiry.css";
 
 import ScheduleMeetingModal from "../components/ScheduleMeetingModal";
 
@@ -54,9 +55,9 @@ const EnquiriesTable = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
+    <div className="enquiries-wrapper">
       <h2>All Enquiries</h2>
-      <table border="1" cellPadding="8" style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table className="enquiries-table">
         <thead>
           <tr>
             <th>Customer Name</th>
@@ -77,15 +78,15 @@ const EnquiriesTable = () => {
               <td>{enquiry.mobile}</td>
               <td>{enquiry.email}</td>
               <td>{enquiry.eventType}</td>
-              <td>{enquiry.eventDate}</td>
+              <td>{new Date(enquiry.eventDate).toLocaleDateString()}</td>
               <td>{enquiry.location}</td>
               <td>{enquiry.guests}</td>
               <td>{enquiry.notes}</td>
-              <td>
-                <button className="button" onClick={() => navigate("/quotation", { state: { enquiry } })}>
+              <td className="actions-cell">
+                <button className="action-btn generate-quotation-btn" onClick={() => navigate("/quotation", { state: { enquiry } })}>
                   Generate Quotation
                 </button>
-                <button className="button" style={{ marginLeft: 8 }} onClick={() => handleScheduleClick(enquiry)}>
+                <button className="action-btn schedule-meeting-btn" onClick={() => handleScheduleClick(enquiry)}>
                   Schedule Meeting
                 </button>
               </td>

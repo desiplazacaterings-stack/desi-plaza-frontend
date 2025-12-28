@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import printAgreement from '../utils/printAgreement';
 
 function Confirmation() {
   const location = useLocation();
@@ -75,7 +76,7 @@ function Confirmation() {
                 <td style={{ padding: 10, border: '1px solid #ddd' }}>{item.itemName}</td>
                 <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.unit}</td>
                 <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.qty}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>₹{Number(item.price).toFixed(2)}</td>
+                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>${Number(item.price).toFixed(2)}</td>
                 <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>₹{(item.price * item.qty).toFixed(2)}</td>
               </tr>
             ))}
@@ -95,6 +96,12 @@ function Confirmation() {
           style={{ padding: '10px 20px', borderRadius: 4, border: '1px solid #ccc', background: '#fff', cursor: 'pointer' }}
         >
           Back to Edit
+        </button>
+        <button 
+          onClick={() => printAgreement(enquiry)}
+          style={{ padding: '10px 20px', borderRadius: 4, border: '1px solid #f39c12', background: '#fff', color: '#f39c12', fontWeight: 'bold', cursor: 'pointer' }}
+        >
+          Print Agreement
         </button>
         <button 
           onClick={handlePlaceOrder}

@@ -1,0 +1,114 @@
+/* Breadcrumb Navigation Styles */
+
+.breadcrumb-nav {
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  padding: 12px 20px;
+  margin: 0 0 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(245, 186, 74, 0.15);
+}
+
+.breadcrumb-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.breadcrumb-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+}
+
+.breadcrumb-link:hover {
+  background: rgba(35, 42, 54, 0.08);
+  border-bottom-color: var(--text-primary);
+  transform: translateX(2px);
+}
+
+.breadcrumb-link:focus {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+.breadcrumb-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-separator {
+  color: var(--text-primary);
+  font-weight: 600;
+  opacity: 0.6;
+  margin: 0 4px;
+}
+
+.breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .breadcrumb-nav {
+    padding: 10px 16px;
+    margin: 0 0 16px 0;
+  }
+
+  .breadcrumb-container {
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-current {
+    padding: 3px 6px;
+  }
+
+  .breadcrumb-separator {
+    margin: 0 3px;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumb-nav {
+    padding: 8px 12px;
+    margin: 0 0 12px 0;
+  }
+
+  .breadcrumb-container {
+    font-size: 0.85rem;
+    gap: 4px;
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-current {
+    padding: 2px 4px;
+  }
+
+  .breadcrumb-separator {
+    margin: 0 2px;
+    font-size: 0.8em;
+  }
+}

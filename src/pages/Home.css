@@ -22,6 +22,7 @@
 /* SERVICES SECTION */
 .services-section {
   margin-bottom: 48px;
+  margin-top: 60px;
   padding: 40px;
   background: linear-gradient(135deg, rgba(245, 186, 74, 0.08) 0%, rgba(255, 199, 87, 0.08) 100%);
   border-radius: 12px;
@@ -96,8 +97,8 @@
 
 .home-buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
   margin-bottom: 0;
 }
 
@@ -106,17 +107,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px;
-  gap: 12px;
-  font-size: 16px;
+  padding: 20px 16px;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 600;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: inherit;
-  min-height: 200px;
+  min-height: 130px;
   position: relative;
   overflow: hidden;
 }
@@ -138,12 +139,12 @@
 }
 
 .home-btn:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(245, 186, 74, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(245, 186, 74, 0.2);
 }
 
 .home-btn:active {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .order-btn {
@@ -162,21 +163,22 @@
 }
 
 .btn-icon {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   display: block;
 }
 
 .btn-label {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   display: block;
 }
 
 .btn-desc {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 400;
-  opacity: 0.9;
+  opacity: 0.85;
   display: block;
+  line-height: 1.3;
 }
 
 /* CONTENT SECTION */
@@ -211,26 +213,26 @@
   }
 
   .home-buttons {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
   }
 
   .home-btn {
-    padding: 24px 20px;
-    min-height: 180px;
-    gap: 10px;
+    padding: 18px 14px;
+    min-height: 120px;
+    gap: 6px;
   }
 
   .btn-icon {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .btn-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .btn-desc {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -249,6 +251,31 @@
     margin-bottom: 24px;
   }
 
+  .home-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .home-btn {
+    padding: 16px 12px;
+    min-height: 110px;
+    gap: 5px;
+  }
+
+  .btn-icon {
+    font-size: 1.5rem;
+  }
+
+  .btn-label {
+    font-size: 0.85rem;
+  }
+
+  .btn-desc {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 600px) {
   .services-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -324,41 +351,6 @@
     font-size: 1rem;
   }
 
-  .btn-icon {
-    font-size: 1.5rem;
-  }
-
-  .btn-label {
-    font-size: 0.9rem;
-  }
-
-  .btn-desc {
-    font-size: 0.7rem;
-  }
-}
-
-  .home-buttons {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 24px 16px;
-  }
-
-  .home-buttons button {
-    padding: 18px 20px;
-    min-height: 65px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
-
-  .divider {
-    margin: 28px 0;
-  }
-
-@media (max-width: 480px) {
-  .home-container {
-    padding: 24px 12px;
-  }
-
   .home-buttons {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -371,6 +363,18 @@
     min-height: 60px;
     font-size: 13px;
     gap: 8px;
+  }
+
+  .btn-icon {
+    font-size: 1.5rem;
+  }
+
+  .btn-label {
+    font-size: 0.9rem;
+  }
+
+  .btn-desc {
+    font-size: 0.7rem;
   }
 
   .divider {

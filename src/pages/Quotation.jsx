@@ -140,8 +140,23 @@ function Quotation() {
     return generateQuotationId(quotationSerial++);
   });
 
-  const printQuotation = () => {
+  const printQuotation = async () => {
     const total = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+    
+    // Fetch and convert logo to data URL
+    let logoDataUrl = '';
+    try {
+      const response = await fetch('/logo.png');
+      const blob = await response.blob();
+      logoDataUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.log('Logo could not be loaded');
+    }
+
     let html = `<!DOCTYPE html><html><head><title>Quotation Print</title>
     <style>
       @media print {
@@ -155,14 +170,23 @@ function Quotation() {
       .company-details { font-size: 13px; background: #f2f2f2; color: #222; border-radius: 8px; padding: 8px 14px; max-width: 350px; }
       .quotation-title { text-align: left; font-size: 22px; font-weight: bold; margin-bottom: 8px; }
       .quotation-info { margin-bottom: 18px; text-align: left; }
-      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 18px; table-layout: fixed; }
       th, td { border: 1px solid #bbb; padding: 8px 10px; text-align: left; }
       th { background: #f5f5f5; }
-      tfoot td { font-weight: bold; }
+      th:nth-child(1) { width: 5%; }
+      th:nth-child(2) { width: 45%; }
+      th:nth-child(3) { width: 10%; }
+      th:nth-child(4) { width: 10%; text-align: center; }
+      th:nth-child(5) { width: 15%; text-align: right; }
+      th:nth-child(6) { width: 15%; text-align: right; }
+      td:nth-child(1) { text-align: center; }
+      td:nth-child(4) { text-align: center; }
+      td:nth-child(5), td:nth-child(6) { text-align: right; }
+      tfoot td { font-weight: bold; text-align: right; }
     </style>
     </head><body><div class="quotation-a4">
       <div class="company-header">
-        <img src="/logo.png" alt="Desi Plaza Caterings Logo" class="company-logo" />
+        <img src="${logoDataUrl}" alt="Desi Plaza Caterings Logo" class="company-logo" />
         <div class="company-details">
           <strong>Desi Plaza Caterings</strong><br>123 Main Street, City, State, ZIP<br>Phone: +91 12345 67890<br>Email: info@desiplazacaterings.com<br>GSTIN: 29ABCDE1234F2Z5
         </div>
@@ -197,15 +221,15 @@ function Quotation() {
               <td>${item.itemName}</td>
               <td>${item.unit}</td>
               <td>${item.qty}</td>
-              <td>₹${item.price.toFixed(2)}</td>
-              <td>₹${(item.price * item.qty).toFixed(2)}</td>
+              <td>$${item.price.toFixed(2)}</td>
+              <td>$${(item.price * item.qty).toFixed(2)}</td>
             </tr>
           `).join('')}
         </tbody>
         <tfoot>
           <tr>
             <td colspan="5" style="text-align:right;">Total</td>
-            <td>₹${total.toFixed(2)}</td>
+            <td>$${total.toFixed(2)}</td>
           </tr>
         </tfoot>
       </table>
