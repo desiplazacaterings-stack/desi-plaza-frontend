@@ -381,3 +381,52 @@
     margin: 20px 0;
   }
 }
+
+/* MENU PREVIEW SECTION */
+.menu-preview-section {
+  margin: 40px 0;
+  padding: 20px 0;
+  border-top: 2px solid #f5ba4a;
+  border-bottom: 2px solid #f5ba4a;
+}
+
+.menu-preview-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* CONTENT SECTION - Enquiry Form */
+.content-section {
+  width: 100%;
+  margin: 30px 0;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ITEM AVAILABLE BADGE */
+.item-available {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+

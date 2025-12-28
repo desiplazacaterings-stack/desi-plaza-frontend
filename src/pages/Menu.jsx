@@ -5,7 +5,7 @@ import axios from "axios";
 import API_ENDPOINTS from "../config";
 import "./Menu.css";
 
-export default function Menu() {
+export default function Menu({ hidePrice = false }) {
   const [filter, setFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [menuItems, setMenuItems] = useState([]);
@@ -121,7 +121,7 @@ export default function Menu() {
                       <h4>{item.itemName}</h4>
                     </div>
 
-                    {item.prices && item.prices.length > 0 ? (
+                    {!hidePrice && item.prices && item.prices.length > 0 ? (
                       <div className="prices-container">
                         {item.prices.map((priceObj, i) => (
                           <div key={i} className="price-option">
@@ -132,8 +132,10 @@ export default function Menu() {
                           </div>
                         ))}
                       </div>
-                    ) : (
+                    ) : !hidePrice ? (
                       <div className="no-price">No pricing available</div>
+                    ) : (
+                      <div className="item-available">✓ Available</div>
                     )}
                   </div>
                 ))}
