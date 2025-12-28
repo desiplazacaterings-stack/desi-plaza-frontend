@@ -28,12 +28,14 @@ function AdminDashboard() {
       if (filterRole) params.append('role', filterRole);
       if (filterStatus) params.append('status', filterStatus);
 
-      const response = await axios.get(`${API_ENDPOINTS.AUTH.BASE}/admin/users?${params}`, {
+      const response = await axios.get(`${API_ENDPOINTS.ADMIN.USERS}?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data.data.users);
+      console.log('Users fetched:', response.data.data.users);
     } catch (error) {
-      setMessage('Error fetching users: ' + (error.response?.data?.error || error.message));
+      console.error('Error fetching users:', error.response?.data || error.message);
+      setMessage('Error fetching users: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }
@@ -42,11 +44,12 @@ function AdminDashboard() {
   // Fetch statistics
   const fetchStatistics = async () => {
     try {
-      const response = await axios.get(`${API_ENDPOINTS.AUTH.BASE}/admin/statistics/users`, {
+      const response = await axios.get(API_ENDPOINTS.ADMIN.STATISTICS, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStatistics(response.data.data.statistics);
     } catch (error) {
+      console.error('Error fetching statistics:', error);
       setMessage('Error fetching statistics: ' + (error.response?.data?.error || error.message));
     }
   };
@@ -71,15 +74,18 @@ function AdminDashboard() {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_ENDPOINTS.AUTH.BASE}/admin/users`, formData, {
+      console.log('Creating user with data:', formData);
+      const response = await axios.post(API_ENDPOINTS.ADMIN.CREATE_USER, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('User created successfully:', response.data);
       setMessage('User created successfully');
       setShowModal(false);
       setFormData({});
       fetchUsers();
     } catch (error) {
-      setMessage('Error creating user: ' + (error.response?.data?.error || error.message));
+      console.error('Error creating user:', error.response?.data || error.message);
+      setMessage('Error creating user: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     }
   };
 
@@ -87,7 +93,7 @@ function AdminDashboard() {
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${selectedUser._id}`, formData, {
+      await axios.patch(API_ENDPOINTS.ADMIN.UPDATE_USER(selectedUser._id), formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('User updated successfully');
@@ -96,7 +102,8 @@ function AdminDashboard() {
       setSelectedUser(null);
       fetchUsers();
     } catch (error) {
-      setMessage('Error updating user: ' + (error.response?.data?.error || error.message));
+      console.error('Error updating user:', error.response?.data || error.message);
+      setMessage('Error updating user: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     }
   };
 
@@ -104,13 +111,14 @@ function AdminDashboard() {
   const handleDeleteUser = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}`, {
+        await axios.delete(API_ENDPOINTS.ADMIN.DELETE_USER(id), {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMessage('User deleted successfully');
         fetchUsers();
       } catch (error) {
-        setMessage('Error deleting user: ' + (error.response?.data?.error || error.message));
+        console.error('Error deleting user:', error.response?.data || error.message);
+        setMessage('Error deleting user: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
       }
     }
   };
@@ -118,26 +126,28 @@ function AdminDashboard() {
   // Change user status
   const handleChangeStatus = async (id, newStatus) => {
     try {
-      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}/status`, { status: newStatus }, {
+      await axios.patch(API_ENDPOINTS.ADMIN.CHANGE_STATUS(id), { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(`User status changed to ${newStatus}`);
       fetchUsers();
     } catch (error) {
-      setMessage('Error changing status: ' + (error.response?.data?.error || error.message));
+      console.error('Error changing status:', error.response?.data || error.message);
+      setMessage('Error changing status: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     }
   };
 
   // Change user role
   const handleChangeRole = async (id, newRole) => {
     try {
-      await axios.patch(`${API_ENDPOINTS.AUTH.BASE}/admin/users/${id}/role`, { role: newRole }, {
+      await axios.patch(API_ENDPOINTS.ADMIN.CHANGE_ROLE(id), { role: newRole }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(`User role changed to ${newRole}`);
       fetchUsers();
     } catch (error) {
-      setMessage('Error changing role: ' + (error.response?.data?.error || error.message));
+      console.error('Error changing role:', error.response?.data || error.message);
+      setMessage('Error changing role: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     }
   };
 

@@ -6,8 +6,20 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
 
 export const API_ENDPOINTS = {
   AUTH: {
+    BASE: `${API_BASE_URL}/api/auth`,
     LOGIN: `${API_BASE_URL}/api/auth/login`,
     REGISTER: `${API_BASE_URL}/api/auth/register`,
+  },
+  ADMIN: {
+    BASE: `${API_BASE_URL}/api/admin`,
+    USERS: `${API_BASE_URL}/api/admin/users`,
+    GET_USER: (id) => `${API_BASE_URL}/api/admin/users/${id}`,
+    CREATE_USER: `${API_BASE_URL}/api/admin/users`,
+    UPDATE_USER: (id) => `${API_BASE_URL}/api/admin/users/${id}`,
+    DELETE_USER: (id) => `${API_BASE_URL}/api/admin/users/${id}`,
+    CHANGE_STATUS: (id) => `${API_BASE_URL}/api/admin/users/${id}/status`,
+    CHANGE_ROLE: (id) => `${API_BASE_URL}/api/admin/users/${id}/role`,
+    STATISTICS: `${API_BASE_URL}/api/admin/statistics/users`,
   },
   ENQUIRIES: {
     BASE: `${API_BASE_URL}/api/enquiries`,
