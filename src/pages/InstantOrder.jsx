@@ -63,10 +63,25 @@ function InstantOrder() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
+        console.log('Fetching menu items from:', API_ENDPOINTS.ITEMS.GET_ALL);
         const res = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        setMenuItems(res.data);
+        console.log('Menu API response:', res.data);
+        
+        // Handle both array and wrapped object responses
+        let items = [];
+        if (Array.isArray(res.data)) {
+          items = res.data;
+        } else if (res.data && typeof res.data === 'object' && res.data.items) {
+          items = res.data.items;
+        } else if (res.data && typeof res.data === 'object') {
+          items = Object.values(res.data).flat();
+        }
+        
+        console.log('Processed items count:', items.length);
+        setMenuItems(items);
       } catch (err) {
-        console.error("Error fetching menu:", err);
+        console.error("Error fetching menu:", err.message);
+        setMenuItems([]);
       }
     };
     fetchMenu();
