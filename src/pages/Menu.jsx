@@ -15,16 +15,23 @@ export default function Menu() {
     const fetchMenu = async () => {
       try {
         setLoading(true);
+        console.log('Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
         const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
         console.log('Menu data fetched:', response.data);
+        
         if (response.data && Array.isArray(response.data)) {
+          console.log('Items count:', response.data.length);
           setMenuItems(response.data);
+        } else if (response.data && typeof response.data === 'object' && response.data.items) {
+          // If backend returns wrapped in an object
+          console.log('Items count:', response.data.items.length);
+          setMenuItems(response.data.items);
         } else {
+          console.warn('Unexpected response format, using local data');
           setMenuItems(menuData);
         }
       } catch (error) {
-        console.error('Error fetching menu, using local data:', error.message);
-        // Fallback to local data
+        console.error('Error fetching menu:', error.message, 'Using local data instead');
         setMenuItems(menuData || []);
       } finally {
         setLoading(false);
@@ -137,6 +144,11 @@ export default function Menu() {
       ) : (
         <div className="no-items">
           <p>No menu items found</p>
+          {menuItems.length > 0 && (
+            <p style={{ fontSize: '0.9em', color: '#666', marginTop: '10px' }}>
+              (Total items loaded: {menuItems.length}, but none match current filter)
+            </p>
+          )}
         </div>
       )}
     </div>

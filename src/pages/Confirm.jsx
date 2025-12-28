@@ -1,8 +1,7 @@
-
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import API_ENDPOINTS from "../config";
 import printAgreement from "../utils/printAgreement";
 import "./Confirm.css";
 
@@ -18,7 +17,7 @@ function Confirm() {
       setOrders([passedOrder]);
       setLoading(false);
     } else {
-      axios.get("http://localhost:3000/api/orders")
+      axios.get(API_ENDPOINTS.ORDERS.GET_ALL)
         .then(res => {
           setOrders(res.data.filter(o => o.orderType === 'Event'));
           setLoading(false);
