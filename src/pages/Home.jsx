@@ -60,7 +60,7 @@ function Home() {
           <p className="hero-subtitle">What would you like to do?</p>
 
           <div className="action-buttons">
-            {permissions?.canCreateInstantOrder !== false && (
+            {permissions?.canCreateInstantOrder === true && (
               <button
                 className="action-card instant-order-card"
                 onClick={() => navigate("/instantorder")}
@@ -71,7 +71,7 @@ function Home() {
               </button>
             )}
 
-            {permissions?.canCreateEnquiry !== false && (
+            {permissions?.canCreateEnquiry === true && (
               <button
                 className="action-card enquiry-card"
                 onClick={() => setActiveSection("enquiry")}
@@ -82,7 +82,7 @@ function Home() {
               </button>
             )}
 
-            {permissions?.canViewMenu !== false && (
+            {permissions?.canViewMenu === true && (
               <button
                 className="action-card menu-card"
                 onClick={() => setActiveSection("menu")}
