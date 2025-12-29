@@ -19,6 +19,8 @@ export const API_ENDPOINTS = {
     DELETE_USER: (id) => `${API_BASE_URL}/api/admin/users/${id}`,
     CHANGE_STATUS: (id) => `${API_BASE_URL}/api/admin/users/${id}/status`,
     CHANGE_ROLE: (id) => `${API_BASE_URL}/api/admin/users/${id}/role`,
+    GET_PERMISSIONS: (id) => `${API_BASE_URL}/api/admin/users/${id}/permissions`,
+    UPDATE_PERMISSIONS: (id) => `${API_BASE_URL}/api/admin/users/${id}/permissions`,
     STATISTICS: `${API_BASE_URL}/api/admin/statistics/users`,
   },
   ENQUIRIES: {
