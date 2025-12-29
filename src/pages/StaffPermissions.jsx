@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import API_ENDPOINTS from "../../config";
+import API_ENDPOINTS from "../config";
 import "./StaffPermissions.css";
 
 function StaffPermissions() {
