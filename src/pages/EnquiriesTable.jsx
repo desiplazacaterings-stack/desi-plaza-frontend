@@ -17,13 +17,16 @@ const EnquiriesTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(API_ENDPOINTS.ENQUIRIES.GET_ALL)
+    const token = localStorage.getItem('token');
+    axios.get(API_ENDPOINTS.ENQUIRIES.GET_ALL, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => {
         setEnquiries(res.data);
         setLoading(false);
       })
       .catch(err => {
-        setError("Failed to fetch enquiries");
+        setError(err.response?.data?.message || "Failed to fetch enquiries");
         setLoading(false);
       });
   }, []);

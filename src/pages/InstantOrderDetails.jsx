@@ -92,7 +92,10 @@ function InstantOrderDetails() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(API_ENDPOINTS.ORDERS.GET_ALL);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(API_ENDPOINTS.ORDERS.GET_ALL, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       // Filter for instant orders
       const instantOrders = response.data.filter(order => order.orderType === 'Instant');
       setOrders(instantOrders);

@@ -11,7 +11,10 @@ const ViewQuotations = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    axios.get(API_ENDPOINTS.QUOTATIONS.GET_ALL)
+    const token = localStorage.getItem('token');
+    axios.get(API_ENDPOINTS.QUOTATIONS.GET_ALL, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => {
         // Filter out confirmed quotations
         const pendingQuotations = res.data.filter(q => q.status !== 'Confirmed');
@@ -19,7 +22,7 @@ const ViewQuotations = () => {
         setLoading(false);
       })
       .catch(err => {
-        setError("Failed to fetch quotations");
+        setError(err.response?.data?.message || "Failed to fetch quotations");
         setLoading(false);
       });
   }, []);

@@ -13,7 +13,10 @@ const ScheduledMeetings = () => {
 
   const fetchMeetings = () => {
     setLoading(true);
-    axios.get(API_ENDPOINTS.SCHEDULES.GET_ALL)
+    const token = localStorage.getItem('token');
+    axios.get(API_ENDPOINTS.SCHEDULES.GET_ALL, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => {
         setMeetings(res.data);
         setLoading(false);
