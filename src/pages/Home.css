@@ -92,6 +92,11 @@
   color: white;
 }
 
+.instant-order-card {
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #1a1a1a;
+}
+
 .card-icon {
   font-size: 3rem;
   margin-bottom: 16px;

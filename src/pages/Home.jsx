@@ -50,30 +50,70 @@ function Home() {
 
   return (
     <div className="home-container">
-      <section className="hero-section">
-        <h1 className="hero-title">Welcome to Desi Plaza Caterings</h1>
-        <p className="hero-subtitle">Plan your perfect event with us</p>
+      {/* ADMIN/LOGGED-IN USER VIEW */}
+      {userRole && (
+        <section className="hero-section">
+          <h1 className="hero-title">Welcome Back</h1>
+          <p className="hero-subtitle">What would you like to do?</p>
 
-        <div className="action-buttons">
-          <button
-            className="action-card enquiry-card"
-            onClick={() => setActiveSection("enquiry")}
-          >
-            <div className="card-icon">📋</div>
-            <h3 className="card-title">Enquiry</h3>
-            <p className="card-description">Tell us about your event</p>
-          </button>
+          <div className="action-buttons">
+            <button
+              className="action-card instant-order-card"
+              onClick={() => navigate("/instantorder")}
+            >
+              <div className="card-icon">🧾</div>
+              <h3 className="card-title">Create Instant Order</h3>
+              <p className="card-description">Quick order and KOT</p>
+            </button>
 
-          <button
-            className="action-card menu-card"
-            onClick={() => setActiveSection("menu")}
-          >
-            <div className="card-icon">🍽️</div>
-            <h3 className="card-title">View Menu</h3>
-            <p className="card-description">Browse our delicious offerings</p>
-          </button>
-        </div>
-      </section>
+            <button
+              className="action-card enquiry-card"
+              onClick={() => setActiveSection("enquiry")}
+            >
+              <div className="card-icon">📋</div>
+              <h3 className="card-title">New Enquiry</h3>
+              <p className="card-description">Send us an enquiry</p>
+            </button>
+
+            <button
+              className="action-card menu-card"
+              onClick={() => setActiveSection("menu")}
+            >
+              <div className="card-icon">🍽️</div>
+              <h3 className="card-title">View Menu</h3>
+              <p className="card-description">Browse our offerings</p>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* PUBLIC USER VIEW */}
+      {!userRole && (
+        <section className="hero-section">
+          <h1 className="hero-title">Welcome to Desi Plaza Caterings</h1>
+          <p className="hero-subtitle">Plan your perfect event with us</p>
+
+          <div className="action-buttons">
+            <button
+              className="action-card enquiry-card"
+              onClick={() => setActiveSection("enquiry")}
+            >
+              <div className="card-icon">📋</div>
+              <h3 className="card-title">Enquiry</h3>
+              <p className="card-description">Tell us about your event</p>
+            </button>
+
+            <button
+              className="action-card menu-card"
+              onClick={() => setActiveSection("menu")}
+            >
+              <div className="card-icon">🍽️</div>
+              <h3 className="card-title">View Menu</h3>
+              <p className="card-description">Browse our delicious offerings</p>
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className="services-section">
         <h2>Our Services</h2>
