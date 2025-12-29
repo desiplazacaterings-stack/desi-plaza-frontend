@@ -16,7 +16,9 @@ function StaffPermissions() {
 
   const fetchStaff = async () => {
     try {
-      const response = await axios.get(`${API_ENDPOINTS.ADMIN.USERS}?role=staff`);
+      const response = await axios.get(`${API_ENDPOINTS.ADMIN.USERS}?role=staff`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setStaff(response.data.data.users);
     } catch (error) {
       console.error("Error fetching staff:", error);
@@ -28,8 +30,10 @@ function StaffPermissions() {
     setSelectedStaff(staffId);
     setLoading(true);
     try {
-      const response = await axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(staffId));
-      setPermissions(response.data.data.permissions);
+      const response = await axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(staffId), {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPermissions(response.data.data.customPermissions || {});
       setMessage("");
     } catch (error) {
       console.error("Error fetching permissions:", error);
@@ -53,7 +57,8 @@ function StaffPermissions() {
     try {
       await axios.patch(
         API_ENDPOINTS.ADMIN.UPDATE_PERMISSIONS(selectedStaff),
-        { customPermissions: permissions }
+        { customPermissions: permissions },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage("✅ Permissions updated successfully!");
       setTimeout(() => setMessage(""), 3000);
