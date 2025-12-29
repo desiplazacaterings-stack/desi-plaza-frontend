@@ -20,6 +20,7 @@ import InstantOrdersTable from "./pages/InstantOrdersTable";
 import EnquiriesTable from "./pages/EnquiriesTable";
 import ScheduledMeetings from "./pages/ScheduledMeetings";
 import AdminDashboard from "./pages/AdminDashboard";
+import StaffPermissions from "./pages/StaffPermissions";
 import Reports from "./pages/Reports";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -133,6 +134,9 @@ function App() {
 
             {/* Admin Dashboard */}
             <Route path="/admin" element={<AdminDashboard />} />
+
+            {/* Staff Permissions */}
+            <Route path="/staff-permissions" element={<StaffPermissions />} />
 
             {/* Reports */}
             <Route

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_ENDPOINTS from '../config';
+import StaffPermissions from './StaffPermissions';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -192,6 +193,12 @@ function AdminDashboard() {
           👥 User Management
         </button>
         <button
+          className={`tab-button ${activeTab === 'permissions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('permissions')}
+        >
+          🔐 Staff Permissions
+        </button>
+        <button
           className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveTab('settings')}
         >
@@ -341,6 +348,10 @@ function AdminDashboard() {
             )}
           </div>
         </div>
+      )}
+
+      {activeTab === 'permissions' && (
+        <StaffPermissions />
       )}
 
       {activeTab === 'settings' && (
