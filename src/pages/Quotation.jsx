@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
+import useMenuItems from "../hooks/useMenuItems";
 
 let quotationSerial = 1;
 
@@ -21,6 +22,8 @@ function Quotation() {
 
   // Add state for dropdown visibility
   const [showDropdown, setShowDropdown] = useState(false);
+  const [permissions, setPermissions] = useState({});
+  const [userRole, setUserRole] = useState(null);
 
   // Remove item by index
   const removeMenuItem = (idxToRemove) => {
@@ -35,6 +38,40 @@ function Quotation() {
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
+
+  // Fetch user permissions on mount
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        
+        // Admins have all permissions
+        if (user.role === 'admin') {
+          setPermissions({ canCreateQuotation: true });
+        } else if (user.role === 'staff' && user._id && token) {
+          // Fetch staff permissions from backend
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => {
+              setPermissions(res.data.data.customPermissions || {});
+            })
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUserRole(null);
+      }
+    }
+  }, []);
+
   const location = useLocation();
   const navigate = useNavigate();
   const enquiry = location.state?.enquiry;
@@ -46,7 +83,7 @@ function Quotation() {
     mobile: ''
   });
 
-  const [menuItems, setMenuItems] = useState([]);
+  const { menuItems, loading: menuLoading } = useMenuItems();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
   const [menuSearch, setMenuSearch] = useState("");
@@ -55,33 +92,6 @@ function Quotation() {
   const [price, setPrice] = useState(0);
   const [availableUnits, setAvailableUnits] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
-
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        console.log('Fetching menu items from:', API_ENDPOINTS.ITEMS.GET_ALL);
-        const res = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        console.log('Menu API response:', res.data);
-        
-        // Handle both array and wrapped object responses
-        let items = [];
-        if (Array.isArray(res.data)) {
-          items = res.data;
-        } else if (res.data && typeof res.data === 'object' && res.data.items) {
-          items = res.data.items;
-        } else if (res.data && typeof res.data === 'object') {
-          items = Object.values(res.data).flat();
-        }
-        
-        console.log('Processed items count:', items.length);
-        setMenuItems(items);
-      } catch (err) {
-        console.error("Error fetching menu:", err.message);
-        setMenuItems([]);
-      }
-    };
-    fetchMenu();
-  }, []);
 
   useEffect(() => {
     if (!selectedItem) {
@@ -171,38 +181,38 @@ function Quotation() {
       console.log('Logo could not be loaded');
     }
 
-    let html = `<!DOCTYPE html><html><head><title>Quotation Print</title>
+    let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quotation Print</title>
     <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       @media print {
         @page { size: A4; margin: 20mm; }
-        body { background: #fff !important; }
+        body { background: #fff !important; margin: 0; padding: 20mm; }
       }
-      body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; }
-      .quotation-a4 { max-width: 800px; margin: 0 auto; padding: 24px; background: #fff; border-radius: 8px; }
-      .company-header { display: flex; align-items: center; margin-bottom: 18px; }
-      .company-logo { width: 90px; height: 90px; object-fit: contain; margin-right: 18px; border-radius: 8px; background: #fff; }
-      .company-details { font-size: 13px; background: #f2f2f2; color: #222; border-radius: 8px; padding: 8px 14px; max-width: 350px; }
-      .quotation-title { text-align: left; font-size: 22px; font-weight: bold; margin-bottom: 8px; }
-      .quotation-info { margin-bottom: 18px; text-align: left; }
-      table { width: 100%; border-collapse: collapse; margin-top: 18px; table-layout: fixed; }
-      th, td { border: 1px solid #bbb; padding: 8px 10px; text-align: left; }
-      th { background: #f5f5f5; }
-      th:nth-child(1) { width: 5%; }
-      th:nth-child(2) { width: 45%; }
-      th:nth-child(3) { width: 10%; }
-      th:nth-child(4) { width: 10%; text-align: center; }
-      th:nth-child(5) { width: 15%; text-align: right; }
-      th:nth-child(6) { width: 15%; text-align: right; }
-      td:nth-child(1) { text-align: center; }
-      td:nth-child(4) { text-align: center; }
-      td:nth-child(5), td:nth-child(6) { text-align: right; }
-      tfoot td { font-weight: bold; text-align: right; }
+      body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 20px; }
+      .quotation-a4 { max-width: 900px; margin: 0 auto; padding: 20px; background: #fff; }
+      .company-header { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
+      .company-logo { width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; background: #fff; }
+      .company-details { font-size: 12px; background: #f2f2f2; color: #222; border-radius: 4px; padding: 10px; flex: 1; }
+      .quotation-title { text-align: left; font-size: 20px; font-weight: bold; margin: 15px 0 10px 0; }
+      .quotation-info { margin-bottom: 15px; text-align: left; font-size: 13px; line-height: 1.6; }
+      table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+      th, td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 13px; }
+      th { background: #f5f5f5; font-weight: bold; }
+      td { background: #fff; }
+      @media (max-width: 768px) {
+        .quotation-a4 { padding: 12px; }
+        .company-header { flex-direction: column; }
+        .company-details { font-size: 11px; }
+        table { font-size: 12px; }
+        th, td { padding: 6px; }
+      }
+      tfoot td { font-weight: bold; text-align: right; background: #f9f9f9; }
     </style>
     </head><body><div class="quotation-a4">
       <div class="company-header">
         <img src="${logoDataUrl}" alt="Desi Plaza Caterings Logo" class="company-logo" />
         <div class="company-details">
-          <strong>Desi Plaza Caterings</strong><br>123 Main Street, City, State, ZIP<br>Phone: +91 12345 67890<br>Email: info@desiplazacaterings.com<br>GSTIN: 29ABCDE1234F2Z5
+          <strong>Desi Plaza Caterings</strong><br>9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States<br>Phone: +1 513 7773374<br>Email: desiplazacaterings@gmail.com
         </div>
       </div>
       <div class="quotation-title">Quotation</div>
@@ -249,11 +259,16 @@ function Quotation() {
       </table>
     </div></body></html>`;
     const printWindow = window.open('', '', 'width=900,height=1200');
-    printWindow.document.write(html);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
+    if (printWindow) {
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+      }, 300);
+    } else {
+      alert('Please enable pop-ups to print. Alternatively, use your browser\'s print menu.');
+    }
   };
 
   // Get unique categories from menuItems
@@ -323,7 +338,7 @@ function Quotation() {
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
         <img src="/logo.png" alt="Desi Plaza Caterings Logo" style={{ width: 90, height: 90, objectFit: 'contain', marginRight: 18, borderRadius: 8, background: '#fff' }} />
         <div className="company-details" style={{ fontSize: 14, background: '#f2f2f2', color: '#222', borderRadius: 8, padding: '8px 14px', maxWidth: 350 }}>
-          <strong>Desi Plaza Caterings</strong><br />123 Main Street, City, State, ZIP<br />Phone: +91 12345 67890<br />Email: info@desiplazacaterings.com<br />GSTIN: 29ABCDE1234F2Z5
+          <strong>Desi Plaza Caterings</strong><br />9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States<br />Phone: +1 513 7773374<br />Email: desiplazacaterings@gmail.com
         </div>
       </div>
 
@@ -485,13 +500,13 @@ function Quotation() {
                 grouped[category].forEach(item => {
                   rows.push(
                     <tr key={rowIdx + '-' + item.itemName}>
-                      <td>{rowIdx++}</td>
-                      <td>{item.category}</td>
-                      <td>{item.itemName}</td>
-                      <td>{item.unit}</td>
-                      <td>{item.qty}</td>
-                      <td>₹{(item.price * item.qty).toFixed(2)}</td>
-                      <td><button onClick={() => removeMenuItem(item._idx)} style={{color:'#c00'}}>Remove</button></td>
+                      <td data-label="#">{rowIdx++}</td>
+                      <td data-label="Category">{item.category}</td>
+                      <td data-label="Item Name">{item.itemName}</td>
+                      <td data-label="Unit">{item.unit}</td>
+                      <td data-label="Qty">{item.qty}</td>
+                      <td data-label="Total">${(item.price * item.qty).toFixed(2)}</td>
+                      <td data-label="Action"><button onClick={() => removeMenuItem(item._idx)} style={{color:'#c00'}}>Remove</button></td>
                     </tr>
                   );
                 });
@@ -500,7 +515,7 @@ function Quotation() {
                 rows.push(
                   <tr key="total-row">
                     <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total</td>
-                    <td style={{ fontWeight: 'bold' }}>₹{addedItems.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</td>
+                    <td style={{ fontWeight: 'bold' }}>${addedItems.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</td>
                   </tr>
                 );
               }
@@ -510,7 +525,18 @@ function Quotation() {
         </table>
       </div>
       <button className="button" onClick={printQuotation} style={{marginRight:8}}>🖨️ Print Quotation</button>
-      <button className="button" onClick={saveQuotation}>💾 Save Quotation</button>
+      {permissions.canCreateQuotation ? (
+        <button className="button" onClick={saveQuotation}>💾 Save Quotation</button>
+      ) : (
+        <button 
+          className="button" 
+          style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }} 
+          disabled 
+          title="You don't have permission to create quotations"
+        >
+          💾 Save Quotation
+        </button>
+      )}
     </div>
   );
 }

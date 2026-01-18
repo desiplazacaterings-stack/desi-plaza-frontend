@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
+import ViewSignedAgreement from "../components/ViewSignedAgreement";
 import "./Event.css";
 
 // Helper function to round amounts to nearest rupee
@@ -19,6 +20,8 @@ function Event() {
     role: '',
     phone: ''
   });
+  const [permissions, setPermissions] = useState({});
+  const [userRole, setUserRole] = useState(null);
 
   const teamOptions = [
     { name: 'Raj Kumar', role: 'Event Manager', phone: '9876543210' },
@@ -34,7 +37,9 @@ function Event() {
         setLoading(true);
         const response = await axios.get(API_ENDPOINTS.ORDERS.GET_ALL);
         console.log('Orders fetched:', response.data);
-        setOrders(response.data || []);
+        // Filter out cancelled events
+        const activeOrders = (response.data || []).filter(order => order.status !== 'Cancelled');
+        setOrders(activeOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
         setOrders([]);
@@ -43,6 +48,36 @@ function Event() {
       }
     };
     fetchOrders();
+  }, []);
+
+  // Fetch user permissions
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        if (user.role === 'admin') {
+          setPermissions({
+            canAssignTeamToEvent: true,
+            canCompleteEvent: true,
+            canDeleteEvent: true
+          });
+        } else if (user.role === 'staff' && user._id && token) {
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => setPermissions(res.data.data.customPermissions || {}))
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
   }, []);
 
   // Categorize orders by date
@@ -56,7 +91,10 @@ function Event() {
       past: []
     };
 
-    orders.forEach(order => {
+    // Filter out cancelled events
+    const activeOrders = orders.filter(order => order.status !== 'Cancelled');
+
+    activeOrders.forEach(order => {
       if (order.eventDate) {
         const eventDate = new Date(order.eventDate);
         eventDate.setHours(0, 0, 0, 0);
@@ -137,6 +175,24 @@ function Event() {
     }
   };
 
+  const handleCancelEvent = async (order) => {
+    if (window.confirm(`Are you sure you want to cancel the event for ${order.customerName}?`)) {
+      try {
+        await axios.patch(
+          `${API_ENDPOINTS.ORDERS.BASE}/${order._id}/cancel`,
+          { status: 'Cancelled' }
+        );
+        
+        // Update the orders list
+        setOrders(orders.filter(o => o._id !== order._id));
+        alert('Event cancelled successfully!');
+      } catch (error) {
+        console.error('Error cancelling event:', error);
+        alert('Failed to cancel event');
+      }
+    }
+  };
+
   const printInvoice = async (order) => {
     const total = (order.items || []).reduce((sum, item) => sum + item.price * item.qty, 0);
     
@@ -154,52 +210,68 @@ function Event() {
       console.log('Logo could not be loaded');
     }
 
-    let html = `<!DOCTYPE html><html><head><title>Invoice Print</title>
+    let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Invoice Print</title>
     <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       @media print {
         @page { size: A4; margin: 20mm; }
-        body { background: #fff !important; }
+        body { background: #fff !important; margin: 0; padding: 20mm; }
       }
-      body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; }
-      .invoice-a4 { max-width: 800px; margin: 0 auto; padding: 24px; background: #fff; border-radius: 8px; }
-      .company-header { display: flex; align-items: center; margin-bottom: 18px; }
-      .company-logo { width: 90px; height: 90px; object-fit: contain; margin-right: 18px; border-radius: 8px; background: #fff; }
-      .company-details { font-size: 13px; background: #f2f2f2; color: #222; border-radius: 8px; padding: 8px 14px; max-width: 350px; }
-      .invoice-title { text-align: left; font-size: 22px; font-weight: bold; margin-bottom: 8px; }
-      .invoice-info { margin-bottom: 18px; text-align: left; }
-      table { width: 100%; border-collapse: collapse; margin-top: 18px; table-layout: fixed; }
-      th, td { border: 1px solid #bbb; padding: 8px 10px; text-align: left; }
-      th { background: #f5f5f5; }
-      th:nth-child(1) { width: 5%; }
-      th:nth-child(2) { width: 45%; }
-      th:nth-child(3) { width: 10%; }
-      th:nth-child(4) { width: 10%; text-align: center; }
-      th:nth-child(5) { width: 15%; text-align: right; }
-      th:nth-child(6) { width: 15%; text-align: right; }
-      td:nth-child(1) { text-align: center; }
-      td:nth-child(4) { text-align: center; }
-      td:nth-child(5), td:nth-child(6) { text-align: right; }
-      tfoot td { font-weight: bold; text-align: right; }
-      .payment-summary { margin-top: 20px; padding: 12px; background: #f9f9f9; border-radius: 4px; }
-      .summary-row { display: flex; justify-content: space-between; padding: 6px 0; }
+      body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 20px; }
+      .invoice-a4 { max-width: 900px; margin: 0 auto; padding: 20px; background: #fff; }
+      .company-header { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
+      .company-logo { width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; background: #fff; }
+      .company-details { font-size: 12px; background: #f2f2f2; color: #222; border-radius: 4px; padding: 10px; flex: 1; }
+      .invoice-title { text-align: left; font-size: 20px; font-weight: bold; margin: 15px 0 10px 0; }
+      .invoice-info { margin-bottom: 15px; text-align: left; font-size: 13px; line-height: 1.6; }
+      table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+      th, td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 13px; }
+      th { background: #f5f5f5; font-weight: bold; }
+      td { background: #fff; }
+      .payment-summary { margin-top: 15px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
+      .summary-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+      @media (max-width: 768px) {
+        .invoice-a4 { padding: 12px; }
+        .company-header { flex-direction: column; }
+        .company-details { font-size: 11px; }
+        table { font-size: 12px; }
+        th, td { padding: 6px; }
+      }
+      tfoot td { font-weight: bold; text-align: right; background: #f9f9f9; }
     </style>
     </head><body><div class="invoice-a4">
       <div class="company-header">
         <img src="${logoDataUrl}" alt="Desi Plaza Caterings Logo" class="company-logo" />
         <div class="company-details">
-          <strong>Desi Plaza Caterings</strong><br>123 Main Street, City, State, ZIP<br>Phone: +91 12345 67890<br>Email: info@desiplazacaterings.com<br>GSTIN: 29ABCDE1234F2Z5
+          <strong>Desi Plaza Caterings</strong><br>9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States<br>Phone: +1 513 7773374<br>Email: desiplazacaterings@gmail.com
         </div>
       </div>
       <div class="invoice-title">Invoice</div>
       <div class="invoice-info">
-        <strong>Invoice ID:</strong> ${order._id.toString().substring(0, 8).toUpperCase()}<br />
-        <strong>Customer:</strong> ${order.customerName}<br />
-        <strong>Mobile:</strong> ${order.mobile}<br />
-        <strong>Email:</strong> ${order.email}<br />
-        <strong>Event Type:</strong> ${order.eventType}<br />
-        <strong>Event Date:</strong> ${new Date(order.eventDate).toLocaleDateString()}<br />
-        <strong>Location:</strong> ${order.location}<br />
-        <strong>Guests:</strong> ${order.guests}<br />
+        <table style="width: 100%; border: none; margin-bottom: 12px;">
+          <tr>
+            <td style="border: none; width: 50%;"><strong>Invoice ID:</strong> ${order._id.toString().substring(0, 8).toUpperCase()}</td>
+            <td style="border: none; width: 50%; text-align: right;"><strong>Invoice Date:</strong> ${new Date().toLocaleDateString()}</td>
+          </tr>
+          <tr>
+            <td style="border: none;"><strong>Customer:</strong> ${order.customerName}</td>
+            <td style="border: none; text-align: right;"><strong>Status:</strong> ${order.status || 'Active'}</td>
+          </tr>
+        </table>
+        <table style="width: 100%; border: none;">
+          <tr>
+            <td style="border: none; width: 50%;"><strong>Mobile:</strong> ${order.mobile}</td>
+            <td style="border: none; width: 50%;"><strong>Email:</strong> ${order.email}</td>
+          </tr>
+          <tr>
+            <td style="border: none;"><strong>Event Type:</strong> ${order.eventType}</td>
+            <td style="border: none;"><strong>Event Date:</strong> ${new Date(order.eventDate).toLocaleDateString()}</td>
+          </tr>
+          <tr>
+            <td style="border: none;"><strong>Location:</strong> ${order.location}</td>
+            <td style="border: none;"><strong>Guests:</strong> ${order.guests || 'N/A'}</td>
+          </tr>
+        </table>
       </div>
       <table>
         <thead>
@@ -241,17 +313,41 @@ function Event() {
       </table>
       <div class="payment-summary">
         <div class="summary-row">
-          <strong>Payment Status:</strong>
-          <strong>${order.paymentStatus || 'Pending'}</strong>
+          <span><strong>Total Amount:</strong></span>
+          <span><strong>$${total.toFixed(2)}</strong></span>
+        </div>
+        <div class="summary-row">
+          <span>Advance/Deposit Paid:</span>
+          <span>$${(order.advance || 0).toFixed(2)}</span>
+        </div>
+        <div class="summary-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+          <span><strong>Balance Due:</strong></span>
+          <span><strong>$${(order.balanceDue || 0).toFixed(2)}</strong></span>
+        </div>
+        <div class="summary-row" style="margin-top: 8px;">
+          <span><strong>Payment Status:</strong></span>
+          <span><strong>${order.paymentStatus || 'Pending'}</strong></span>
+        </div>
+        <div class="summary-row">
+          <span><strong>Payment Mode:</strong></span>
+          <span>${order.paymentMode || 'Not Specified'}</span>
+        </div>
+        <div class="summary-row" style="border-top: 1px solid #ddd; padding-top: 8px; margin-top: 12px; font-size: 12px; color: #666;">
+          <span>Note: Remaining balance due by event date</span>
         </div>
       </div>
     </div></body></html>`;
     const printWindow = window.open('', '', 'width=900,height=1200');
-    printWindow.document.write(html);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
+    if (printWindow) {
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+      }, 300);
+    } else {
+      alert('Please enable pop-ups to print. Alternatively, use your browser\'s print menu.');
+    }
   };
 
   const handleViewLocation = (order) => {
@@ -273,6 +369,7 @@ function Event() {
           <table className="events-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Event Type</th>
                 <th>Customer Name</th>
                 <th>Mobile</th>
@@ -286,23 +383,24 @@ function Event() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders.map((order, index) => (
                 <React.Fragment key={order._id}>
                   <tr>
-                    <td>{order.eventType}</td>
-                    <td>{order.customerName}</td>
-                    <td>{order.mobile}</td>
-                    <td>{new Date(order.eventDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-                    <td>
+                    <td data-label="#" className="serial-number">{index + 1}</td>
+                    <td data-label="Event Type">{order.eventType}</td>
+                    <td data-label="Customer Name">{order.customerName}</td>
+                    <td data-label="Mobile">{order.mobile}</td>
+                    <td data-label="Event Date">{new Date(order.eventDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                    <td data-label="Location">
                       <button 
                         className="view-location-btn"
                         onClick={() => handleViewLocation(order)}
-                        title="View location on map"
+                        title={order.eventPlace}
                       >
-                        📍 {order.eventPlace}
+                        <img src="/G Maps Logo.png" alt="Google Maps" className="map-logo" />
                       </button>
                     </td>
-                    <td>
+                    <td data-label="Items">
                       <button 
                         className="view-items-btn-small"
                         onClick={() => setExpandedOrder(expandedOrder === order._id ? null : order._id)}
@@ -310,9 +408,9 @@ function Event() {
                         {order.items?.length || 0} items
                       </button>
                     </td>
-                    <td className="amount-gold">${roundAmount(order.totalAmount).toFixed(2)}</td>
-                    <td className="amount-green">${roundAmount((order.totalAmount || 0) - (order.advance || 0)).toFixed(2)}</td>
-                    <td>
+                    <td className="amount-gold" data-label="Total Amount">${roundAmount(order.totalAmount).toFixed(2)}</td>
+                    <td className="amount-green" data-label="Balance">${roundAmount(order.balanceDue || order.totalAmount).toFixed(2)}</td>
+                    <td data-label="Status">
                       <span className={`status-badge status-${order.status?.toLowerCase() || 'placed'}`}>
                         {order.status || 'Placed'}
                       </span>
@@ -329,16 +427,28 @@ function Event() {
                         </div>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Action">
                       {order.status !== 'Completed' ? (
                         <div className="action-buttons">
                           {!order.assignedTeam?.name ? (
-                            <button 
-                              className="assign-btn" 
-                              onClick={() => handleAssign(order)}
-                            >
-                              Assign Team
-                            </button>
+                            permissions.canAssignTeamToEvent ? (
+                              <button 
+                                className="assign-btn" 
+                                onClick={() => handleAssign(order)}
+                                title="Assign Team"
+                              >
+                                👥
+                              </button>
+                            ) : (
+                              <button 
+                                className="assign-btn"
+                                disabled
+                                style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }}
+                                title="You don't have permission to assign teams"
+                              >
+                                👥
+                              </button>
+                            )
                           ) : (
                             <>
                               <div className="assigned-info">
@@ -346,13 +456,45 @@ function Event() {
                                   ✓ Assigned: {order.assignedTeam.name}
                                 </div>
                               </div>
-                              <button 
-                                className="complete-btn" 
-                                onClick={() => handleMarkComplete(order)}
-                              >
-                                Mark Complete
-                              </button>
+                              {permissions.canCompleteEvent ? (
+                                <button 
+                                  className="complete-btn" 
+                                  onClick={() => handleMarkComplete(order)}
+                                  title="Mark Complete"
+                                >
+                                  ✅
+                                </button>
+                              ) : (
+                                <button 
+                                  className="complete-btn"
+                                  disabled
+                                  style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }}
+                                  title="You don't have permission to mark events as complete"
+                                >
+                                  ✅
+                                </button>
+                              )}
                             </>
+                          )}
+                          {userRole === 'admin' && (
+                            <button 
+                              className="cancel-btn" 
+                              onClick={() => handleCancelEvent(order)}
+                              style={{
+                                padding: "6px 10px",
+                                backgroundColor: "#dc3545",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                fontSize: "0.8em",
+                                marginLeft: "6px"
+                              }}
+                              title="Cancel this event (Admin only)"
+                            >
+                              ✕
+                            </button>
                           )}
                         </div>
                       ) : (
@@ -360,9 +502,16 @@ function Event() {
                           <button 
                             className="print-invoice-btn" 
                             onClick={() => printInvoice(order)}
+                            title="Print Invoice"
                           >
-                            🖨️ Print Invoice
+                            🖨️
                           </button>
+                          {order.agreementSigned && order.signedAgreementId && (
+                            <ViewSignedAgreement 
+                              agreementId={order.signedAgreementId} 
+                              customerName={order.customerName}
+                            />
+                          )}
                         </div>
                       )}
                     </td>
@@ -386,12 +535,12 @@ function Event() {
                             <tbody>
                               {order.items.map((item, idx) => (
                                 <tr key={idx}>
-                                  <td>{item.itemName}</td>
-                                  <td>{item.category || '-'}</td>
-                                  <td>{item.unit || '-'}</td>
-                                  <td>{item.qty}</td>
-                                  <td>${(item.price || 0).toFixed(2)}</td>
-                                  <td>${((item.qty || 0) * (item.price || 0)).toFixed(2)}</td>
+                                  <td data-label="Item Name">{item.itemName}</td>
+                                  <td data-label="Category">{item.category || '-'}</td>
+                                  <td data-label="Unit">{item.unit || '-'}</td>
+                                  <td data-label="Quantity">{item.qty}</td>
+                                  <td data-label="Price">${(item.price || 0).toFixed(2)}</td>
+                                  <td data-label="Total">${((item.qty || 0) * (item.price || 0)).toFixed(2)}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -470,15 +619,17 @@ function Event() {
               <button 
                 className="cancel-btn" 
                 onClick={() => setShowAssignModal(false)}
+                title="Close"
               >
-                Cancel
+                ✕
               </button>
               <button 
                 className="complete-btn" 
                 onClick={handleAssignTeam}
                 disabled={!teamMember.name}
+                title="Assign Team"
               >
-                Assign Team
+                👥
               </button>
             </div>
           </div>
@@ -531,14 +682,16 @@ function Event() {
               <button 
                 className="cancel-btn" 
                 onClick={() => setShowCompleteModal(false)}
+                title="Close"
               >
-                Cancel
+                ✕
               </button>
               <button 
                 className="complete-btn" 
                 onClick={handleCompleteEvent}
+                title="Mark Event Complete"
               >
-                Confirm & Mark Complete
+                ✅
               </button>
             </div>
           </div>
@@ -559,18 +712,6 @@ function Event() {
                 <p><strong>Customer:</strong> {selectedOrder.customerName}</p>
                 <p><strong>Event Location:</strong> {selectedOrder.eventPlace}</p>
                 <p><strong>Event Date:</strong> {new Date(selectedOrder.eventDate).toLocaleDateString('en-IN')}</p>
-              </div>
-
-              <div className="map-container">
-                <iframe
-                  width="100%"
-                  height="400"
-                  style={{ border: 'none', borderRadius: '8px' }}
-                  src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${encodeURIComponent(selectedOrder.eventPlace)}`}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
               </div>
 
               <div className="map-links">
