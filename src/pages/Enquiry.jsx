@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useEnquiry } from "../context/EnquiryContext.jsx";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
@@ -8,6 +9,9 @@ import "./Enquiry.css";
 function Enquiry() {
   const navigate = useNavigate();
   const { setEnquiry } = useEnquiry();
+  const [submitted, setSubmitted] = useState(false);
+  const [permissions, setPermissions] = useState({});
+  const [userRole, setUserRole] = useState(null);
 
   const [form, setForm] = useState({
     customerName: "",
@@ -20,6 +24,40 @@ function Enquiry() {
     guests: "",
     notes: ""
   });
+
+  // Fetch user permissions
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        if (user.role === 'admin') {
+          setPermissions({ canCreateEnquiry: true });
+        } else if (user.role === 'staff' && user._id && token) {
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => setPermissions(res.data.data.customPermissions || {}))
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        } else {
+          // Public users can always create enquiries
+          setPermissions({ canCreateEnquiry: true });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        // Default to allowing enquiry creation for public users
+        setPermissions({ canCreateEnquiry: true });
+      }
+    } else {
+      // Public users can create enquiries
+      setPermissions({ canCreateEnquiry: true });
+    }
+  }, []);
 
   function handleChange(e) {
     setForm({
@@ -40,13 +78,57 @@ function Enquiry() {
       axios.post(API_ENDPOINTS.ENQUIRIES.CREATE, form)
         .then((res) => {
           console.log('Enquiry submitted:', res.data);
-          // Move to Enquiries table view
-          navigate("/enquiries");
+          // Check if user is logged in
+          const userData = localStorage.getItem('user');
+          const userRole = userData ? JSON.parse(userData).role : null;
+          
+          if (userRole === 'admin' || userRole === 'staff') {
+            // Logged-in users go to enquiries table
+            navigate("/enquiries");
+          } else {
+            // Public users see thank you message
+            setSubmitted(true);
+            // Reset form
+            setForm({
+              customerName: "",
+              mobile: "",
+              email: "",
+              eventType: "",
+              eventDate: "",
+              eventTime: "",
+              location: "",
+              guests: "",
+              notes: ""
+            });
+          }
         })
         .catch(err => {
           console.error('Error submitting enquiry:', err);
           alert('Failed to submit enquiry');
         });
+  }
+
+  // Show thank you message for public users
+  if (submitted) {
+    return (
+      <div className="enquiry-container">
+        <div className="thank-you-message">
+          <div className="thank-you-icon">✅</div>
+          <h2>Thank You!</h2>
+          <p>Thank you for your enquiry.</p>
+          <p>We'll call you back soon!</p>
+          <button 
+            className="back-home-btn" 
+            onClick={() => {
+              setSubmitted(false);
+              navigate('/');
+            }}
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -156,8 +238,8 @@ function Enquiry() {
           />
         </div>
 
-        <button type="submit">
-          Submit Enquiry & Continue →
+        <button type="submit" disabled={!permissions.canCreateEnquiry} style={!permissions.canCreateEnquiry ? { opacity: 0.5, cursor: 'not-allowed', background: '#ccc' } : {}}>
+          {permissions.canCreateEnquiry ? '✓ Submit Enquiry & Continue →' : '✗ You cannot create enquiries'}
         </button>
       </form>
     </div>

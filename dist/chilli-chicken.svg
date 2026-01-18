@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="chilligrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE4E1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD4D4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow4" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="100" cy="100" r="95" fill="url(#chilligrad)" filter="url(#shadow4)"/>
+  
+  <!-- Crispy chicken pieces -->
+  <polygon points="60,80 75,70 80,90" fill="#CD5C5C"/>
+  <polygon points="110,65 125,75 120,95" fill="#C44F28"/>
+  <polygon points="70,110 90,100 95,125" fill="#CD5C5C"/>
+  <polygon points="120,110 140,100 135,125" fill="#C44F28"/>
+  
+  <!-- Sauce coating -->
+  <ellipse cx="67" cy="85" rx="12" ry="14" fill="#8B0000" opacity="0.6"/>
+  <ellipse cx="117" cy="80" rx="12" ry="14" fill="#8B0000" opacity="0.6"/>
+  <ellipse cx="82" cy="112" rx="12" ry="14" fill="#8B0000" opacity="0.6"/>
+  <ellipse cx="127" cy="112" rx="12" ry="14" fill="#8B0000" opacity="0.6"/>
+  
+  <!-- Chilli sauce glaze -->
+  <path d="M 55 95 Q 65 110 80 105" stroke="#FF4500" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M 115 90 Q 130 105 145 100" stroke="#FF4500" stroke-width="2" fill="none" opacity="0.7"/>
+  
+  <!-- Green onion garnish -->
+  <path d="M 50 60 Q 55 50 60 55" stroke="#228B22" stroke-width="2" fill="none"/>
+  <path d="M 140 60 Q 145 50 150 55" stroke="#228B22" stroke-width="2" fill="none"/>
+  <path d="M 100 130 Q 105 140 110 135" stroke="#228B22" stroke-width="2" fill="none"/>
+</svg>

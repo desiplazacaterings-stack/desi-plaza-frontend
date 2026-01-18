@@ -1,0 +1,128 @@
+.confirmation-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.confirmation-container h1 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.confirmation-container h3 {
+  margin-top: 0;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .confirmation-container {
+    padding: 16px;
+    margin: 16px auto;
+  }
+
+  .confirmation-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .confirmation-container h3 {
+    font-size: 1.2rem;
+  }
+
+  /* Mobile Table Responsive Styles */
+  table {
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    width: 100%;
+  }
+
+  table thead {
+    display: none;
+  }
+
+  table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  table tr {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #e8e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    gap: 12px;
+  }
+
+  table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border: none !important;
+    text-align: right;
+    font-size: 12px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #f5ba4a;
+    text-transform: uppercase;
+    font-size: 11px;
+    text-align: left;
+    flex: 0 0 auto;
+  }
+
+  table tfoot tr {
+    background: #f9f9f9;
+    font-weight: bold;
+  }
+
+  table tfoot td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-container {
+    padding: 12px;
+    margin: 12px auto;
+  }
+
+  .confirmation-container h1 {
+    font-size: 1.3rem;
+  }
+
+  .confirmation-container h3 {
+    font-size: 1.1rem;
+  }
+
+  table tr {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  table td {
+    padding: 8px 0;
+  }
+
+  table td::before {
+    font-size: 10px;
+  }
+
+  /* Buttons responsive */
+  button {
+    width: 100%;
+    margin: 8px 0 !important;
+  }
+}

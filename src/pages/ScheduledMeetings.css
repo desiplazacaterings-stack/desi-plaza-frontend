@@ -1,16 +1,16 @@
 /* Scheduled Meetings Page Styles */
 
 .scheduled-meetings-dark {
-  background: linear-gradient(135deg, #1a1f28 0%, #1e2332 100%);
+  background: linear-gradient(135deg, #f9f9fc 0%, #ffffff 100%);
   min-height: 100vh;
-  color: #e0e0e0;
+  color: #232a36;
   padding: 40px 20px;
   font-family: inherit;
 }
 
 .scheduled-title {
-  color: var(--primary-color);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: #232a36;
+  text-shadow: none;
   margin-bottom: 32px;
   font-size: 28px;
   font-weight: 700;
@@ -25,9 +25,9 @@
 }
 
 .tab-btn {
-  background: #232a36;
-  color: var(--primary-color);
-  border: 1.5px solid transparent;
+  background: #ffffff;
+  color: #232a36;
+  border: 1.5px solid #e8e8f0;
   padding: 12px 20px;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -38,7 +38,7 @@
 }
 
 .tab-btn:hover {
-  background: #2a3140;
+  background: #f5f5f8;
   border-color: var(--primary-color);
   box-shadow: 0 2px 8px rgba(245, 186, 74, 0.1);
 }
@@ -54,27 +54,28 @@
 .scheduled-table-wrapper {
   overflow-x: auto;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  background: #232a36;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
 }
 
 .scheduled-table {
   width: 100%;
   border-collapse: collapse;
-  background: #232a36;
+  background: #ffffff;
 }
 
 .scheduled-table th,
 .scheduled-table td {
   padding: 14px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #e8e8f0;
   text-align: left;
   font-size: 0.9rem;
+  color: #232a36;
 }
 
 .scheduled-table th {
-  background: linear-gradient(90deg, #232a36 0%, #2a3140 100%);
-  color: var(--primary-color);
+  background: linear-gradient(90deg, #f9f9fc 0%, #f5f5f8 100%);
+  color: #232a36;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -122,13 +123,13 @@
 }
 
 .action-btn.call {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #1a1a1a;
 }
 
 .action-btn.mail {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #fff;
+  background: #e8e8f0;
+  color: #232a36;
 }
 
 .action-btn.complete {
@@ -163,11 +164,40 @@
     margin-bottom: 20px;
   }
 
+  .tab-btn {
+    padding: 10px 16px;
+    font-size: 0.8rem;
+  }
+
+  .scheduled-table {
+    min-width: 900px;
+    table-layout: fixed;
+  }
+
   .scheduled-table th,
   .scheduled-table td {
     padding: 10px 8px;
     font-size: 0.85rem;
+    text-align: left;
   }
+
+  .scheduled-table th:nth-child(1),
+  .scheduled-table td:nth-child(1) { width: 18%; }
+
+  .scheduled-table th:nth-child(2),
+  .scheduled-table td:nth-child(2) { width: 18%; }
+
+  .scheduled-table th:nth-child(3),
+  .scheduled-table td:nth-child(3) { width: 16%; }
+
+  .scheduled-table th:nth-child(4),
+  .scheduled-table td:nth-child(4) { width: 16%; text-align: right; }
+
+  .scheduled-table th:nth-child(5),
+  .scheduled-table td:nth-child(5) { width: 16%; text-align: center; }
+
+  .scheduled-table th:nth-child(6),
+  .scheduled-table td:nth-child(6) { width: 16%; text-align: center; }
 
   .actions-cell {
     flex-direction: column;
@@ -198,11 +228,114 @@
 
   .tab-btn {
     padding: 8px 14px;
-    font-size: 0.85rem;
+    font-size: 0.65rem;
   }
 
   .action-btn {
     padding: 6px 10px;
     font-size: 0.75rem;
+  }
+}
+
+/* Mobile Responsive Styles for Meetings Table */
+@media (max-width: 768px) {
+  .scheduled-meetings-dark {
+    padding: 20px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scheduled-title {
+    font-size: 22px;
+    padding: 0 15px;
+  }
+
+  .scheduled-table {
+    min-width: 1000px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .scheduled-table thead {
+    display: table-header-group;
+  }
+
+  .scheduled-table tbody {
+    display: table-row-group;
+  }
+
+  .scheduled-table tr {
+    display: table-row;
+    padding: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .scheduled-table td {
+    display: table-cell;
+    padding: 12px 8px;
+    font-size: 12px;
+    color: #232a36;
+    border: none;
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .scheduled-table td:last-child {
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .scheduled-table td::before {
+    content: none;
+    display: none;
+  }
+
+  .scheduled-table .actions-cell {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+  }
+
+  .scheduled-table .actions-cell::before {
+    display: none;
+  }
+
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scheduled-meetings-dark {
+    padding: 15px 10px;
+  }
+
+  .scheduled-title {
+    font-size: 20px;
+  }
+
+  .scheduled-table tr {
+    padding: 12px;
+  }
+
+  .scheduled-table td {
+    padding: 8px 0;
+    font-size: 12px;
+  }
+
+  .scheduled-table td::before {
+    min-width: 70px;
+    font-size: 10px;
+  }
+
+  .action-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+    min-width: 70px;
   }
 }

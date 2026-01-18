@@ -17,6 +17,7 @@ function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const token = localStorage.getItem('token');
 
@@ -29,6 +30,7 @@ function AdminDashboard() {
       if (filterRole) params.append('role', filterRole);
       if (filterStatus) params.append('status', filterStatus);
 
+      console.log('Fetching users with token:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
       const response = await axios.get(`${API_ENDPOINTS.ADMIN.USERS}?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -36,7 +38,9 @@ function AdminDashboard() {
       console.log('Users fetched:', response.data.data.users);
     } catch (error) {
       console.error('Error fetching users:', error.response?.data || error.message);
-      setMessage('Error fetching users: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
+      console.error('Full error:', error);
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || error.message;
+      setMessage('Error fetching users: ' + errorMsg);
     } finally {
       setLoading(false);
     }
@@ -50,8 +54,9 @@ function AdminDashboard() {
       });
       setStatistics(response.data.data.statistics);
     } catch (error) {
-      console.error('Error fetching statistics:', error);
-      setMessage('Error fetching statistics: ' + (error.response?.data?.error || error.message));
+      console.error('Error fetching statistics:', error.response?.data || error.message);
+      // Don't show statistics errors in the message, just log them
+      // setMessage('Error fetching statistics: ' + (error.response?.data?.error || error.message));
     }
   };
 
@@ -74,6 +79,20 @@ function AdminDashboard() {
   // Create user
   const handleCreateUser = async (e) => {
     e.preventDefault();
+    
+    // Validate all required fields with better error messaging
+    const missingFields = [];
+    if (!formData.name || formData.name.trim() === '') missingFields.push('Name');
+    if (!formData.email || formData.email.trim() === '') missingFields.push('Email');
+    if (!formData.password || formData.password.trim() === '') missingFields.push('Password');
+    if (!formData.mobile || formData.mobile.trim() === '') missingFields.push('Phone');
+    if (!formData.role) missingFields.push('Role');
+    
+    if (missingFields.length > 0) {
+      setMessage(`Error: Missing required fields: ${missingFields.join(', ')}`);
+      return;
+    }
+    
     try {
       console.log('Creating user with data:', formData);
       const response = await axios.post(API_ENDPOINTS.ADMIN.CREATE_USER, formData, {
@@ -82,7 +101,7 @@ function AdminDashboard() {
       console.log('User created successfully:', response.data);
       setMessage('User created successfully');
       setShowModal(false);
-      setFormData({});
+      setFormData({ role: 'staff' });
       fetchUsers();
     } catch (error) {
       console.error('Error creating user:', error.response?.data || error.message);
@@ -94,16 +113,25 @@ function AdminDashboard() {
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(API_ENDPOINTS.ADMIN.UPDATE_USER(selectedUser._id), formData, {
+      console.log('Updating user with data:', {
+        userId: selectedUser._id,
+        formData: formData
+      });
+      const response = await axios.patch(API_ENDPOINTS.ADMIN.UPDATE_USER(selectedUser._id), formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('Update response:', response.data);
       setMessage('User updated successfully');
       setShowModal(false);
       setFormData({});
       setSelectedUser(null);
       fetchUsers();
     } catch (error) {
-      console.error('Error updating user:', error.response?.data || error.message);
+      console.error('Error updating user:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
       setMessage('Error updating user: ' + (error.response?.data?.message || error.response?.data?.error || error.message));
     }
   };
@@ -155,7 +183,7 @@ function AdminDashboard() {
   // Open modal for create
   const openCreateModal = () => {
     setModalType('create');
-    setFormData({});
+    setFormData({ role: 'staff' }); // Set default role
     setSelectedUser(null);
     setShowModal(true);
   };
@@ -224,10 +252,6 @@ function AdminDashboard() {
               <h3>Staff</h3>
               <p className="stat-number">{statistics.byRole?.staff || 0}</p>
             </div>
-            <div className="stat-card customer-color">
-              <h3>Customers</h3>
-              <p className="stat-number">{statistics.byRole?.customer || 0}</p>
-            </div>
             <div className="stat-card active-color">
               <h3>Active</h3>
               <p className="stat-number">{statistics.byStatus?.active || 0}</p>
@@ -261,7 +285,6 @@ function AdminDashboard() {
                 <option value="">All Roles</option>
                 <option value="admin">Admin</option>
                 <option value="staff">Staff</option>
-                <option value="customer">Customer</option>
               </select>
 
               <select
@@ -299,10 +322,10 @@ function AdminDashboard() {
                 <tbody>
                   {users.map(user => (
                     <tr key={user._id}>
-                      <td><strong>{user.name}</strong></td>
-                      <td>{user.email}</td>
-                      <td>{user.mobile}</td>
-                      <td>
+                      <td data-label="Name"><strong>{user.name}</strong></td>
+                      <td data-label="Email">{user.email}</td>
+                      <td data-label="Phone">{user.mobile}</td>
+                      <td data-label="Role">
                         <select
                           value={user.role}
                           onChange={(e) => handleChangeRole(user._id, e.target.value)}
@@ -313,7 +336,7 @@ function AdminDashboard() {
                           <option value="customer">Customer</option>
                         </select>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <select
                           value={user.status}
                           onChange={(e) => handleChangeStatus(user._id, e.target.value)}
@@ -324,10 +347,10 @@ function AdminDashboard() {
                           <option value="suspended">Suspended</option>
                         </select>
                       </td>
-                      <td>
+                      <td data-label="Last Login">
                         {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <button
                           className="edit-btn"
                           onClick={() => openEditModal(user)}
@@ -397,6 +420,7 @@ function AdminDashboard() {
                 <input
                   type="text"
                   name="name"
+                  placeholder="Enter full name"
                   value={formData.name || ''}
                   onChange={handleInputChange}
                   required
@@ -408,6 +432,7 @@ function AdminDashboard() {
                 <input
                   type="email"
                   name="email"
+                  placeholder="Enter email address"
                   value={formData.email || ''}
                   onChange={handleInputChange}
                   required
@@ -419,6 +444,7 @@ function AdminDashboard() {
                 <input
                   type="tel"
                   name="mobile"
+                  placeholder="Enter phone number"
                   value={formData.mobile || ''}
                   onChange={handleInputChange}
                   required
@@ -426,16 +452,51 @@ function AdminDashboard() {
               </div>
 
               {modalType === 'create' && (
-                <div className="form-group">
+                <div className="form-group password-group">
                   <label>Password *</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password || ''}
-                    onChange={handleInputChange}
-                    required
-                    minLength="8"
-                  />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      placeholder="Minimum 8 characters"
+                      value={formData.password || ''}
+                      onChange={handleInputChange}
+                      required
+                      minLength="8"
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password-btn"
+                      onClick={() => setShowPassword(!showPassword)}
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {modalType === 'edit' && (
+                <div className="form-group password-group">
+                  <label>New Password (optional)</label>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      placeholder="Leave empty to keep current password"
+                      value={formData.password || ''}
+                      onChange={handleInputChange}
+                      minLength="8"
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password-btn"
+                      onClick={() => setShowPassword(!showPassword)}
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -443,11 +504,10 @@ function AdminDashboard() {
                 <label>Role *</label>
                 <select
                   name="role"
-                  value={formData.role || 'customer'}
+                  value={formData.role || 'staff'}
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="customer">Customer</option>
                   <option value="staff">Staff</option>
                   <option value="admin">Admin</option>
                 </select>

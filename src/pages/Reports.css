@@ -26,14 +26,14 @@
 
 .filters-section {
   background: white;
-  padding: 20px;
+  padding: 25px;
   border-radius: 12px;
   margin-bottom: 30px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .filter-group {
@@ -46,6 +46,116 @@
   font-weight: 600;
   color: #2c3e50;
   white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #f5ba4a;
+}
+
+.date-range-group {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.date-inputs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+}
+
+.date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.date-field label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.date-input {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.date-input:focus {
+  border-color: #f5ba4a;
+  box-shadow: 0 0 0 3px rgba(245, 186, 74, 0.1);
+  outline: none;
+}
+
+.btn-search {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ff9a56 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-search:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 186, 74, 0.3);
+}
+
+.btn-search:active {
+  transform: translateY(0);
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-reset {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-reset:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(127, 140, 141, 0.3);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
 }
 
 .month-input {
@@ -255,40 +365,89 @@
   margin-bottom: 30px;
 }
 
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
 .orders-table-section h2 {
-  margin: 0 0 20px 0;
+  margin: 0;
   color: #2c3e50;
   font-size: 1.5rem;
   font-weight: 600;
+}
+
+.download-btn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #232a36;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(245, 186, 74, 0.2);
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(245, 186, 74, 0.3);
+}
+
+.download-btn:active {
+  transform: translateY(0);
 }
 
 .table-wrapper {
   overflow-x: auto;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .orders-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.95rem;
+  display: table !important;
 }
 
 .orders-table thead {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  display: table-header-group !important;
+}
+
+.orders-table thead tr {
+  display: table-row !important;
+}
+
+.orders-table tbody {
+  display: table-row-group !important;
 }
 
 .orders-table th {
   padding: 15px;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   white-space: nowrap;
+  vertical-align: middle;
+  height: 50px;
+  display: table-cell !important;
+  line-height: 1.2;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
 .orders-table tbody tr {
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s ease;
+  display: table-row !important;
 }
 
 .orders-table tbody tr:hover {
@@ -297,6 +456,14 @@
 
 .orders-table td {
   padding: 12px 15px;
+  display: table-cell !important;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.orders-table td::before {
+  display: none !important;
+  content: none !important;
 }
 
 .orders-table td:last-child {
@@ -404,25 +571,85 @@
     font-size: 1.8rem;
   }
 
+  .reports-header p {
+    font-size: 0.95rem;
+  }
+
   .statistics-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
   }
 
   .stat-card {
     flex-direction: column;
     text-align: center;
+    padding: 20px;
+    border-left: none;
+    border-top: 4px solid;
+  }
+
+  .stat-card.instant-orders {
+    border-top-color: #3498db;
+  }
+
+  .stat-card.events {
+    border-top-color: #2ecc71;
+  }
+
+  .stat-card.revenue {
+    border-top-color: #f39c12;
+  }
+
+  .stat-card.pending {
+    border-top-color: #e74c3c;
   }
 
   .stat-icon {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .stat-content h3 {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
   }
 
   .breakdown-section {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .breakdown-card {
+    padding: 20px 15px;
+  }
+
+  .breakdown-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .breakdown-amount {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+  }
+
+  .breakdown-label {
+    font-size: 0.75rem;
   }
 
   .filters-section {
     flex-direction: column;
+    padding: 20px;
+    gap: 15px;
   }
 
   .filter-group {
@@ -430,16 +657,286 @@
     justify-content: space-between;
   }
 
+  .filter-group label {
+    font-size: 0.95rem;
+  }
+
   .month-input {
-    flex: 1;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .date-range-group {
+    width: 100%;
+  }
+
+  .date-inputs {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .date-field {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .date-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-search,
+  .btn-reset {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    height: auto;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .orders-table-section h2 {
+    font-size: 1.2rem;
+    width: 100%;
+  }
+
+  .download-btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Mobile: Horizontal Scrollable Table View */
+  .orders-table-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    padding: 20px;
   }
 
   .orders-table {
-    font-size: 0.85rem;
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    min-width: 900px;
+    font-size: 0.85em;
+    display: table !important;
+  }
+
+  .orders-table thead {
+    background: #f9f9f9;
+    border-bottom: 2px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: table-header-group !important;
+  }
+
+  .orders-table thead tr {
+    display: table-row !important;
+  }
+
+  .orders-table th {
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    white-space: nowrap;
+    font-size: 0.8em;
+    color: #2c3e50;
+    border-right: 1px solid #e0e0e0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    height: 45px;
+    display: table-cell !important;
+    line-height: 1.2;
+  }
+
+  .orders-table th:last-child {
+    border-right: none;
+  }
+
+  .orders-table tbody {
+    display: table-row-group !important;
+  }
+
+  .orders-table tbody tr {
+    display: table-row !important;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .orders-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .orders-table td {
+    padding: 10px;
+    border-right: 1px solid #e0e0e0;
+    font-size: 0.8em;
+    white-space: nowrap;
+    color: #2c3e50;
+    vertical-align: middle;
+    display: table-cell !important;
+    text-align: left;
+  }
+
+  .orders-table td::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .orders-table td:last-child {
+    border-right: none;
+  }
+
+  .orders-table .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .orders-table .payment-mode-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 500;
+    background-color: #c8e6c9;
+    color: #2e7d32;
+    white-space: nowrap;
+  }
+
+  .orders-table .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .no-data {
+    padding: 30px 20px;
+  }
+
+  .no-data p {
+    font-size: 1rem;
+  }
+
+  .loading {
+    padding: 40px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reports-container {
+    padding: 15px 10px;
+  }
+
+  .reports-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .reports-header p {
+    font-size: 0.9rem;
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+  }
+
+  .stat-content h3 {
+    font-size: 0.75rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+  }
+
+  .breakdown-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .breakdown-card {
+    padding: 15px;
+  }
+
+  .breakdown-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .breakdown-amount {
+    font-size: 1.6rem;
+  }
+
+  .breakdown-label {
+    font-size: 0.75rem;
+  }
+
+  .filters-section {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .filter-group label {
+    font-size: 0.9rem;
+  }
+
+  .orders-table-section {
+    padding: 15px;
+  }
+
+  .orders-table-section h2 {
+    font-size: 1.1rem;
+  }
+
+  .orders-table {
+    font-size: 0.75em;
   }
 
   .orders-table th,
   .orders-table td {
-    padding: 8px 10px;
+    padding: 8px 5px;
+  }
+
+  .btn-search,
+  .btn-reset {
+    font-size: 0.95rem;
+  }
+
+  .date-field label {
+    font-size: 0.9rem;
   }
 }

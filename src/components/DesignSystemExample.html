@@ -1,0 +1,634 @@
+<!-- ========================================
+   DESI PLAZA CATERINGS - DESIGN SYSTEM
+   Example HTML Structure
+   Demonstrates usage of all CSS styles
+   ======================================== -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desi Plaza Caterings - Design System Example</title>
+  <link rel="stylesheet" href="./design-system.css">
+  <style>
+    /* Additional example-specific styles */
+    .example-section {
+      background: var(--color-white);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .code-block {
+      background-color: #f5f5f5;
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: var(--font-size-sm);
+      margin: var(--spacing-md) 0;
+      border-left: 4px solid var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       NAVIGATION BAR EXAMPLE
+       ======================================== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">Desi Plaza</a>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#home" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#services" class="nav-link dropdown-toggle">Services</a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Wedding Catering</a>
+            <a href="#" class="dropdown-item">Corporate Events</a>
+            <a href="#" class="dropdown-item">Birthday Parties</a>
+            <a href="#" class="dropdown-item">Anniversary Dinners</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#menu" class="nav-link">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a href="#gallery" class="nav-link">Gallery</a>
+        </li>
+        <li class="nav-item">
+          <a href="#contact" class="nav-link">Contact</a>
+        </li>
+      </ul>
+      <button class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========================================
+       HERO SECTION EXAMPLE
+       ======================================== -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-title">Premium Catering for Every Occasion</h1>
+      <p class="hero-subtitle">Authentic Indian cuisine crafted with passion and tradition</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg">Request a Quote</button>
+        <button class="btn btn-outline btn-lg">View Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SERVICES SECTION
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container">
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-subtitle">We cater to all types of events with excellence</p>
+
+      <div class="grid-4">
+        <div class="card service-card">
+          <div class="service-icon">💍</div>
+          <h3 class="card-title">Weddings</h3>
+          <p class="card-description">Grand celebrations with premium cuisines and impeccable service</p>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🎉</div>
+          <h3 class="card-title">Celebrations</h3>
+          <p class="card-description">Birthdays, anniversaries, and special occasions catered perfectly</p>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🏢</div>
+          <h3 class="card-title">Corporate</h3>
+          <p class="card-description">Professional catering for meetings and corporate events</p>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🎂</div>
+          <h3 class="card-title">Customized</h3>
+          <p class="card-description">Tailored menus for your unique event requirements</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       GALLERY SECTION
+       ======================================== -->
+  <section class="section section-dark" id="gallery">
+    <div class="container">
+      <h2 class="section-title">Our Work</h2>
+      <p class="section-subtitle">Gallery of our finest catering events</p>
+
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+1" alt="Wedding Event">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Grand Wedding</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+2" alt="Corporate Event">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Corporate Dinner</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+3" alt="Party">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Birthday Celebration</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+4" alt="Event">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Anniversary Dinner</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+5" alt="Event">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Family Gathering</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://via.placeholder.com/300x300?text=Event+6" alt="Event">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-title">Conference Catering</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       QUOTE REQUEST FORM SECTION
+       ======================================== -->
+  <section class="section section-light" id="contact">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="section-title">Request a Quote</h2>
+      <p class="section-subtitle">Tell us about your event and we'll provide a custom quote</p>
+
+      <form class="quote-form">
+        <h3 class="quote-form-title">Event Details</h3>
+
+        <!-- Name and Email -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+          </div>
+        </div>
+
+        <!-- Phone and Event Date -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+          </div>
+          <div class="form-group">
+            <label for="event-date">Event Date *</label>
+            <input type="date" id="event-date" name="event-date" required>
+          </div>
+        </div>
+
+        <!-- Event Type and Guest Count -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="event-type">Event Type *</label>
+            <select id="event-type" name="event-type" required>
+              <option value="">Select an event type</option>
+              <option value="wedding">Wedding</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="birthday">Birthday Party</option>
+              <option value="anniversary">Anniversary</option>
+              <option value="engagement">Engagement</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guest-count">Expected Guest Count *</label>
+            <input type="number" id="guest-count" name="guest-count" min="10" placeholder="e.g., 100" required>
+          </div>
+        </div>
+
+        <!-- Budget and Dietary Requirements -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="budget">Budget Range (Optional)</label>
+            <select id="budget" name="budget">
+              <option value="">Select budget range</option>
+              <option value="20000-50000">$20,000 - $50,000</option>
+              <option value="50000-100000">$50,000 - $1,00,000</option>
+              <option value="100000-200000">$1,00,000 - $2,00,000</option>
+              <option value="200000-500000">$2,00,000 - $5,00,000</option>
+              <option value="500000+">$5,00,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dietary">Dietary Restrictions/Preferences</label>
+            <input type="text" id="dietary" name="dietary" placeholder="e.g., vegetarian, gluten-free">
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group">
+          <label for="message">Event Description & Requirements *</label>
+          <textarea id="message" name="message" placeholder="Tell us about your event, menu preferences, and any special requirements..." required></textarea>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="form-group">
+          <label>Services Interested In:</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="catering"> Full Catering Service
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="decoration"> Event Decoration
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="staff"> Professional Staff
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="setup"> Setup & Cleanup
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Get Quote</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========================================
+       BUTTON STYLES SHOWCASE
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="section-title">Button Styles</h2>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Primary Buttons</h3>
+        <p style="margin-bottom: var(--spacing-lg);">Use for main call-to-action elements</p>
+        <button class="btn btn-primary">Primary Button</button>
+        <button class="btn btn-primary btn-sm">Small Primary</button>
+        <button class="btn btn-primary btn-lg">Large Primary</button>
+        <button class="btn btn-primary btn-block">Full Width Primary</button>
+
+        <div class="code-block">
+          &lt;button class="btn btn-primary"&gt;Request a Quote&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Secondary Buttons</h3>
+        <p style="margin-bottom: var(--spacing-lg);">Use for secondary actions</p>
+        <button class="btn btn-secondary">Secondary Button</button>
+        <button class="btn btn-secondary btn-sm">Small Secondary</button>
+        <button class="btn btn-secondary btn-lg">Large Secondary</button>
+
+        <div class="code-block">
+          &lt;button class="btn btn-secondary"&gt;Learn More&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Outline Buttons (for dark backgrounds)</h3>
+        <p style="margin-bottom: var(--spacing-lg);">Use on dark backgrounds</p>
+        <div style="background-color: var(--color-secondary); padding: var(--spacing-lg); border-radius: var(--radius-lg); display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+          <button class="btn btn-outline">Outline Button</button>
+          <button class="btn btn-outline btn-sm">Small Outline</button>
+          <button class="btn btn-outline btn-lg">Large Outline</button>
+        </div>
+
+        <div class="code-block">
+          &lt;button class="btn btn-outline"&gt;View Menu&lt;/button&gt;
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FORM ELEMENTS SHOWCASE
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="section-title">Form Elements</h2>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Text Inputs</h3>
+        
+        <div class="form-group">
+          <label for="example-text">Standard Input Field</label>
+          <input type="text" id="example-text" placeholder="Enter text here...">
+        </div>
+
+        <div class="form-group">
+          <label for="example-email">Email Input</label>
+          <input type="email" id="example-email" placeholder="email@example.com">
+        </div>
+
+        <div class="code-block">
+          &lt;input type="text" placeholder="Enter text..."&gt;
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Select & Textarea</h3>
+        
+        <div class="form-group">
+          <label for="example-select">Dropdown Select</label>
+          <select id="example-select">
+            <option>Choose an option</option>
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="example-textarea">Textarea</label>
+          <textarea id="example-textarea" placeholder="Enter your message..."></textarea>
+        </div>
+
+        <div class="code-block">
+          &lt;select&gt;&lt;option&gt;Choose...&lt;/option&gt;&lt;/select&gt;
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Checkboxes & Radio Buttons</h3>
+        
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox"> Vegetarian Menu
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox"> Non-Vegetarian Menu
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox"> Vegan Options
+          </label>
+        </div>
+
+        <div class="code-block">
+          &lt;label class="checkbox-label"&gt;
+            &lt;input type="checkbox"&gt; Vegetarian Menu
+          &lt;/label&gt;
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       TYPOGRAPHY SHOWCASE
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 900px;">
+      <h2 class="section-title">Typography Styles</h2>
+
+      <div class="example-section">
+        <h1>Heading 1 (56px)</h1>
+        <p>Used for main page titles and hero sections. Font: Playfair Display, bold weight.</p>
+
+        <h2>Heading 2 (40px)</h2>
+        <p>Used for section titles. Creates visual hierarchy with decorative underline.</p>
+
+        <h3>Heading 3 (32px)</h3>
+        <p>Used for subsection titles. Maintains visual consistency.</p>
+
+        <h4>Heading 4 (24px)</h4>
+        <p>Used for card and component titles.</p>
+
+        <h5>Heading 5 (18px)</h5>
+        <p>Used for smaller headings within content.</p>
+
+        <h6>Heading 6 (16px)</h6>
+        <p>Used for labels and small headings. Uppercase with letter spacing.</p>
+
+        <div class="code-block">
+          &lt;h2 class="section-title"&gt;Section Title&lt;/h2&gt;
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Text Utilities</h3>
+        
+        <p class="text-center">Centered text utility</p>
+        <p class="text-primary">Primary color text</p>
+        <p class="text-secondary">Secondary color text</p>
+        <p class="text-light">Light gray text</p>
+
+        <div class="code-block">
+          &lt;p class="text-center"&gt;Centered text&lt;/p&gt;
+          &lt;p class="text-primary"&gt;Primary text&lt;/p&gt;
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SPACING UTILITIES SHOWCASE
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="section-title">Spacing System</h2>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Margin Bottom Utilities</h3>
+        
+        <div style="background-color: var(--color-neutral-bg); padding: var(--spacing-md); margin-bottom: var(--spacing-lg); border-radius: var(--radius-md);">
+          <p class="mb-2xl" style="background: white; padding: var(--spacing-md); border-radius: var(--radius-md);">Text with mb-2xl (96px bottom margin)</p>
+        </div>
+
+        <div style="background-color: var(--color-neutral-fg); padding: var(--spacing-md); margin-bottom: var(--spacing-lg); border-radius: var(--radius-md);">
+          <p class="mb-lg" style="background: white; padding: var(--spacing-md); border-radius: var(--radius-md);">Text with mb-lg (48px bottom margin)</p>
+        </div>
+
+        <div class="code-block">
+          &lt;p class="mb-lg"&gt;Spacing classes: mb-xs, mb-sm, mb-md, mb-lg, mb-xl, mb-2xl&lt;/p&gt;
+          &lt;p class="mt-lg"&gt;Also available: mt-xs, mt-sm, mt-md, mt-lg, mt-xl, mt-2xl&lt;/p&gt;
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       RESPONSIVE GRID SHOWCASE
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container">
+      <h2 class="section-title">Responsive Grids</h2>
+
+      <div class="example-section">
+        <h3 class="subsection-title">4-Column Grid (2 columns on tablet, 1 on mobile)</h3>
+        <div class="grid-4">
+          <div class="card">
+            <h4 class="card-title">Item 1</h4>
+            <p class="card-description">This grid automatically adjusts to fewer columns on smaller screens</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Item 2</h4>
+            <p class="card-description">Perfect for service cards, menu items, or testimonials</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Item 3</h4>
+            <p class="card-description">Maintains consistent spacing and alignment</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Item 4</h4>
+            <p class="card-description">Built with CSS Grid for modern layout control</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">3-Column Grid</h3>
+        <div class="grid-3">
+          <div class="card">
+            <h4 class="card-title">Feature A</h4>
+            <p class="card-description">Responsive and flexible layout system</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Feature B</h4>
+            <p class="card-description">Built with CSS Grid</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Feature C</h4>
+            <p class="card-description">Mobile-first design approach</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       COLORS & DESIGN TOKENS
+       ======================================== -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 900px;">
+      <h2 class="section-title">Color Palette & Design Tokens</h2>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Primary Colors</h3>
+        <div class="grid-3">
+          <div style="padding: var(--spacing-lg); background: var(--color-primary); border-radius: var(--radius-lg); color: white; text-align: center;">
+            <strong>Primary Gold</strong><br>
+            <code>#d4a574</code>
+          </div>
+          <div style="padding: var(--spacing-lg); background: var(--color-primary-dark); border-radius: var(--radius-lg); color: white; text-align: center;">
+            <strong>Primary Dark</strong><br>
+            <code>#b8935f</code>
+          </div>
+          <div style="padding: var(--spacing-lg); background: var(--color-primary-light); border-radius: var(--radius-lg); color: var(--color-secondary); text-align: center;">
+            <strong>Primary Light</strong><br>
+            <code>#e6c89a</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">Secondary & Neutral Colors</h3>
+        <div class="grid-3">
+          <div style="padding: var(--spacing-lg); background: var(--color-secondary); border-radius: var(--radius-lg); color: white; text-align: center;">
+            <strong>Secondary</strong><br>
+            <code>#1a1a1a</code>
+          </div>
+          <div style="padding: var(--spacing-lg); background: var(--color-neutral-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); color: var(--color-secondary); text-align: center;">
+            <strong>Neutral BG</strong><br>
+            <code>#f9f8f5</code>
+          </div>
+          <div style="padding: var(--spacing-lg); background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); text-align: center;">
+            <strong>White</strong><br>
+            <code>#ffffff</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-section">
+        <h3 class="subsection-title">CSS Variables (Custom Properties)</h3>
+        <div class="code-block">
+/* Colors */
+--color-primary: #d4a574
+--color-primary-dark: #b8935f
+--color-secondary: #1a1a1a
+--color-neutral-bg: #f9f8f5
+
+/* Typography */
+--font-serif: 'Playfair Display', Georgia, serif
+--font-sans: 'Lato', sans-serif
+--font-size-base: 1rem
+--font-weight-bold: 700
+
+/* Spacing */
+--spacing-sm: 1rem
+--spacing-md: 1.5rem
+--spacing-lg: 2rem
+--spacing-xl: 3rem
+
+/* Transitions */
+--transition-base: 300ms ease-in-out
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FOOTER
+       ======================================== -->
+  <footer class="section section-dark">
+    <div class="container" style="text-align: center;">
+      <p>&copy; 2024 Desi Plaza Caterings. All rights reserved.</p>
+      <p style="font-size: var(--font-size-sm); color: var(--color-neutral-light);">Premium catering services for your special occasions</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple hamburger menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.querySelector('.nav-menu');
+      const dropdowns = document.querySelectorAll('.dropdown');
+
+      // Hamburger click handler
+      if (hamburger) {
+        hamburger.addEventListener('click', function() {
+          this.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+      }
+
+      // Close menu when link is clicked
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      // Mobile dropdown handling
+      dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            this.classList.toggle('active');
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

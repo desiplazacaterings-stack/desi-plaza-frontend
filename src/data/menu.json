@@ -1,240 +1,6081 @@
 [
   {
-    "slNo": 1,
-    "itemName": "Basmati Rice",
-    "category": "Rice & Biryani",
-    "veg_nonveg": "Veg",
+    "itemName": "Whole wheat Roti",
+    "category": "Roti",
     "prices": [
-      { "unit": "kg", "units": 1, "price": 250 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 0.5
+      }
     ]
   },
   {
-    "slNo": 2,
-    "itemName": "Chicken Biryani",
-    "category": "Rice & Biryani",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Methi Roti",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 350 },
-      { "unit": "kg", "units": 1, "price": 800 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 0.75
+      }
     ]
   },
   {
-    "slNo": 3,
-    "itemName": "Mutton Biryani",
-    "category": "Rice & Biryani",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Butter Naan ",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 400 },
-      { "unit": "kg", "units": 1, "price": 950 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
     ]
   },
   {
-    "slNo": 4,
-    "itemName": "Vegetable Biryani",
-    "category": "Rice & Biryani",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Portion", "units": 1, "price": 200 },
-      { "unit": "kg", "units": 1, "price": 500 }
-    ]
-  },
-  {
-    "slNo": 5,
-    "itemName": "Whole Wheat Roti",
-    "category": "Breads",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Piece", "units": 1, "price": 5 },
-      { "unit": "Dozen", "units": 12, "price": 50 }
-    ]
-  },
-  {
-    "slNo": 6,
-    "itemName": "Butter Naan",
-    "category": "Breads",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Piece", "units": 1, "price": 20 },
-      { "unit": "Dozen", "units": 12, "price": 180 }
-    ]
-  },
-  {
-    "slNo": 7,
     "itemName": "Garlic Naan",
-    "category": "Breads",
-    "veg_nonveg": "Veg",
+    "category": "Roti",
     "prices": [
-      { "unit": "Piece", "units": 1, "price": 25 },
-      { "unit": "Dozen", "units": 12, "price": 220 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
     ]
   },
   {
-    "slNo": 8,
-    "itemName": "Tandoori Chicken",
-    "category": "Main Course - Non-Veg",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Plain Naan",
+    "category": "Roti",
     "prices": [
-      { "unit": "Piece", "units": 1, "price": 180 },
-      { "unit": "kg", "units": 1, "price": 900 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
     ]
   },
   {
-    "slNo": 9,
-    "itemName": "Chicken Tikka Masala",
-    "category": "Main Course - Non-Veg",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Bullet Naan ",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 320 },
-      { "unit": "kg", "units": 1, "price": 850 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
     ]
   },
   {
-    "slNo": 10,
-    "itemName": "Butter Chicken",
-    "category": "Main Course - Non-Veg",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Rumali Roti",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 300 },
-      { "unit": "kg", "units": 1, "price": 800 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
     ]
   },
   {
-    "slNo": 11,
-    "itemName": "Mutton Rogan Josh",
-    "category": "Main Course - Non-Veg",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Onion Kulcha",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 350 },
-      { "unit": "kg", "units": 1, "price": 900 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
     ]
   },
   {
-    "slNo": 12,
-    "itemName": "Fish Curry",
-    "category": "Main Course - Non-Veg",
-    "veg_nonveg": "Non-Veg",
+    "itemName": "Poori ",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 280 },
-      { "unit": "kg", "units": 1, "price": 750 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
     ]
   },
   {
-    "slNo": 13,
-    "itemName": "Dal Makhani",
-    "category": "Main Course - Veg",
-    "veg_nonveg": "Veg",
+    "itemName": "Bathura ",
+    "category": "Roti",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 150 },
-      { "unit": "kg", "units": 1, "price": 400 }
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
     ]
   },
   {
-    "slNo": 14,
-    "itemName": "Paneer Tikka Masala",
-    "category": "Main Course - Veg",
-    "veg_nonveg": "Veg",
+    "itemName": "Sugarcane Juice Live ",
+    "category": "Beverages",
     "prices": [
-      { "unit": "Portion", "units": 1, "price": 200 },
-      { "unit": "kg", "units": 1, "price": 550 }
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 50
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
     ]
   },
   {
-    "slNo": 15,
-    "itemName": "Vegetable Jalfrezi",
-    "category": "Main Course - Veg",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Portion", "units": 1, "price": 120 },
-      { "unit": "kg", "units": 1, "price": 350 }
-    ]
-  },
-  {
-    "slNo": 16,
-    "itemName": "Aloo Gobi",
-    "category": "Main Course - Veg",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Portion", "units": 1, "price": 100 },
-      { "unit": "kg", "units": 1, "price": 300 }
-    ]
-  },
-  {
-    "slNo": 17,
-    "itemName": "Gulab Jamun",
-    "category": "Desserts",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Piece", "units": 1, "price": 25 },
-      { "unit": "kg", "units": 1, "price": 400 }
-    ]
-  },
-  {
-    "slNo": 18,
-    "itemName": "Kheer",
-    "category": "Desserts",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Portion", "units": 1, "price": 80 },
-      { "unit": "Liter", "units": 1, "price": 300 }
-    ]
-  },
-  {
-    "slNo": 19,
-    "itemName": "Rasgulla",
-    "category": "Desserts",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Piece", "units": 1, "price": 20 },
-      { "unit": "kg", "units": 1, "price": 450 }
-    ]
-  },
-  {
-    "slNo": 20,
-    "itemName": "Ice Cream Served",
-    "category": "Desserts",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Scoop", "units": 1, "price": 50 },
-      { "unit": "Liter", "units": 1, "price": 500 }
-    ]
-  },
-  {
-    "slNo": 21,
-    "itemName": "Fresh Salad Mix",
-    "category": "Sides & Salads",
-    "veg_nonveg": "Veg",
-    "prices": [
-      { "unit": "Portion", "units": 1, "price": 60 },
-      { "unit": "kg", "units": 1, "price": 200 }
-    ]
-  },
-  {
-    "slNo": 22,
     "itemName": "Mango Lassi",
     "category": "Beverages",
-    "veg_nonveg": "Veg",
     "prices": [
-      { "unit": "Glass", "units": 1, "price": 80 },
-      { "unit": "Liter", "units": 1, "price": 300 }
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
     ]
   },
   {
-    "slNo": 23,
-    "itemName": "Sweet Lassi",
+    "itemName": "Masala Chai",
     "category": "Beverages",
-    "veg_nonveg": "Veg",
     "prices": [
-      { "unit": "Glass", "units": 1, "price": 60 },
-      { "unit": "Liter", "units": 1, "price": 250 }
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
     ]
   },
   {
-    "slNo": 24,
-    "itemName": "Bottled Water",
+    "itemName": "Irani Chai",
     "category": "Beverages",
-    "veg_nonveg": "Veg",
     "prices": [
-      { "unit": "Bottle", "units": 1, "price": 30 }
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Falooda",
+    "category": "Beverages",
+    "prices": [
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 50
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Chikoo Shake",
+    "category": "Beverages",
+    "prices": [
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 50
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Filter coffee",
+    "category": "Beverages",
+    "prices": [
+      {
+        "unit": "Gallon",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Mango Dal",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Dal Tadka",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Spinach Dal",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Tomato Dal",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Dal Makhani",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Moong Dal with Peas",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Masoor Dal Kadhi ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Val Dal (Gujarati)",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Mudda Pappu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Chana Masala",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Chana Dalna (Bengali)",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Punjabi Rajma ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Undhiyu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Labra (Mixed Veg – Bengali)",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Avial",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Aloo Gobi",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Aloo Gobi with Matar ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi Matar",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Aloo Methi Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Baingan Aloo Peas Tomato Curry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Aloo tomato Curry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Bhindi Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Bhindi Masala Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Cut Bhindi Masala",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Tindora Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Tindora Fry with Cashews",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Chikkudu Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chamagadda Fry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Potato Varuval",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Cabbage / Carrot Beans Poriyal",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Beans Kosambari",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Saag Chana",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Korma",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Chettinad Veg Korma",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Navratan Korma",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Mix Veg Curry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Mix Veg Jalfrezi",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Dum Ka Veg Curry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Guthi Vankaya Curry ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Baingan Bharta",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Baingan Fry (Besan Fry – Bengali)",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Bagara Baingan",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Methi Malai Mutter",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Malai Kofta",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Phool Makhana Curry",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Methi Paneer ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Shahi Paneer ",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Kadai Paneer",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Saag Paneer",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Butter Masala",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Dum Ka Paneer",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Lababdar",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pachi Pulusu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Sambhar",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Mukkala Pulusu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Rasam",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Masala Vada Pulusu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Kara Kulambu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Bhindi Pulusu",
+    "category": "Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Curry (Bone-in)",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Curry (Boneless)",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chettinnad Chicken Curry",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Vepudu ( Fry)",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Butter Chicken",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Tikka Masala",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Goat Curry ",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Goat sukka (Fry)",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Gongura Goat Curry ",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Lamb Curry",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Lamb Rogan Josh",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Fish Curry",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Shrimp Curry ",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Biryani",
+    "category": "Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Biryani",
+    "category": "Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gongura Paneer Biryani",
+    "category": "Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Guthivankay Biryani",
+    "category": "Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi Biryani",
+    "category": "Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Dum Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Boneless Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Fry Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gongura Chicken Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Goat Dum Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Goat Fry Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Goat Kheema Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Lamb Biryani (Boneless)",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Shrimp Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Fish Biryani",
+    "category": "Non-Veg Biryani",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Guthivankay Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Fry Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Mutton Fry Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Kheema Pulav",
+    "category": "Pulav",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Pulihora Tamarind",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Lemon Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Bisibelebath (Sambhar Rice)",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Pudina Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Coconut Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "White Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 20
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Jeera Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Curd Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Ragi Sangati",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Baghara Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Fried Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Fried Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chciken Fried Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Shrimp Fried Rice ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Noodles ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Noodles ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Noodles",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Shrimp Noodles ",
+    "category": "Special Rice",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Tikka Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Haryali Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Angara Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Afghani Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Malai Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Tangdi Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Tandoori Chicken",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Gongura Chicken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pachimirchi Chiocken Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Seekh Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Lamb Seekh Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Lamb Galouti Kebab",
+    "category": "Non Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Tikka Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Haryali Paneer Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Malai Paneer Tikka ",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Harayali Soya Chaap",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Malai Soya Chaap",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Soya Chaap Tikka",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Hara Bhara Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Shami Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Galouti Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Cutlet  Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Dahi Ke Kebab",
+    "category": "Veg Kebab's",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Manchuria",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi manchuria",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli Gobi",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi 65",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Karampodi Gobi",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Cilanthro Gobi",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Karivepaku Gobi",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Gobi Pakoda ",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli Paneer",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Manchuria",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Majestic ",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer 65",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Cilanthro Paneer ",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "lotus root",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Baby Corn Manchuria",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Baby Corn Majestic ",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli Baby Corn",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Gudalu",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Pakoda",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Onion Pakora",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Palak Pakoda",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Cut Mirchi",
+    "category": "Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Chciken lollipop",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 3
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "kodi vepudu",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pandu Mirchi Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pachi Mirchi Chicken Fry",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 180
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 90
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 45
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Majestic",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Manchuria",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken 65",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken 555",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Dragon Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "DB spcl Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Karampodi Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pepper Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Lemon Pepper Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Cilanthro Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Karivepaku Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Madras Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 170
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli Fish",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Andhra Fish Fry",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Pomfret Fish Fry",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Apollo Fish",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Chilli Shrimp",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Shrimp Fry",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Kheema Balls",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Goat Sukka",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 220
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 110
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 55
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Bread Pakora",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.5
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.375
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Onion Samosa",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.375
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.1875
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 0.75
+      }
+    ]
+  },
+  {
+    "itemName": "Spring Roll",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.25
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Chana Dal Vada",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.5
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.375
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Samosa",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.5
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.375
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Veg Cutlet",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.25
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Vegetable Puff",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Puff",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2.49
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.245
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.6225
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.49
+      }
+    ]
+  },
+  {
+    "itemName": "Chicken Puff",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2.49
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.245
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.6225
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.49
+      }
+    ]
+  },
+  {
+    "itemName": "Egg Puff",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2.49
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.245
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.6225
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.49
+      }
+    ]
+  },
+  {
+    "itemName": "Kheema Puff",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2.99
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1.495
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.7475
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.99
+      }
+    ]
+  },
+  {
+    "itemName": "Stuffed Mirchi Bajji",
+    "category": "Finger foods or Bites",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Gulab Jamun",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.25
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Kala Jamun",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.25
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.625
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.3125
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.25
+      }
+    ]
+  },
+  {
+    "itemName": "Rasmalai",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.25
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.625
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.3125
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.25
+      }
+    ]
+  },
+  {
+    "itemName": "Shahi Jamun",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1.25
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.625
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.3125
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.25
+      }
+    ]
+  },
+  {
+    "itemName": "Jilebi",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Pound",
+        "units": 1,
+        "price": 10.99
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 5.495
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 2.7475
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Sweet Pan",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Bobatlu",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 2
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Dodha Burfi",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Piece",
+        "units": 1,
+        "price": 1
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 0.5
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 0.25
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1
+      }
+    ]
+  },
+  {
+    "itemName": "Rabdi",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Double Ka Meetha",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Pineapple Kesari",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Gajar Halwa ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Shahi Tukda ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 160
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 80
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 40
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 3
+      }
+    ]
+  },
+  {
+    "itemName": "Sweet Pongal",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Louki Halwa ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 140
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 70
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 35
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2
+      }
+    ]
+  },
+  {
+    "itemName": "Monng Dal Halwa ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 150
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 75
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 2.5
+      }
+    ]
+  },
+  {
+    "itemName": "Kheer ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Full Tray",
+        "units": 1,
+        "price": 120
+      },
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 60
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 30
+      },
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 1.5
+      }
+    ]
+  },
+  {
+    "itemName": "Chetinnad Chicken Curry",
+    "category": "Non Veg Curries",
+    "prices": [
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      }
+    ]
+  },
+  {
+    "itemName": "Draagon Chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      }
+    ]
+  },
+  {
+    "itemName": "chilli chicken",
+    "category": "Non Veg Appetizers ",
+    "prices": [
+      {
+        "unit": "Half Tray",
+        "units": 1,
+        "price": 85
+      },
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 42.5
+      }
+    ]
+  },
+  {
+    "itemName": "Moong Dal Halwa ",
+    "category": "Desserts",
+    "prices": [
+      {
+        "unit": "Quarter Tray",
+        "units": 1,
+        "price": 37.5
+      }
+    ]
+  },
+  {
+    "itemName": "Samosa Chat",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Aloo tikki Chat",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Kachori Chat",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "chat papdi",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Sev Puri",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Dahi Puri",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Pani Puri ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "bhel puri",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 4
+      }
+    ]
+  },
+  {
+    "itemName": "Muntha Masala",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Dahi Wada",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Pav Bhaji",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 6
+      }
+    ]
+  },
+  {
+    "itemName": "Vada Pav",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Punugulu Chat ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 6
+      }
+    ]
+  },
+  {
+    "itemName": "Paneer Chat",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 6
+      }
+    ]
+  },
+  {
+    "itemName": "Maggi Station",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Pasta Station",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Noodles Live ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Dosa Live ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 15
+      }
+    ]
+  },
+  {
+    "itemName": "Idly Live ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Kathi Roll Live ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 6
+      }
+    ]
+  },
+  {
+    "itemName": "Tawa Sweet ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Jilebi Live ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Roll Up Ice Cream",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 6
+      }
+    ]
+  },
+  {
+    "itemName": "Falooda (Punjabi)",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Tawa Veg ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Sugar Cane Juice ",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
+    ]
+  },
+  {
+    "itemName": "Falooda Drink",
+    "category": "Chat Counter ",
+    "prices": [
+      {
+        "unit": "Pax",
+        "units": 1,
+        "price": 5
+      }
     ]
   }
 ]

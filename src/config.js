@@ -5,6 +5,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 export const API_ENDPOINTS = {
+  BASE_URL: API_BASE_URL,
   AUTH: {
     BASE: `${API_BASE_URL}/api/auth`,
     LOGIN: `${API_BASE_URL}/api/auth/login`,
@@ -64,6 +65,13 @@ export const API_ENDPOINTS = {
     UPDATE: (id) => `${API_BASE_URL}/api/schedules/${id}`,
     COMPLETE: (id) => `${API_BASE_URL}/api/schedules/${id}/complete`,
     DELETE: (id) => `${API_BASE_URL}/api/schedules/${id}`,
+  },
+  AGREEMENTS: {
+    BASE: `${API_BASE_URL}/api/agreements`,
+    GENERATE_LINK: `${API_BASE_URL}/api/agreements/generate-link`,
+    VIEW: (token) => `${API_BASE_URL}/api/agreements/view/${token}`,
+    SUBMIT_SIGNATURE: (token) => `${API_BASE_URL}/api/agreements/submit-signature/${token}`,
+    GET: (id) => `${API_BASE_URL}/api/agreements/${id}`,
   },
 };
 

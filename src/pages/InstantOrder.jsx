@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
+import useMenuItems from "../hooks/useMenuItems";
 import "./InstantOrder.css";
 
 function InstantOrder() {
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState(null);
+  const [permissions, setPermissions] = useState({});
   const [selectedItem, setSelectedItem] = useState("");
   const [menuSearch, setMenuSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -43,6 +45,68 @@ function InstantOrder() {
   const [menuItems, setMenuItems] = useState([]);
   const [kotItems, setKotItems] = useState([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [kotSerialNumber, setKotSerialNumber] = useState(1);
+  const [menuItemsLoadError, setMenuItemsLoadError] = useState(null);
+  const COMPANY_NAME = "DESI PLAZA CATERINGS";
+
+  // Use the menu items hook to fetch items
+  const { menuItems: hookMenuItems, loading: menuLoading, error: menuError, fetchMenuItems: refetchMenuItems, clearCache } = useMenuItems();
+
+  // Generate KOT serial number on mount
+  useEffect(() => {
+    const lastSerialNumber = localStorage.getItem('lastKOTSerialNumber');
+    if (lastSerialNumber) {
+      setKotSerialNumber(parseInt(lastSerialNumber) + 1);
+    }
+  }, []);
+
+  // Sync hook menu items to component state
+  useEffect(() => {
+    if (hookMenuItems && hookMenuItems.length > 0) {
+      console.log(`✓ Menu items synced: ${hookMenuItems.length} items loaded`);
+      setMenuItems(hookMenuItems);
+      setMenuItemsLoadError(null);
+    } else if (menuError) {
+      console.error('❌ Failed to load menu items:', menuError);
+      setMenuItemsLoadError(menuError);
+    } else if (!menuLoading && hookMenuItems && hookMenuItems.length === 0) {
+      console.warn('⚠️ No menu items returned from server');
+      setMenuItemsLoadError('No menu items available in the system');
+    }
+  }, [hookMenuItems, menuLoading, menuError]);
+
+  // Fetch user permissions on mount
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        
+        // Admins have all permissions
+        if (user.role === 'admin') {
+          setPermissions({ canCreateInstantOrder: true });
+        } else if (user.role === 'staff' && user._id && token) {
+          // Fetch staff permissions from backend
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => {
+              setPermissions(res.data.data.customPermissions || {});
+            })
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUserRole(null);
+      }
+    }
+  }, []);
 
   /* 🔹 Filter items based on search query */
   const filteredMenuItems = menuItems
@@ -74,34 +138,6 @@ function InstantOrder() {
     };
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
-
-  /* 🔹 Fetch Menu */
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        console.log('Fetching menu items from:', API_ENDPOINTS.ITEMS.GET_ALL);
-        const res = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        console.log('Menu API response:', res.data);
-        
-        // Handle both array and wrapped object responses
-        let items = [];
-        if (Array.isArray(res.data)) {
-          items = res.data;
-        } else if (res.data && typeof res.data === 'object' && res.data.items) {
-          items = res.data.items;
-        } else if (res.data && typeof res.data === 'object') {
-          items = Object.values(res.data).flat();
-        }
-        
-        console.log('Processed items count:', items.length);
-        setMenuItems(items);
-      } catch (err) {
-        console.error("Error fetching menu:", err.message);
-        setMenuItems([]);
-      }
-    };
-    fetchMenu();
   }, []);
 
   /* 🔹 Handle unit and price update when item is selected */
@@ -403,8 +439,8 @@ function InstantOrder() {
 
       {/* ITEM INPUT WITH SEARCH */}
       <div className="order-input">
-        <h3>Add Menu Item</h3>
-        <div style={{ position: 'relative' }}>
+        <h3 style={{ marginRight: 16, minWidth: 110, marginBottom: 0 }}>Add Menu Item</h3>
+        <div style={{ position: 'relative', flex: 1, minWidth: 240 }}>
           <input
             type="text"
             placeholder="Search and select menu item..."
@@ -414,23 +450,42 @@ function InstantOrder() {
               setShowDropdown(true);
             }}
             onFocus={() => setShowDropdown(true)}
-            style={{ marginRight: 8, minWidth: 160, marginBottom: 8 }}
+            style={{ marginRight: 0, minWidth: 160, marginBottom: 0, width: '100%' }}
             autoComplete="off"
           />
           {showDropdown && (
-            <div style={{ position: 'absolute', top: 38, left: 0, right: 0, background: '#fff', border: '1px solid #ccc', borderRadius: 4, zIndex: 10, maxHeight: 180, overflowY: 'auto' }}>
-              {filteredMenuItems.length === 0 ? (
-                <div style={{ padding: 8, color: '#888' }}>No items found</div>
+            <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#fff', border: '1.5px solid #ddd', borderRadius: 8, zIndex: 10, maxHeight: 220, overflowY: 'auto', marginTop: 4, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+              {menuLoading ? (
+                <div style={{ padding: 12, color: '#888', fontSize: '0.9rem', textAlign: 'center' }}>⏳ Loading menu items...</div>
+              ) : menuError ? (
+                <div style={{ padding: 12, textAlign: 'center' }}>
+                  <div style={{ color: '#d32f2f', fontSize: '0.9rem', marginBottom: 8 }}>❌ Failed to load menu items</div>
+                  <button 
+                    onClick={() => {
+                      clearCache();
+                      refetchMenuItems(true);
+                    }}
+                    style={{ padding: '6px 12px', background: '#f5ba4a', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
+                  >
+                    🔄 Retry
+                  </button>
+                </div>
+              ) : filteredMenuItems.length === 0 ? (
+                <div style={{ padding: 12, color: '#888', fontSize: '0.9rem', textAlign: 'center' }}>
+                  {menuItems.length === 0 ? 'No menu items available' : 'No items found'}
+                </div>
               ) : (
                 filteredMenuItems.map((item, i) => (
                   <div
                     key={i}
-                    style={{ padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+                    style={{ padding: '10px 14px', cursor: 'pointer', borderBottom: '1px solid #eee', fontSize: '0.9rem', transition: 'all 0.2s' }}
                     onMouseDown={() => {
                       setSelectedItem(item.itemName);
                       setMenuSearch(item.itemName);
                       setShowDropdown(false);
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#f5f5f5'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
                     {item.itemName}
                   </div>
@@ -448,7 +503,7 @@ function InstantOrder() {
               const found = availableUnits.find(u => u.unit === e.target.value);
               setPrice(found ? found.price : 0);
             }}
-            style={{ marginRight: 8, width: 90 }}
+            style={{ marginRight: 0, width: 130, marginBottom: 0, flex: '0 0 auto' }}
           >
             {availableUnits.map((u, idx) => (
               <option key={idx} value={u.unit}>{u.unit}</option>
@@ -460,7 +515,7 @@ function InstantOrder() {
             placeholder="Unit"
             value={unit}
             readOnly
-            style={{ marginRight: 8, width: 80, background: '#f5f5f5', color: '#888', cursor: 'not-allowed' }}
+            style={{ marginRight: 0, width: 130, background: '#f5f5f5', color: '#888', cursor: 'not-allowed', marginBottom: 0, flex: '0 0 auto' }}
           />
         )}
         <input
@@ -469,7 +524,8 @@ function InstantOrder() {
           placeholder="Qty"
           value={qty}
           onChange={e => setQty(Number(e.target.value))}
-          style={{ marginRight: 8, width: 60 }}
+          style={{ marginRight: 0, width: 70, marginBottom: 0, flex: '0 0 auto' }}
+          className="qty-input"
         />
         <input
           type="number"
@@ -477,7 +533,7 @@ function InstantOrder() {
           placeholder="Price"
           value={price}
           readOnly
-          style={{ marginRight: 8, width: 80, background: '#f5f5f5', color: '#888', cursor: 'not-allowed' }}
+          style={{ marginRight: 0, width: 90, background: '#f5f5f5', color: '#888', cursor: 'not-allowed', marginBottom: 0, flex: '0 0 auto' }}
         />
         <button className="button" onClick={addToKOT}>Add</button>
       </div>
@@ -503,8 +559,8 @@ function InstantOrder() {
                 const availableUnits = menuItem?.prices?.map(p => p.unit) || [];
                 return (
                   <tr key={index}>
-                    <td>{item.itemName}</td>
-                    <td>
+                    <td data-label="Item">{item.itemName}</td>
+                    <td data-label="Unit">
                       {availableUnits.length > 1 ? (
                         <select
                           value={item.unit}
@@ -519,7 +575,7 @@ function InstantOrder() {
                         <span>{item.unit}</span>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Qty">
                       <input
                         type="number"
                         min="1"
@@ -532,9 +588,9 @@ function InstantOrder() {
                         className="qty-input"
                       />
                     </td>
-                    <td>${item.price.toFixed(2)}</td>
-                    <td>${(item.price * item.qty).toFixed(2)}</td>
-                    <td>
+                    <td data-label="Price">${item.price.toFixed(2)}</td>
+                    <td data-label="Total">${(item.price * item.qty).toFixed(2)}</td>
+                    <td data-label="Action">
                       <button
                         className="remove-btn"
                         onClick={() => {
@@ -554,18 +610,18 @@ function InstantOrder() {
 
       {/* SUMMARY */}
       <div className="order-summary">
-        <p>Subtotal: ₹{subtotal.toFixed(2)}</p>
-        <p>Sales Tax ({salesTaxRate}%): ₹{salesTaxAmount.toFixed(2)}</p>
-        <p>Service Charges ({serviceChargeRate}%): ₹{serviceChargeAmount.toFixed(2)}</p>
+        <p>Subtotal: ${subtotal.toFixed(2)}</p>
+        <p>Sales Tax ({salesTaxRate}%): ${salesTaxAmount.toFixed(2)}</p>
+        <p>Service Charges ({serviceChargeRate}%): ${serviceChargeAmount.toFixed(2)}</p>
         <p style={{ fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '8px', marginTop: '8px' }}>
-          Subtotal with Charges: ₹{subtotalWithCharges.toFixed(2)}
+          Subtotal with Charges: ${subtotalWithCharges.toFixed(2)}
         </p>
-        <p>Discount ({discount}%): -₹{discountAmount.toFixed(2)}</p>
+        <p>Discount ({discount}%): -${discountAmount.toFixed(2)}</p>
         <p style={{ fontSize: '1.2em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px', marginTop: '8px' }}>
-          Total: ₹{total.toFixed(2)}
+          Total: ${total.toFixed(2)}
         </p>
-        <p>Advance: ₹{advance.toFixed(2)}</p>
-        <p>Balance Due: ₹{balance.toFixed(2)}</p>
+        <p>Advance: ${advance.toFixed(2)}</p>
+        <p>Balance Due: ${balance.toFixed(2)}</p>
       </div>
 
       {/* ACTIONS */}
@@ -587,10 +643,11 @@ function InstantOrder() {
             return abbrev[unit] || unit;
           };
           let out = '';
-          out += pad('KOT', 32) + '\n';
-          out += pad('Customer: ' + customerName, 32) + '\n';
-          out += pad('Date: ' + new Date().toLocaleDateString(), 32) + '\n';
-          out += pad('Time: ' + new Date().toLocaleTimeString(), 32) + '\n';
+          out += '====================================\n';
+          out += pad(COMPANY_NAME, 32) + '\n';
+          out += '====================================\n';
+          out += 'KOT #' + kotSerialNumber.toString().padStart(5, '0') + '  Date: ' + new Date().toLocaleDateString() + '\n';
+          out += 'Time: ' + new Date().toLocaleTimeString() + ' Customer: ' + customerName + '\n';
           out += '\n';
           out += 'No  Item             Unit  Qty\n';
           out += '------------------------------------\n';
@@ -598,6 +655,11 @@ function InstantOrder() {
             out += pad((idx + 1).toString(), 2) + '  ' + pad(item.itemName, 16) + pad(abbreviateUnit(item.unit || ''), 6) + pad(item.qty.toString(), 3) + '\n';
           });
           out += '------------------------------------\n';
+          out += '====================================\n';
+          
+          // Save serial number for next KOT
+          localStorage.setItem('lastKOTSerialNumber', kotSerialNumber.toString());
+          
           const printWindow = window.open('', '', 'width=600,height=600');
           printWindow.document.write('<html><head><title>KOT Print</title>');
           printWindow.document.write('<style>body{font-family:monospace;} .kot-print{white-space:pre;}</style>');
@@ -610,7 +672,18 @@ function InstantOrder() {
           printWindow.close();
         }}>🖨️ Print KOT</button>
         <button className="button" onClick={() => setKotItems([])}>🧹 Reset KOT</button>
-        <button className="button" onClick={submitOrder}>Submit Order</button>
+        {permissions.canCreateInstantOrder ? (
+          <button className="button" onClick={submitOrder}>Submit Order</button>
+        ) : (
+          <button 
+            className="button" 
+            style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }} 
+            disabled 
+            title="You don't have permission to create instant orders"
+          >
+            Submit Order
+          </button>
+        )}
       </div>
 
       {/* KOT PRINT */}
@@ -630,10 +703,11 @@ function InstantOrder() {
             return abbrev[unit] || unit;
           };
           let out = '';
-          out += pad('KOT', 32) + '\n';
-          out += pad('Customer: ' + customerName, 32) + '\n';
-          out += pad('Date: ' + new Date().toLocaleDateString(), 32) + '\n';
-          out += pad('Time: ' + new Date().toLocaleTimeString(), 32) + '\n';
+          out += '====================================\n';
+          out += pad(COMPANY_NAME, 32) + '\n';
+          out += '====================================\n';
+          out += 'KOT #' + kotSerialNumber.toString().padStart(5, '0') + '  Date: ' + new Date().toLocaleDateString() + '\n';
+          out += 'Time: ' + new Date().toLocaleTimeString() + ' Customer: ' + customerName + '\n';
           out += '\n';
           out += 'No  Item             Unit  Qty\n';
           out += '------------------------------------\n';
@@ -641,6 +715,7 @@ function InstantOrder() {
             out += pad((idx + 1).toString(), 2) + '  ' + pad(item.itemName, 16) + pad(abbreviateUnit(item.unit || ''), 6) + pad(item.qty.toString(), 3) + '\n';
           });
           out += '------------------------------------\n';
+          out += '====================================\n';
           return out;
         })()}
       </pre>

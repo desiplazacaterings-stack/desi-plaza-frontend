@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import printAgreement from '../utils/printAgreement';
+import './Confirmation.css';
 
 function Confirmation() {
   const location = useLocation();
@@ -72,19 +73,19 @@ function Confirmation() {
           <tbody>
             {items.map((item, index) => (
               <tr key={index}>
-                <td style={{ padding: 10, border: '1px solid #ddd' }}>{index + 1}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd' }}>{item.itemName}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.unit}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.qty}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>${Number(item.price).toFixed(2)}</td>
-                <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>₹{(item.price * item.qty).toFixed(2)}</td>
+                <td data-label="#" style={{ padding: 10, border: '1px solid #ddd' }}>{index + 1}</td>
+                <td data-label="Item Name" style={{ padding: 10, border: '1px solid #ddd' }}>{item.itemName}</td>
+                <td data-label="Unit" style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.unit}</td>
+                <td data-label="Qty" style={{ padding: 10, border: '1px solid #ddd', textAlign: 'center' }}>{item.qty}</td>
+                <td data-label="Price" style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>${Number(item.price).toFixed(2)}</td>
+                <td data-label="Total" style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>${(item.price * item.qty).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
             <tr style={{ background: '#f9f9f9', fontWeight: 'bold' }}>
               <td colSpan={5} style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>Grand Total</td>
-              <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>₹{Number(total).toFixed(2)}</td>
+              <td style={{ padding: 10, border: '1px solid #ddd', textAlign: 'right' }}>${Number(total).toFixed(2)}</td>
             </tr>
           </tfoot>
         </table>

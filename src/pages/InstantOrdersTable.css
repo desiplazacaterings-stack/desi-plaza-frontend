@@ -1,36 +1,51 @@
 .instant-orders-table-container {
-  padding: 20px;
-  max-width: 1200px;
+  padding: 32px;
+  max-width: 1400px;
   margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .instant-orders-table-container h2 {
   color: #222;
-  margin-bottom: 20px;
-  font-size: 24px;
+  margin-bottom: 32px;
+  font-size: 28px;
+  font-weight: 700;
+  padding-bottom: 16px;
+  border-bottom: 3px solid #f5ba4a;
 }
 
 .instant-orders-filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
+  padding: 16px;
+  background: #f9f9fb;
+  border-radius: 10px;
+  border: 1px solid #e8e8f0;
 }
 
 .instant-orders-filters button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: #e0e0e0;
+  background-color: #fff;
   color: #222;
-  font-size: 14px;
-  transition: background-color 0.3s;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .instant-orders-filters button.active {
-  background-color: #007bff;
-  color: white;
+  background: linear-gradient(135deg, #f5ba4a, #ffc757);
+  color: #fff;
+  border-color: #f5ba4a;
+  box-shadow: 0 4px 12px rgba(245, 186, 74, 0.3);
+  font-weight: 600;
 }
 
 .instant-orders-filters button:hover {
@@ -41,50 +56,212 @@
   width: 100%;
   border-collapse: collapse;
   background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
   overflow: hidden;
+  table-layout: fixed;
+  border: 1px solid #e8e8f0;
 }
 
 .instant-orders-table thead {
-  background: #f5f5f5;
-  border-bottom: 2px solid #ddd;
+  background: linear-gradient(135deg, #f5ba4a, #ffc757);
+  border-bottom: 2px solid #f5ba4a;
 }
 
 .instant-orders-table th {
-  padding: 12px;
+  padding: 16px 14px;
   text-align: left;
-  font-weight: 600;
-  color: #222;
+  font-weight: 700;
+  color: #fff;
+  word-break: break-word;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
 }
 
+.instant-orders-table th:nth-child(1) { width: 25%; }
+.instant-orders-table th:nth-child(2) { width: 20%; }
+.instant-orders-table th:nth-child(3) { width: 15%; }
+.instant-orders-table th:nth-child(4) { width: 15%; }
+.instant-orders-table th:nth-child(5) { width: 15%; }
+.instant-orders-table th:nth-child(6) { width: 10%; }
+
 .instant-orders-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+  padding: 14px;
+  border-bottom: 1px solid #e8e8f0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.95rem;
+  color: #444;
 }
+
+.instant-orders-table td:nth-child(1) { width: 25%; }
+.instant-orders-table td:nth-child(2) { width: 20%; }
+.instant-orders-table td:nth-child(3) { width: 15%; }
+.instant-orders-table td:nth-child(4) { width: 15%; }
+.instant-orders-table td:nth-child(5) { width: 15%; }
+.instant-orders-table td:nth-child(6) { width: 10%; }
+.instant-orders-table td:nth-child(7) { width: 10%; }
+.instant-orders-table td:nth-child(8) { width: 12%; }
+.instant-orders-table td:nth-child(9) { width: 16%; }
 
 .instant-orders-table tbody tr:hover {
   background: #f9f9f9;
 }
 
 .instant-orders-table select {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1.5px solid #ddd;
   background: white;
   cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
 .instant-orders-table button {
-  padding: 6px 12px;
-  background: #ff4444;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
 
 .instant-orders-table button:hover {
   background: #cc0000;
+}
+
+/* Mobile Responsive Styles for Instant Orders Table */
+@media (max-width: 768px) {
+  .instant-orders-table-container {
+    padding: 15px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .instant-orders-table-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding: 0 10px;
+  }
+
+  .instant-orders-filters {
+    padding: 0 10px;
+  }
+
+  .instant-orders-table {
+    min-width: 900px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 0 10px;
+  }
+
+  .instant-orders-table thead {
+    display: table-header-group;
+    background: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .instant-orders-table th {
+    padding: 10px 8px;
+    font-size: 12px;
+    word-break: break-word;
+    text-align: left;
+  }
+
+  .instant-orders-table th:nth-child(1) { width: 25%; }
+  .instant-orders-table th:nth-child(2) { width: 20%; }
+  .instant-orders-table th:nth-child(3) { width: 15%; }
+  .instant-orders-table th:nth-child(4) { width: 15%; }
+  .instant-orders-table th:nth-child(5) { width: 15%; }
+  .instant-orders-table th:nth-child(6) { width: 10%; }
+
+  .instant-orders-table tbody {
+    display: table-row-group;
+  }
+
+  .instant-orders-table tr {
+    display: table-row;
+    border-bottom: 1px solid #eee;
+  }
+
+  .instant-orders-table td {
+    display: table-cell;
+    padding: 10px 8px;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    word-break: break-word;
+    text-align: left;
+  }
+
+  .instant-orders-table td:nth-child(1) { width: 25%; }
+  .instant-orders-table td:nth-child(2) { width: 20%; }
+  .instant-orders-table td:nth-child(3) { width: 15%; text-align: center; }
+  .instant-orders-table td:nth-child(4) { width: 15%; text-align: right; }
+  .instant-orders-table td:nth-child(5) { width: 15%; text-align: center; }
+  .instant-orders-table td:nth-child(6) { width: 10%; text-align: center; }
+
+  .instant-orders-table select {
+    padding: 5px 6px;
+    font-size: 11px;
+    width: 90%;
+  }
+
+  .instant-orders-table button {
+    padding: 5px 8px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .instant-orders-table-container {
+    padding: 12px 0;
+  }
+
+  .instant-orders-table-container h2 {
+    font-size: 18px;
+    padding: 0 10px;
+    margin-bottom: 12px;
+  }
+
+  .instant-orders-filters {
+    padding: 0 10px;
+    gap: 5px;
+  }
+
+  .instant-orders-filters button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .instant-orders-table {
+    margin: 0 10px;
+    min-width: 950px;
+  }
+
+  .instant-orders-table th {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .instant-orders-table td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .instant-orders-table select {
+    padding: 4px 5px;
+    font-size: 10px;
+  }
+
+  .instant-orders-table button {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
 }

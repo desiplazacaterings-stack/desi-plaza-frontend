@@ -1,0 +1,43 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ricegrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFACD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F0E68C;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow3" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="100" cy="100" r="95" fill="url(#ricegrad)" filter="url(#shadow3)"/>
+  
+  <!-- Rice mound -->
+  <ellipse cx="100" cy="110" rx="65" ry="55" fill="#F5DEB3"/>
+  
+  <!-- Rice grains texture -->
+  <line x1="60" y1="90" x2="65" y2="95" stroke="#E6D37C" stroke-width="1.5" opacity="0.8"/>
+  <line x1="75" y1="80" x2="78" y2="88" stroke="#E6D37C" stroke-width="1.5" opacity="0.8"/>
+  <line x1="95" y1="70" x2="98" y2="80" stroke="#E6D37C" stroke-width="1.5" opacity="0.8"/>
+  <line x1="125" y1="75" x2="128" y2="85" stroke="#E6D37C" stroke-width="1.5" opacity="0.8"/>
+  <line x1="140" y1="90" x2="135" y2="100" stroke="#E6D37C" stroke-width="1.5" opacity="0.8"/>
+  
+  <!-- Paneer pieces -->
+  <rect x="70" y="100" width="16" height="16" fill="#FFFAFA" opacity="0.8" rx="2"/>
+  <rect x="100" y="95" width="16" height="16" fill="#FFFAFA" opacity="0.8" rx="2"/>
+  <rect x="125" y="105" width="16" height="16" fill="#FFFAFA" opacity="0.8" rx="2"/>
+  
+  <!-- Vegetables (corn) -->
+  <circle cx="85" cy="115" r="5" fill="#FFD700" opacity="0.9"/>
+  <circle cx="110" cy="125" r="5" fill="#FFD700" opacity="0.9"/>
+  <circle cx="135" cy="120" r="5" fill="#FFD700" opacity="0.9"/>
+  
+  <!-- Vegetables (peas) -->
+  <circle cx="80" cy="125" r="4" fill="#90EE90" opacity="0.9"/>
+  <circle cx="105" cy="110" r="4" fill="#90EE90" opacity="0.9"/>
+  <circle cx="130" cy="130" r="4" fill="#90EE90" opacity="0.9"/>
+  
+  <!-- Ginger-garlic flavor indication -->
+  <path d="M 50 70 Q 45 75 50 80" stroke="#D2691E" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M 150 70 Q 155 75 150 80" stroke="#D2691E" stroke-width="2" fill="none" opacity="0.6"/>
+</svg>

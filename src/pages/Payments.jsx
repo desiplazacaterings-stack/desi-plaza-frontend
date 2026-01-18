@@ -13,6 +13,41 @@ function Payments() {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [paymentNotes, setPaymentNotes] = useState("");
   const [filterStatus, setFilterStatus] = useState("pending");
+  const [permissions, setPermissions] = useState({});
+  const [userRole, setUserRole] = useState(null);
+
+  // Fetch user permissions on mount
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        
+        // Admins have all permissions
+        if (user.role === 'admin') {
+          setPermissions({ canRecordPayment: true });
+        } else if (user.role === 'staff' && user._id && token) {
+          // Fetch staff permissions from backend
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => {
+              setPermissions(res.data.data.customPermissions || {});
+            })
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUserRole(null);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -136,22 +171,22 @@ function Payments() {
                 const balanceDue = calculateBalanceDue(order);
                 return (
                   <tr key={order._id}>
-                    <td className="order-id">{order._id?.substring(0, 8) || "N/A"}...</td>
-                    <td>{order.customerName || "N/A"}</td>
-                    <td>{order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A"}</td>
-                    <td className="amount">${roundAmount(order.totalAmount).toLocaleString()}</td>
-                    <td className="amount-received">${roundAmount(order.amountReceived).toLocaleString()}</td>
-                    <td className="balance-due">
+                    <td className="order-id" data-label="Order ID">{order._id?.substring(0, 8) || "N/A"}...</td>
+                    <td data-label="Customer">{order.customerName || "N/A"}</td>
+                    <td data-label="Event Date">{order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A"}</td>
+                    <td className="amount" data-label="Total Amount">${roundAmount(order.totalAmount).toLocaleString()}</td>
+                    <td className="amount-received" data-label="Amount Received">${roundAmount(order.amountReceived).toLocaleString()}</td>
+                    <td className="balance-due" data-label="Balance Due">
                       <span className={balanceDue > 0 ? "warning" : "success"}>
                         ${roundAmount(balanceDue).toLocaleString()}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Status">
                       <span className={`status-badge ${order.paymentStatus?.toLowerCase() || "pending"}`}>
                         {order.paymentStatus || "Pending"}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Action">
                       {balanceDue > 0 && (
                         <button
                           className="add-payment-btn"
@@ -265,9 +300,21 @@ function Payments() {
                   </div>
 
                   <div className="form-actions">
-                    <button type="submit" className="submit-btn">
-                      ✓ Record Payment
-                    </button>
+                    {permissions.canRecordPayment ? (
+                      <button type="submit" className="submit-btn">
+                        ✓ Record Payment
+                      </button>
+                    ) : (
+                      <button 
+                        type="button"
+                        className="submit-btn" 
+                        style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }} 
+                        disabled 
+                        title="You don't have permission to record payments"
+                      >
+                        ✓ Record Payment
+                      </button>
+                    )}
                     <button
                       type="button"
                       className="cancel-btn"

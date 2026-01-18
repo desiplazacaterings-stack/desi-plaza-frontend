@@ -11,6 +11,9 @@ function Confirm() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedOrder, setExpandedOrder] = useState(null);
+  const [shareLoading, setShareLoading] = useState({});
+  const [shareLinks, setShareLinks] = useState({});
 
   useEffect(() => {
     if (passedOrder) {
@@ -29,53 +32,76 @@ function Confirm() {
     }
   }, [passedOrder]);
 
+  const handleGenerateShareLink = async (order) => {
+    try {
+      setShareLoading(prev => ({ ...prev, [order._id]: true }));
+      
+      const response = await axios.post(API_ENDPOINTS.AGREEMENTS.GENERATE_LINK, {
+        orderId: order._id,
+        customerData: {
+          customerName: order.customerName,
+          mobile: order.mobile,
+          email: order.email,
+          eventType: order.eventType,
+          eventDate: order.eventDate,
+          eventTime: order.eventTime,
+          guests: order.guests,
+          location: order.address,
+          notes: order.notes || ''
+        }
+      });
+
+      setShareLinks(prev => ({
+        ...prev,
+        [order._id]: response.data.shareableUrl
+      }));
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(response.data.shareableUrl);
+      alert("Share link copied to clipboard! You can now send it to your customer.");
+    } catch (err) {
+      alert("Error generating share link: " + (err.response?.data?.message || err.message));
+    } finally {
+      setShareLoading(prev => ({ ...prev, [order._id]: false }));
+    }
+  };
+
   return (
     <div className="confirm-container" style={{ padding: '20px', maxWidth: '1400px', margin: '0 auto' }}>
       <h2 style={{ marginBottom: '20px', color: '#232a36', fontSize: '1.8em' }}>Confirmed Orders</h2>
       {loading && <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>}
       {error && <div style={{ padding: '20px', color: '#d32f2f', background: '#ffebee', borderRadius: '4px' }}>{error}</div>}
       {!loading && !error && orders.length > 0 && (
-        <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <table style={{ 
-            width: "100%", 
-            borderCollapse: "collapse", 
-            fontSize: '0.95em'
-          }}>
+        <div className="confirm-wrapper">
+          <table>
             <thead>
-              <tr style={{ 
-                background: '#f5ba4a', 
-                fontWeight: 'bold', 
-                textAlign: 'left',
-                position: 'sticky',
-                top: 0
-              }}>
-                <th style={{ padding: '14px', minWidth: '100px', borderRight: '1px solid #ddd' }}>Order ID</th>
-                <th style={{ padding: '14px', minWidth: '120px', borderRight: '1px solid #ddd' }}>Customer Name</th>
-                <th style={{ padding: '14px', minWidth: '110px', borderRight: '1px solid #ddd' }}>Mobile</th>
-                <th style={{ padding: '14px', minWidth: '150px', borderRight: '1px solid #ddd' }}>Email</th>
-                <th style={{ padding: '14px', minWidth: '140px', borderRight: '1px solid #ddd' }}>Address</th>
-                <th style={{ padding: '14px', minWidth: '150px', borderRight: '1px solid #ddd' }}>Event Date</th>
-                <th style={{ padding: '14px', minWidth: '80px', borderRight: '1px solid #ddd', textAlign: 'right' }}>Total</th>
-                <th style={{ padding: '14px', minWidth: '80px', borderRight: '1px solid #ddd', textAlign: 'right' }}>Advance</th>
-                <th style={{ padding: '14px', minWidth: '80px', borderRight: '1px solid #ddd', textAlign: 'right' }}>Balance</th>
-                <th style={{ padding: '14px', minWidth: '90px', borderRight: '1px solid #ddd' }}>Status</th>
-                <th style={{ padding: '14px', minWidth: '200px', borderRight: '1px solid #ddd' }}>Line Items</th>
-                <th style={{ padding: '14px', minWidth: '120px' }}>Actions</th>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Event Date</th>
+                <th>Total</th>
+                <th>Advance</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map(order => (
-                <tr key={order._id || order.quotationId} style={{ borderBottom: '1px solid #eee', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = '#f9f9f9'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee' }}><strong>{order._id?.substring(0, 8) || order.quotationId || 'N/A'}...</strong></td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee' }}>{order.customer?.name || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee' }}>{order.customer?.mobile || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', fontSize: '0.9em' }}>{order.customer?.email || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', fontSize: '0.9em' }}>{order.customer?.address || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', fontSize: '0.9em' }}>{order.deliveryTime ? new Date(order.deliveryTime).toLocaleString() : 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', textAlign: 'right', fontWeight: '600', color: '#1976d2' }}>${order.total?.toFixed(2) || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', textAlign: 'right', color: '#388e3c' }}>${order.advance?.toFixed(2) || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee', textAlign: 'right', color: '#d32f2f' }}>${order.balance?.toFixed(2) || 'N/A'}</td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee' }}>
+              {orders.map(order => [
+                <tr key={`order-${order._id || order.quotationId}`}>
+                  <td><strong>{order._id?.substring(0, 8) || order.quotationId || 'N/A'}...</strong></td>
+                  <td>{order.customerName || 'N/A'}</td>
+                  <td>{order.mobile || 'N/A'}</td>
+                  <td>{order.email || 'N/A'}</td>
+                  <td>{order.address || 'N/A'}</td>
+                  <td>{order.eventDate ? new Date(order.eventDate).toLocaleString() : 'N/A'}</td>
+                  <td style={{ textAlign: 'right', color: '#1976d2', fontWeight: '600' }}>${order.total?.toFixed(2) || 'N/A'}</td>
+                  <td style={{ textAlign: 'right', color: '#388e3c' }}>${order.advance?.toFixed(2) || 'N/A'}</td>
+                  <td style={{ textAlign: 'right', color: '#d32f2f' }}>${order.balance?.toFixed(2) || 'N/A'}</td>
+                  <td>
                     <span style={{ 
                       padding: '4px 8px', 
                       background: order.status === 'Placed' ? '#e3f2fd' : '#f3e5f5', 
@@ -87,16 +113,22 @@ function Confirm() {
                       {order.status}
                     </span>
                   </td>
-                  <td style={{ padding: '12px', borderRight: '1px solid #eee' }}>
-                    <ul style={{ margin: 0, padding: '0 0 0 16px', listStyle: "disc" }}>
-                      {order.items && order.items.length > 0 ? order.items.map((item, idx) => (
-                        <li key={idx} style={{ marginBottom: '4px', fontSize: '0.85em', color: '#555' }}>
-                          <strong>{item.itemName}</strong> ({item.unit}) x{item.qty} @ ${item.price?.toFixed(2)}
-                        </li>
-                      )) : <li style={{ fontSize: '0.85em', color: '#999' }}>No items</li>}
-                    </ul>
-                  </td>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+                    <button
+                      onClick={() => setExpandedOrder(expandedOrder === order._id ? null : order._id)}
+                      style={{
+                        padding: '6px 12px',
+                        background: '#2196F3',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '0.85em',
+                        fontWeight: '500'
+                      }}
+                    >
+                      {expandedOrder === order._id ? '👁️ Hide Items' : '👁️ View Items'}
+                    </button>
                     <button
                       onClick={() => printAgreement({
                         customerName: order.customer?.name || 'N/A',
@@ -119,12 +151,46 @@ function Confirm() {
                         fontSize: '0.85em',
                         fontWeight: '500'
                       }}
+                      title="Print Agreement"
                     >
-                      Print Agreement
+                      🖨️
+                    </button>
+                    <button
+                      onClick={() => handleGenerateShareLink(order)}
+                      disabled={shareLoading[order._id]}
+                      style={{
+                        padding: '6px 12px',
+                        background: shareLoading[order._id] ? '#ccc' : '#4caf50',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: shareLoading[order._id] ? 'not-allowed' : 'pointer',
+                        fontSize: '0.85em',
+                        fontWeight: '500'
+                      }}
+                      title="Generate Shareable Link"
+                    >
+                      {shareLoading[order._id] ? '⏳' : '🔗'}
                     </button>
                   </td>
-                </tr>
-              ))}
+                </tr>,
+                expandedOrder === order._id && order.items && order.items.length > 0 && (
+                  <tr key={`items-${order._id || order.quotationId}`} style={{ background: '#f9f9f9' }}>
+                    <td colSpan="11" style={{ padding: '16px', borderTop: '2px solid #f5ba4a' }}>
+                      <div style={{ marginTop: '8px' }}>
+                        <h5 style={{ marginTop: 0, marginBottom: '12px', color: '#232a36' }}>Order Items:</h5>
+                        <ul style={{ margin: 0, padding: '0 0 0 24px', listStyle: 'disc' }}>
+                          {order.items.map((item, idx) => (
+                            <li key={idx} style={{ marginBottom: '6px', fontSize: '0.9em', color: '#333' }}>
+                              <strong>{item.itemName}</strong> ({item.unit}) x{item.qty} @ ${item.price?.toFixed(2)}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              ])}
             </tbody>
           </table>
         </div>

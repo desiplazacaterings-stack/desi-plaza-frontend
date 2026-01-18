@@ -7,11 +7,34 @@ import "./Menu.css";
 
 export default function Menu({ hidePrice = false }) {
   const [filter, setFilter] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    // Check user authentication
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    
+    if (token && userData) {
+      try {
+        const user = JSON.parse(userData);
+        setIsAuthenticated(true);
+        setUserRole(user.role);
+        console.log('User authenticated:', user.role);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setIsAuthenticated(false);
+        setUserRole(null);
+      }
+    } else {
+      setIsAuthenticated(false);
+      setUserRole(null);
+    }
+
     const fetchMenu = async () => {
       try {
         setLoading(true);
@@ -46,6 +69,11 @@ export default function Menu({ hidePrice = false }) {
       ? menuItems
       : menuItems.filter(item => item.veg_nonveg === filter);
 
+  // Filter items by selected category
+  if (selectedCategory !== "All") {
+    filteredMenu = filteredMenu.filter(item => item.category === selectedCategory);
+  }
+
   // Filter items by search query (category or item name)
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase();
@@ -65,6 +93,9 @@ export default function Menu({ hidePrice = false }) {
     return acc;
   }, {});
 
+  // Get all unique categories from original menu for category buttons
+  const allCategories = [...new Set(menuItems.map(item => item.category || "Other"))].sort();
+  
   const categories = Object.keys(groupedByCategory).sort();
 
   return (
@@ -101,6 +132,28 @@ export default function Menu({ hidePrice = false }) {
         )}
       </div>
 
+      {/* Category Filter Buttons */}
+      <div className="category-filter-section">
+        <h3 className="category-filter-title">📂 Browse by Category</h3>
+        <div className="category-buttons">
+          <button 
+            className={`category-btn ${selectedCategory === "All" ? "active" : ""}`}
+            onClick={() => setSelectedCategory("All")}
+          >
+            All Categories
+          </button>
+          {allCategories.map((category) => (
+            <button
+              key={category}
+              className={`category-btn ${selectedCategory === category ? "active" : ""}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {loading ? (
         <div className="no-items">
           <p>Loading menu...</p>
@@ -121,21 +174,23 @@ export default function Menu({ hidePrice = false }) {
                       <h4>{item.itemName}</h4>
                     </div>
 
-                    {!hidePrice && item.prices && item.prices.length > 0 ? (
+                    {isAuthenticated && item.prices && item.prices.length > 0 ? (
                       <div className="prices-container">
                         {item.prices.map((priceObj, i) => (
                           <div key={i} className="price-option">
                             <span className="price-label">
                               {priceObj.units} {priceObj.unit}
                             </span>
-                            <span className="price-value">₹{priceObj.price}</span>
+                            <span className="price-value">${priceObj.price}</span>
                           </div>
                         ))}
                       </div>
-                    ) : !hidePrice ? (
-                      <div className="no-price">No pricing available</div>
-                    ) : (
+                    ) : !isAuthenticated ? (
                       <div className="item-available">✓ Available</div>
+                    ) : hidePrice ? (
+                      <div className="item-available">✓ Available</div>
+                    ) : (
+                      <div className="no-price">No pricing available</div>
                     )}
                   </div>
                 ))}

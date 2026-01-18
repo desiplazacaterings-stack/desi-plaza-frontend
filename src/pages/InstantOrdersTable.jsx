@@ -1,15 +1,48 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 import "./InstantOrdersTable.css";
 
 function InstantOrdersTable() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("All");
+  const [permissions, setPermissions] = useState({});
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     fetchInstantOrders();
+  }, []);
+
+  // Fetch user permissions
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+        if (user.role === 'admin') {
+          setPermissions({
+            canEditInstantOrder: true,
+            canDeleteInstantOrder: true
+          });
+        } else if (user.role === 'staff' && user._id && token) {
+          axios.get(API_ENDPOINTS.ADMIN.GET_PERMISSIONS(user._id), {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => setPermissions(res.data.data.customPermissions || {}))
+            .catch(err => {
+              console.error("Error fetching permissions:", err);
+              setPermissions({});
+            });
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
   }, []);
 
   const fetchInstantOrders = async () => {
@@ -30,6 +63,8 @@ function InstantOrdersTable() {
   const filteredOrders = filter === "All" 
     ? orders 
     : orders.filter(order => order.status === filter);
+
+  const pagination = usePagination(filteredOrders);
 
   const deleteOrder = async (id) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
@@ -58,21 +93,21 @@ function InstantOrdersTable() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="instant-orders-table-container">
       <h2>📋 Instant Orders</h2>
 
-      <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+      <div className="instant-orders-filters">
         <button 
-          onClick={() => setFilter("All")} 
-          style={{ padding: "8px 16px", background: filter === "All" ? "#007bff" : "#e0e0e0", color: filter === "All" ? "white" : "black", border: "none", borderRadius: "4px", cursor: "pointer" }}
+          onClick={() => setFilter("All")}
+          className={filter === "All" ? "active" : ""}
         >
           All ({orders.length})
         </button>
         {["Placed", "Preparing", "Ready", "Delivered"].map(status => (
           <button 
             key={status}
-            onClick={() => setFilter(status)} 
-            style={{ padding: "8px 16px", background: filter === status ? "#007bff" : "#e0e0e0", color: filter === status ? "white" : "black", border: "none", borderRadius: "4px", cursor: "pointer" }}
+            onClick={() => setFilter(status)}
+            className={filter === status ? "active" : ""}
           >
             {status} ({orders.filter(o => o.status === status).length})
           </button>
@@ -84,51 +119,73 @@ function InstantOrdersTable() {
       ) : filteredOrders.length === 0 ? (
         <p style={{ textAlign: "center", color: "#888" }}>No instant orders found</p>
       ) : (
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "white", boxShadow: "0 2px 4px rgba(0,0,0,0.1)", borderRadius: "8px", overflow: "hidden" }}>
-            <thead>
-              <tr style={{ background: "#f5f5f5", borderBottom: "2px solid #ddd" }}>
-                <th style={{ padding: "12px", textAlign: "left" }}>Customer</th>
-                <th style={{ padding: "12px", textAlign: "left" }}>Mobile</th>
-                <th style={{ padding: "12px", textAlign: "center" }}>Items</th>
-                <th style={{ padding: "12px", textAlign: "right" }}>Total</th>
-                <th style={{ padding: "12px", textAlign: "center" }}>Status</th>
-                <th style={{ padding: "12px", textAlign: "center" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map(order => (
-                <tr key={order._id} style={{ borderBottom: "1px solid #eee", hover: { background: "#f9f9f9" } }}>
-                  <td style={{ padding: "12px" }}>{order.customerName}</td>
-                  <td style={{ padding: "12px" }}>{order.mobile}</td>
-                  <td style={{ padding: "12px", textAlign: "center" }}>{order.items?.length || 0}</td>
-                  <td style={{ padding: "12px", textAlign: "right" }}>₹{order.total?.toFixed(2) || "0.00"}</td>
-                  <td style={{ padding: "12px", textAlign: "center" }}>
+        <table className="instant-orders-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagination.currentItems.map(order => (
+              <tr key={order._id}>
+                <td>{order.customerName}</td>
+                <td>{order.mobile}</td>
+                <td style={{ textAlign: "center" }}>{order.items?.length || 0}</td>
+                <td style={{ textAlign: "right" }}>${order.total?.toFixed(2) || "0.00"}</td>
+                <td style={{ textAlign: "center" }}>
+                  {permissions.canEditInstantOrder ? (
                     <select 
                       value={order.status} 
                       onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-                      style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #ddd", background: "white", cursor: "pointer" }}
                     >
                       <option>Placed</option>
                       <option>Preparing</option>
                       <option>Ready</option>
                       <option>Delivered</option>
                     </select>
-                  </td>
-                  <td style={{ padding: "12px", textAlign: "center" }}>
+                  ) : (
+                    <select 
+                      value={order.status}
+                      disabled
+                      title="You don't have permission to edit order status"
+                    >
+                      <option>{order.status}</option>
+                    </select>
+                  )}
+                </td>
+                <td style={{ textAlign: "center" }}>
+                  {permissions.canDeleteInstantOrder ? (
                     <button 
                       onClick={() => deleteOrder(order._id)}
-                      style={{ padding: "6px 12px", background: "#ff4444", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
                     >
-                      Delete
+                      ✕ Delete
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  ) : (
+                    <button 
+                      disabled
+                      title="You don't have permission to delete orders"
+                    >
+                      ✕ Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
+
+      <Pagination 
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        totalItems={pagination.totalItems}
+        onPageChange={pagination.goToPage}
+      />
     </div>
   );
 }

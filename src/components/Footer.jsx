@@ -1,16 +1,25 @@
 import { Link } from "react-router-dom";
 import "./Footer.css";
+import { useEffect, useState } from "react";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    if (user?.role) {
+      setUserRole(user.role);
+    }
+  }, []);
 
   const companyInfo = {
     name: "Desi Plaza Caterings",
-    phone: "+91 12345 67890",
-    email: "info@desiplazacaterings.com",
-    address: "123 Main Street, City, State, ZIP",
-    gstin: "29ABCDE1234F2Z5"
-  };
+    phone: "+1 513 7773374",
+    email: "desiplazacaterings@gmail.com",
+    address: "9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States",
+     };
 
   const quickLinks = [
     { label: "Home", path: "/" },
@@ -65,10 +74,6 @@ function Footer() {
                   {companyInfo.email}
                 </a>
               </li>
-              <li>
-                <span className="contact-icon">🏢</span>
-                <span className="gstin-info">GST ID: {companyInfo.gstin}</span>
-              </li>
             </ul>
           </div>
         </div>
@@ -87,19 +92,21 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Services Section */}
-        <div className="footer-section">
-          <h3 className="footer-heading">Services</h3>
-          <ul className="footer-links">
-            {serviceLinks.map((link) => (
-              <li key={link.label}>
-                <Link to={link.path} className="footer-link">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Services Section - Only for authenticated users */}
+        {userRole && (
+          <div className="footer-section">
+            <h3 className="footer-heading">Services</h3>
+            <ul className="footer-links">
+              {serviceLinks.map((link) => (
+                <li key={link.label}>
+                  <Link to={link.path} className="footer-link">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Support Section */}
         <div className="footer-section">

@@ -11,6 +11,8 @@ function Login() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,64 +37,151 @@ function Login() {
         localStorage.setItem('token', response.data.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
         
-        // Redirect to home
-        navigate('/');
+        // Redirect to home with a small delay to ensure localStorage is set
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 100);
+      } else {
+        setError(response.data.message || 'Login failed');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      console.error('Login error details:', err);
+      
+      // Handle different error types
+      let errorMsg = 'Login failed. Please try again.';
+      
+      if (err.response) {
+        // Server responded with error status
+        errorMsg = err.response.data?.error || 
+                   err.response.data?.message || 
+                   err.response.statusText || 
+                   'Invalid Credentials';
+      } else if (err.request) {
+        // Request made but no response
+        errorMsg = 'No response from server. Please check your connection.';
+      } else {
+        // Error in request setup
+        errorMsg = err.message || 'An error occurred';
+      }
+      
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h1>🔓 Login</h1>
-        <p className="auth-subtitle">Sign in to your account</p>
+    <div className="login-wrapper">
+      <div className="login-background">
+        <div className="gradient-blob blob-1"></div>
+        <div className="gradient-blob blob-2"></div>
+        <div className="gradient-blob blob-3"></div>
+      </div>
 
-        {error && <div className="auth-error">{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="your@email.com"
-            />
+      <div className="login-container">
+        <div className="login-card">
+          {/* Logo Section */}
+          <div className="login-logo-section">
+            <div className="brand-logo">
+              <img src="/logo.png" alt="Desi Plaza Logo" className="logo-image" />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder="Enter your password"
-              minLength="8"
-            />
+          {/* Company Name */}
+          <div className="login-company-info">
+            <h1 className="brand-title">Desi Plaza</h1>
+            <p className="brand-subtitle">Caterings & Events</p>
           </div>
 
-          <button 
-            type="submit" 
-            className="auth-button-submit"
-            disabled={loading}
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
+          {/* Error Alert */}
+          {error && (
+            <div className="alert alert-error">
+              <span className="alert-icon">⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
 
-        <div className="auth-footer">
-          <p>Don't have an account? <a href="/register">Register here</a></p>
-          <p><a href="/">Back to Home</a></p>
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="login-form">
+            {/* Email Field */}
+            <div className={`form-group ${focusedField === 'email' ? 'focused' : ''} ${formData.email ? 'filled' : ''}`}>
+              <div className="form-input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  placeholder="Email Address"
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div className={`form-group ${focusedField === 'password' ? 'focused' : ''} ${formData.password ? 'filled' : ''}`}>
+              <div className="form-input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  onFocus={() => setFocusedField('password')}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  placeholder="Password"
+                  minLength="8"
+                  className="form-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
+
+            {/* Remember Me & Forgot Password */}
+            <div className="form-options">
+              <label className="remember-me">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <a href="#" className="forgot-password">Forgot password?</a>
+            </div>
+
+            {/* Submit Button */}
+            <button 
+              type="submit" 
+              className={`login-button ${loading ? 'loading' : ''}`}
+              disabled={loading}
+            >
+              <span className="button-text">
+                {loading ? (
+                  <>
+                    <span className="spinner"></span>
+                    Signing in...
+                  </>
+                ) : (
+                  <>Sign In</>
+                )}
+              </span>
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="login-footer">
+            <p>Don't have an account? <a href="/register">Create one</a></p>
+            <p><a href="/">← Back to Home</a></p>
+          </div>
         </div>
       </div>
     </div>

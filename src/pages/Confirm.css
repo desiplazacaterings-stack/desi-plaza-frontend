@@ -1,14 +1,14 @@
 /* Confirm Page Styles */
 
 .confirm-container {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 40px auto;
-  padding: 40px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
+  padding: 40px 20px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
   font-family: inherit;
-  text-align: center;
+  text-align: left;
   color: var(--text-primary);
   animation: scaleIn 0.5s ease-out;
 }
@@ -26,51 +26,183 @@
 
 .confirm-container h2 {
   color: var(--text-primary);
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   letter-spacing: -0.5px;
 }
 
-.confirm-container p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 16px;
+/* Table Wrapper - Clean Style */
+.confirm-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: white;
 }
 
-.confirm-container button {
-  margin-top: 24px;
+.confirm-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  table-layout: auto;
+}
+
+.confirm-wrapper table th:nth-child(1) { width: 10%; min-width: 80px; }
+.confirm-wrapper table th:nth-child(2) { width: 12%; min-width: 100px; }
+.confirm-wrapper table th:nth-child(3) { width: 10%; min-width: 85px; }
+.confirm-wrapper table th:nth-child(4) { width: 12%; min-width: 100px; }
+.confirm-wrapper table th:nth-child(5) { width: 10%; min-width: 85px; }
+.confirm-wrapper table th:nth-child(6) { width: 12%; min-width: 95px; }
+.confirm-wrapper table th:nth-child(7) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table th:nth-child(8) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table th:nth-child(9) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table th:nth-child(10) { width: 8%; min-width: 65px; }
+.confirm-wrapper table th:nth-child(11) { width: 12%; min-width: 95px; }
+
+.confirm-wrapper table td:nth-child(1) { width: 10%; min-width: 80px; }
+.confirm-wrapper table td:nth-child(2) { width: 12%; min-width: 100px; }
+.confirm-wrapper table td:nth-child(3) { width: 10%; min-width: 85px; }
+.confirm-wrapper table td:nth-child(4) { width: 12%; min-width: 100px; }
+.confirm-wrapper table td:nth-child(5) { width: 10%; min-width: 85px; }
+.confirm-wrapper table td:nth-child(6) { width: 12%; min-width: 95px; }
+.confirm-wrapper table td:nth-child(7) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table td:nth-child(8) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table td:nth-child(9) { width: 8%; min-width: 70px; text-align: right; }
+.confirm-wrapper table td:nth-child(10) { width: 8%; min-width: 65px; }
+.confirm-wrapper table td:nth-child(11) { width: 12%; min-width: 95px; }
+
+.confirm-wrapper table thead {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  z-index: 10;
+}
+
+.confirm-wrapper table th {
+  padding: 16px 12px;
+  text-align: left;
+  color: #232a36;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+}
+
+.confirm-wrapper table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e8e8f0;
+  color: #555;
+  font-size: 13px;
+}
+
+.confirm-wrapper table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.confirm-wrapper table tbody tr:hover {
+  background-color: #f9f9fb;
+}
+
+.confirm-wrapper table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .confirm-container {
-    padding: 24px 16px;
-    margin: 24px auto;
+    padding: 20px 0;
+    margin: 20px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
   }
 
   .confirm-container h2 {
     font-size: 24px;
+    padding: 0 15px;
   }
 
-  .confirm-container p {
-    font-size: 15px;
+  /* Keep table horizontal on mobile */
+  .confirm-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .confirm-wrapper table {
+    min-width: 900px;
+    table-layout: auto;
+  }
+
+  .confirm-wrapper table thead {
+    display: table-header-group;
+  }
+
+  .confirm-wrapper table tbody {
+    display: table-row-group;
+  }
+
+  .confirm-wrapper table tr {
+    display: table-row;
+    padding: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .confirm-wrapper table td {
+    display: table-cell;
+    padding: 12px 8px;
+    font-size: 12px;
+    border: none;
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .confirm-wrapper table td:last-child {
+    border-bottom: 1px solid #e8e8f0;
+  }
+
+  .confirm-wrapper table button {
+    font-size: 10px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  .confirm-wrapper table td::before {
+    content: none;
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
   .confirm-container {
-    padding: 16px 12px;
-    margin: 16px auto;
-    border-radius: 8px;
+    padding: 14px 0;
+    margin: 14px 0;
   }
 
   .confirm-container h2 {
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 16px;
+    padding: 0 15px;
   }
 
-  .confirm-container p {
-    font-size: 14px;
+  /* Further optimize mobile layout */
+  .confirm-wrapper table {
+    min-width: 800px;
+  }
+
+  .confirm-wrapper table th {
+    padding: 12px 6px;
+    font-size: 11px;
+  }
+
+  .confirm-wrapper table td {
+    font-size: 11px;
+    padding: 8px 6px;
+  }
+
+  .confirm-wrapper table button {
+    font-size: 10px;
+    padding: 6px 8px !important;
   }
 }

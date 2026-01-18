@@ -74,18 +74,18 @@ const ScheduledMeetings = () => {
           <tbody>
             {filteredMeetings.map(meeting => (
               <tr key={meeting._id}>
-                <td>{meeting.customerName || (meeting.enquiryId && meeting.enquiryId.customerName)}</td>
-                <td>{meeting.date}</td>
-                <td>{meeting.time}</td>
-                <td>{meeting.place}</td>
-                <td>
+                <td data-label="Customer">{meeting.customerName || (meeting.enquiryId && meeting.enquiryId.customerName)}</td>
+                <td data-label="Date">{meeting.date}</td>
+                <td data-label="Time">{meeting.time}</td>
+                <td data-label="Place">{meeting.place}</td>
+                <td data-label="Enquiry">
                   {typeof meeting.enquiryId === 'object' ? (
                     <Link to={`/enquiries#${meeting.enquiryId._id}`}>{meeting.enquiryId._id}</Link>
                   ) : (
                     <Link to={`/enquiries#${meeting.enquiryId}`}>{meeting.enquiryId}</Link>
                   )}
                 </td>
-                <td className="actions-cell">
+                <td className="actions-cell" data-label="Actions">
                   <button className="action-btn call" onClick={() => handleCall(meeting)}>Call</button>
                   <button className="action-btn mail" onClick={() => handleMail(meeting)}>Mail</button>
                   {tab === 'scheduled' && (
