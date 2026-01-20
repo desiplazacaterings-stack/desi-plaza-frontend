@@ -1,0 +1,23 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: desi-plaza-frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000}
+    networks:
+      - desi-plaza-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  desi-plaza-network:
+    driver: bridge
