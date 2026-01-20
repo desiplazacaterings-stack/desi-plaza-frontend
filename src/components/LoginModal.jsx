@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_ENDPOINTS from '../config';
-import './Auth.css';
+import './LoginModal.css';
 
-function Login() {
+function LoginModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -13,7 +12,6 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +35,8 @@ function Login() {
         localStorage.setItem('token', response.data.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
         
-        // Redirect to home with a small delay to ensure localStorage is set
+        // Close modal and redirect
+        onClose();
         setTimeout(() => {
           window.location.href = '/';
         }, 100);
@@ -47,20 +46,16 @@ function Login() {
     } catch (err) {
       console.error('Login error details:', err);
       
-      // Handle different error types
       let errorMsg = 'Login failed. Please try again.';
       
       if (err.response) {
-        // Server responded with error status
         errorMsg = err.response.data?.error || 
                    err.response.data?.message || 
                    err.response.statusText || 
                    'Invalid Credentials';
       } else if (err.request) {
-        // Request made but no response
         errorMsg = 'No response from server. Please check your connection.';
       } else {
-        // Error in request setup
         errorMsg = err.message || 'An error occurred';
       }
       
@@ -70,16 +65,27 @@ function Login() {
     }
   };
 
-  return (
-    <div className="login-wrapper">
-      <div className="login-background">
-        <div className="gradient-blob blob-1"></div>
-        <div className="gradient-blob blob-2"></div>
-        <div className="gradient-blob blob-3"></div>
-      </div>
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
-      <div className="login-container">
-        <div className="login-card">
+  if (!isOpen) return null;
+
+  return (
+    <div className="login-modal-backdrop" onClick={handleBackdropClick}>
+      <div className="login-modal-container">
+        <button 
+          className="login-modal-close" 
+          onClick={onClose}
+          title="Close login"
+          aria-label="Close login modal"
+        >
+          ✕
+        </button>
+
+        <div className="login-modal-card">
           {/* Logo Section */}
           <div className="login-logo-section">
             <div className="brand-logo">
@@ -175,15 +181,10 @@ function Login() {
               </span>
             </button>
           </form>
-
-          {/* Footer */}
-          <div className="login-footer">
-            <p><a href="/">← Back to Home</a></p>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default LoginModal;

@@ -40,7 +40,7 @@ function InstantOrder() {
   const [discount, setDiscount] = useState(0);
   const [advance, setAdvance] = useState(0);
   const [paymentMode, setPaymentMode] = useState("Cash");
-  const [status, setStatus] = useState("Placed");
+  const [status, setStatus] = useState("Pickup");
 
   const [menuItems, setMenuItems] = useState([]);
   const [kotItems, setKotItems] = useState([]);
@@ -279,7 +279,7 @@ function InstantOrder() {
       setDeliveryTime(getCurrentDateTime());
       setAdvance(0);
       setPaymentMode("Cash");
-      setStatus("Placed");
+      setStatus("Pickup");
 
       // Redirect to instant orders table
       navigate("/instantorders");
@@ -305,7 +305,10 @@ function InstantOrder() {
 
           <label>
             Mobile:
-            <input value={mobile} onChange={e => setMobile(e.target.value)} type="tel" />
+            <input value={mobile} onChange={e => {
+              const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+              setMobile(value);
+            }} type="tel" maxLength="10" />
           </label>
 
           <label>
@@ -321,7 +324,7 @@ function InstantOrder() {
 
         <div className="form-row">
           <label>
-            🕐 Delivery Time:
+            📅 Order Date:
             <input
               type="datetime-local"
               value={deliveryTime}
@@ -367,11 +370,11 @@ function InstantOrder() {
               <input
                 type="radio"
                 name="paymentMode"
-                value="Online"
-                checked={paymentMode === "Online"}
+                value="Cheque"
+                checked={paymentMode === "Cheque"}
                 onChange={e => setPaymentMode(e.target.value)}
               />
-              <span>📱 Online</span>
+              <span>🏦 Cheque</span>
             </label>
           </div>
         </div>
@@ -426,10 +429,8 @@ function InstantOrder() {
               <label>
                 Status:
                 <select value={status} onChange={e => setStatus(e.target.value)}>
-                  <option>Placed</option>
-                  <option>Preparing</option>
-                  <option>Ready</option>
-                  <option>Delivered</option>
+                  <option>Pickup</option>
+                  <option>Delivery</option>
                 </select>
               </label>
             </div>
@@ -610,18 +611,27 @@ function InstantOrder() {
 
       {/* SUMMARY */}
       <div className="order-summary">
-        <p>Subtotal: ${subtotal.toFixed(2)}</p>
-        <p>Sales Tax ({salesTaxRate}%): ${salesTaxAmount.toFixed(2)}</p>
-        <p>Service Charges ({serviceChargeRate}%): ${serviceChargeAmount.toFixed(2)}</p>
+        <div className="summary-row">
+          <p>Subtotal: ${subtotal.toFixed(2)}</p>
+          <p>Sales Tax ({salesTaxRate}%): ${salesTaxAmount.toFixed(2)}</p>
+          <p>Service Charges ({serviceChargeRate}%): ${serviceChargeAmount.toFixed(2)}</p>
+        </div>
+        
         <p style={{ fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '8px', marginTop: '8px' }}>
           Subtotal with Charges: ${subtotalWithCharges.toFixed(2)}
         </p>
-        <p>Discount ({discount}%): -${discountAmount.toFixed(2)}</p>
-        <p style={{ fontSize: '1.2em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px', marginTop: '8px' }}>
-          Total: ${total.toFixed(2)}
-        </p>
-        <p>Advance: ${advance.toFixed(2)}</p>
-        <p>Balance Due: ${balance.toFixed(2)}</p>
+        
+        <div className="summary-row">
+          <p>Discount ({discount}%): -${discountAmount.toFixed(2)}</p>
+          <p style={{ fontSize: '1.2em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px', marginTop: '8px' }}>
+            Total: ${total.toFixed(2)}
+          </p>
+        </div>
+        
+        <div className="summary-row">
+          <p>Advance: ${advance.toFixed(2)}</p>
+          <p>Balance Due: ${balance.toFixed(2)}</p>
+        </div>
       </div>
 
       {/* ACTIONS */}

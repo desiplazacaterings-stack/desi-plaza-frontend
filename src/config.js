@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
     GET_ONE: (id) => `${API_BASE_URL}/api/enquiries/${id}`,
     UPDATE: (id) => `${API_BASE_URL}/api/enquiries/${id}`,
     DELETE: (id) => `${API_BASE_URL}/api/enquiries/${id}`,
+    CANCEL: (id) => `${API_BASE_URL}/api/enquiries/${id}/cancel`,
   },
   QUOTATIONS: {
     BASE: `${API_BASE_URL}/api/quotations`,
@@ -56,6 +57,7 @@ export const API_ENDPOINTS = {
     UPDATE: (id) => `${API_BASE_URL}/api/orders/${id}`,
     PATCH: (id) => `${API_BASE_URL}/api/orders/${id}`,
     DELETE: (id) => `${API_BASE_URL}/api/orders/${id}`,
+    SHORT_CLOSE: (id) => `${API_BASE_URL}/api/orders/${id}/short-close`,
   },
   SCHEDULES: {
     BASE: `${API_BASE_URL}/api/schedules`,

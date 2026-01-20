@@ -45,8 +45,8 @@ function Register() {
       return;
     }
 
-    if (formData.mobile.length < 10 || formData.mobile.length > 15) {
-      setError('Phone number must be between 10-15 digits');
+    if (formData.mobile.length !== 10 || !/^\d+$/.test(formData.mobile)) {
+      setError('Phone number must be exactly 10 digits');
       setLoading(false);
       return;
     }
@@ -116,11 +116,13 @@ function Register() {
               id="mobile"
               name="mobile"
               value={formData.mobile}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                handleChange(e);
+              }}
               required
-              placeholder="10-15 digit phone number"
-              minLength="10"
-              maxLength="15"
+              placeholder="10 digit phone number"
+              maxLength="10"
             />
           </div>
 

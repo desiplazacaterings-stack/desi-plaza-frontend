@@ -26,6 +26,7 @@ function Reports() {
     cashOrders: 0,
     cardOrders: 0,
     onlineOrders: 0,
+    totalShortCloseAmount: 0,
     orders: []
   });
   const [loading, setLoading] = useState(false);
@@ -198,6 +199,11 @@ function Reports() {
       const cardOrders = filteredOrders.filter(o => o.paymentMode === 'Card').length;
       const onlineOrders = filteredOrders.filter(o => o.paymentMode === 'Online').length;
 
+      // Calculate short close amount (Event total - Amount received for short closed orders)
+      const totalShortCloseAmount = filteredOrders
+        .filter(o => o.isShortClosed === true)
+        .reduce((sum, o) => sum + (o.shortCloseAmount || 0), 0);
+
       setReportData({
         instantOrders,
         eventsCompleted,
@@ -215,6 +221,7 @@ function Reports() {
         cashOrders,
         cardOrders,
         onlineOrders,
+        totalShortCloseAmount,
         orders: filteredOrders
       });
 
@@ -337,6 +344,11 @@ function Reports() {
       const cardOrders = filteredOrders.filter(o => o.paymentMode === 'Card').length;
       const onlineOrders = filteredOrders.filter(o => o.paymentMode === 'Online').length;
 
+      // Calculate short close amount
+      const totalShortCloseAmount = filteredOrders
+        .filter(o => o.isShortClosed === true)
+        .reduce((sum, o) => sum + (o.shortCloseAmount || 0), 0);
+
       console.log('Report Summary:', {
         instantOrders,
         totalInstantOrderRevenue,
@@ -361,6 +373,7 @@ function Reports() {
         cashOrders,
         cardOrders,
         onlineOrders,
+        totalShortCloseAmount,
         orders: filteredOrders
       });
     } catch (error) {
@@ -569,6 +582,12 @@ function Reports() {
               <h3>🎁 Discounts Offered</h3>
               <p className="breakdown-amount" style={{ color: '#e74c3c' }}>-${reportData.totalDiscount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
               <p className="breakdown-label">Total discounts on instant orders</p>
+            </div>
+
+            <div className="breakdown-card short-close-card">
+              <h3>🔒 Short Close Amount</h3>
+              <p className="breakdown-amount" style={{ color: '#f39c12' }}>-${reportData.totalShortCloseAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+              <p className="breakdown-label">Total event partial closures</p>
             </div>
           </div>
 

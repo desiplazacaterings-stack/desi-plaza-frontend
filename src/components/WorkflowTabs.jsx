@@ -7,10 +7,9 @@ import "./WorkflowTabs.css";
 const tabs = [
   { path: "/", label: "🏠 Home" },
   { path: "/enquiry", label: "📋 Enquiry", permission: "canCreateEnquiry" },
-  { path: "/menu", label: "🍽️ Menu", permission: "canViewMenu" },
-  { path: "/quotation", label: "📊 Quotation", permission: "canManageQuotations" },
-  { path: "/create-event", label: "✨ Create Event", permission: "canManageQuotations" },
+  { path: "/quotation", label: "📊 Create Quotation", permission: "canManageQuotations" },
   { path: "/confirm", label: "✅ Confirmed Orders", permission: "canManageQuotations" },
+  { path: "/create-event", label: "✨ Create Event", permission: "canManageQuotations" },
   { path: "/event", label: "🎉 Events", permission: "canManageQuotations" },
   { path: "/payments", label: "💳 Payments", permission: "canViewReports" }
 ];

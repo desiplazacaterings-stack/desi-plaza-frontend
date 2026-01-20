@@ -36,15 +36,21 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  width: 100%;
 }
 
 .enquiry-container form > div {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
-.enquiry-container form > div:last-child {
-  grid-column: span 2;
+.enquiry-container form > div.full-width {
+  grid-column: 1 / -1;
+}
+
+.enquiry-container form > button[type="submit"] {
+  grid-column: 1 / -1;
 }
 
 .enquiry-container label {
@@ -67,6 +73,22 @@
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
   font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  line-height: 1.4;
+}
+
+.enquiry-container textarea {
+  height: auto;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.enquiry-container select {
+  height: 44px;
+  appearance: none;
+  padding-right: 30px;
 }
 
 .enquiry-container input::placeholder,
@@ -84,7 +106,7 @@
 }
 
 .enquiry-container button[type="submit"] {
-  grid-column: span 2;
+  grid-column: 1 / -1;
   background: var(--primary-gradient);
   color: var(--text-primary);
   border: none;

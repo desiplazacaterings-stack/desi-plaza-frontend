@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
 import { clearAuthData } from "../utils/authUtils";
+import LoginModal from "./LoginModal";
 import "./Navbar.css";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -84,6 +86,7 @@ function Navbar() {
         setUserRole(user.role);
         setUserName(user.name);
         setUserId(user._id);
+        console.log('✅ User loaded in Navbar:', { name: user.name, role: user.role, userId: user._id });
         
         // If admin, grant all permissions
         if (user.role === 'admin') {
@@ -255,11 +258,11 @@ function Navbar() {
                     handleProtectedNavigation("/instantorders");
                     setIsOpen(false);
                   }}
-                  title="Instant Orders"
+                  title="View Instant Orders"
                   style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                 >
                   <span className="nav-icon">📋</span>
-                  <span className="nav-label">Instant Orders</span>
+                  <span className="nav-label">View Instant Orders</span>
                 </button>
               )}
               
@@ -274,7 +277,7 @@ function Navbar() {
                   style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                 >
                   <span className="nav-icon">🔍</span>
-                  <span className="nav-label">Enquiries</span>
+                  <span className="nav-label">View Enquiries</span>
                 </button>
               )}
               
@@ -289,7 +292,7 @@ function Navbar() {
                   style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                 >
                   <span className="nav-icon">💼</span>
-                  <span className="nav-label">Quotations</span>
+                  <span className="nav-label">View Quotations</span>
                 </button>
               )}
               
@@ -300,11 +303,11 @@ function Navbar() {
                     handleProtectedNavigation("/scheduled-meetings");
                     setIsOpen(false);
                   }}
-                  title="Scheduled Meetings"
+                  title="View Meetings"
                   style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                 >
                   <span className="nav-icon">📅</span>
-                  <span className="nav-label">Meetings</span>
+                  <span className="nav-label">View Meetings</span>
                 </button>
               )}
 
@@ -315,12 +318,24 @@ function Navbar() {
                     handleProtectedNavigation("/reports");
                     setIsOpen(false);
                   }}
-                  title="Business Reports"
+                  title="View Reports"
                   style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                 >
                   <span className="nav-icon">📊</span>
-                  <span className="nav-label">Reports</span>
+                  <span className="nav-label">View Reports</span>
                 </button>
+              )}
+              
+              {permissions.canViewMenu && (
+                <NavLink 
+                  className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+                  to="/menu" 
+                  onClick={() => setIsOpen(false)}
+                  title="View Menu"
+                >
+                  <span className="nav-icon">🍽️</span>
+                  <span className="nav-label">View Menu</span>
+                </NavLink>
               )}
             </>
           )}
@@ -359,27 +374,25 @@ function Navbar() {
               </>
             ) : (
               <>
-                <Link 
+                <button 
                   className="auth-button login-btn" 
-                  to="/login" 
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setShowLoginModal(true);
+                    setIsOpen(false);
+                  }}
                   title="Login to your account"
+                  type="button"
                 >
                   🔓 Login
-                </Link>
-                <Link 
-                  className="auth-button register-btn" 
-                  to="/register" 
-                  onClick={() => setIsOpen(false)}
-                  title="Create a new account"
-                >
-                  ✍️ Register
-                </Link>
+                </button>
               </>
             )}
           </div>
         </nav>
       </aside>
+
+      {/* Login Modal */}
+      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>
   );
 }

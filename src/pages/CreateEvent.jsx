@@ -383,9 +383,13 @@ function CreateEvent() {
                   type="tel"
                   name="mobile"
                   value={enquiryForm.mobile}
-                  onChange={handleEnquiryChange}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    handleEnquiryChange(e);
+                  }}
                   placeholder="Phone number"
                   required
+                  maxLength="10"
                 />
               </div>
               <div className="form-group">

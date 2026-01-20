@@ -9797,12 +9797,16 @@ tr:hover {
 .form-input-wrapper {
   position: relative;
   display: flex;
+  width: 100%;
   align-items: center;
+  pointer-events: none;
 }
 
 .input-icon {
   position: absolute;
   left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 1.2rem;
   pointer-events: none;
   z-index: 2;
@@ -9810,7 +9814,7 @@ tr:hover {
 
 .form-input {
   width: 100%;
-  padding: 14px 14px;
+  padding: 14px 50px 14px 14px;
   border: 2px solid var(--border-color);
   border-radius: 10px;
   font-size: 0.95rem;
@@ -9818,6 +9822,9 @@ tr:hover {
   transition: var(--transition);
   font-family: inherit;
   color: var(--text-dark);
+  box-sizing: border-box;
+  flex: 1;
+  pointer-events: auto;
 }
 
 .form-input::placeholder {
@@ -9858,18 +9865,26 @@ tr:hover {
 /* Password Toggle */
 .password-toggle {
   position: absolute;
-  right: 14px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.1rem;
-  padding: 0;
-  z-index: 3;
+  font-size: 1.2rem;
+  padding: 4px 8px;
+  z-index: 11;
   transition: var(--transition);
-  opacity: 0.6;
+  opacity: 0.7;
+  pointer-events: auto;
 }
 
 .password-toggle:hover {
+  opacity: 1;
+}
+
+.password-toggle:focus {
+  outline: none;
   opacity: 1;
 }
 
@@ -9883,6 +9898,8 @@ tr:hover {
   align-items: center;
   font-size: 0.85rem;
   margin-bottom: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .remember-me {
@@ -9893,6 +9910,7 @@ tr:hover {
   color: var(--text-light);
   user-select: none;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .remember-me:hover {
@@ -9904,6 +9922,7 @@ tr:hover {
   height: 18px;
   cursor: pointer;
   accent-color: var(--primary-color);
+  flex-shrink: 0;
 }
 
 .forgot-password {
@@ -9911,6 +9930,8 @@ tr:hover {
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .forgot-password:hover {
@@ -10084,71 +10105,308 @@ tr:hover {
 
 @media (max-width: 768px) {
   .login-wrapper {
-    padding: 20px;
+    padding: 16px;
+    min-height: 100vh;
   }
 
   .login-container {
     border-radius: 16px;
     width: 100%;
     max-width: 100%;
-  }
-
-  .login-brand-section {
-    display: none;
-  }
-
-  .login-form-section {
-    padding: 30px 24px;
+    box-shadow: 0 4px 16px rgba(245, 186, 74, 0.1);
   }
 
   .login-card {
+    padding: 40px 24px;
     width: 100%;
   }
 
-  .form-header h2 {
-    font-size: 1.5rem;
+  .login-logo-section {
+    margin-bottom: 24px;
   }
 
-  .social-login {
-    grid-template-columns: 1fr 1fr;
+  .brand-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .logo-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .login-company-info {
+    margin-bottom: 32px;
+  }
+
+  .brand-title {
+    font-size: 1.8rem;
+    margin: 12px 0 4px;
+  }
+
+  .brand-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
   }
 
   .form-input {
     font-size: 16px;
+    padding: 14px 12px;
   }
 
-  .brand-icon {
-    font-size: 3rem;
+  .form-options {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .remember-me {
+    font-size: 0.9rem;
+  }
+
+  .forgot-password {
+    font-size: 0.9rem;
+  }
+
+  .login-button {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .alert {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  .login-footer {
+    margin-top: 24px;
+    font-size: 0.85rem;
+  }
+
+  .login-footer p {
+    margin: 8px 0;
+  }
+
+  .login-footer a {
+    font-size: 0.85rem;
+  }
+
+  .password-toggle {
+    padding: 8px;
+  }
+
+  .form-input-wrapper {
+    gap: 8px;
+    position: relative;
+  }
+
+  .gradient-blob {
+    opacity: 0.3;
+  }
+
+  .blob-1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .blob-2 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .blob-3 {
+    width: 120px;
+    height: 120px;
   }
 }
 
 @media (max-width: 480px) {
   .login-wrapper {
-    padding: 12px;
+    padding: 8px;
+    min-height: 100vh;
   }
 
-  .login-form-section {
-    padding: 24px 16px;
+  .login-container {
+    border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0 2px 8px rgba(245, 186, 74, 0.08);
   }
 
-  .form-header h2 {
-    font-size: 1.3rem;
+  .login-card {
+    padding: 32px 16px;
+    width: 100%;
   }
 
-  .form-header p {
+  .login-logo-section {
+    margin-bottom: 20px;
+  }
+
+  .brand-logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .logo-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .login-company-info {
+    margin-bottom: 28px;
+  }
+
+  .brand-title {
+    font-size: 1.6rem;
+    margin: 10px 0 3px;
+  }
+
+  .brand-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-input {
+    font-size: 16px;
+    padding: 12px 10px;
+    border-radius: 8px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+
+  .remember-me {
     font-size: 0.85rem;
+    display: flex;
+    align-items: center;
   }
 
-  .social-login {
-    grid-template-columns: 1fr;
+  .forgot-password {
+    font-size: 0.85rem;
+    text-align: left;
+    display: block;
   }
 
-  .form-divider {
-    margin: 24px 0;
+  .login-button {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  .alert {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+    border-radius: 8px;
   }
 
   .login-footer {
-    font-size: 0.85rem;
+    margin-top: 20px;
+    font-size: 0.8rem;
+  }
+
+  .login-footer p {
+    margin: 6px 0;
+    line-height: 1.4;
+  }
+
+  .login-footer a {
+    font-size: 0.8rem;
+  }
+
+  .password-toggle {
+    position: absolute;
+    padding: 4px 8px;
+    font-size: 1.2rem;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-input-wrapper {
+    display: flex;
+    position: relative;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .form-input {
+    padding: 12px 50px 12px 10px;
+    width: 100%;
+    flex: 1;
+    pointer-events: auto;
+  }
+
+  .gradient-blob {
+    opacity: 0.2;
+  }
+
+  .blob-1 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .blob-2 {
+    width: 100px;
+    height: 100px;
+  }
+
+  .blob-3 {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Ensure form doesn't get too narrow */
+  .login-container {
+    min-width: 100%;
+  }
+
+  /* Better keyboard handling for mobile */
+  .form-input:focus {
+    outline: none;
+    border-color: #f5ba4a;
+    box-shadow: 0 0 0 3px rgba(245, 186, 74, 0.1);
+  }
+
+  /* Improve button touch target */
+  .login-button {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Stack form elements better */
+  .login-form {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -12222,6 +12480,269 @@ input[type="radio"] {
 
 .slide-down {
   animation: slideDown 0.6s ease-in-out;
+}
+/* Mobile-Friendly Print Styles */
+
+@media print {
+  /* Global print styles */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: white !important;
+    color: #222 !important;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+  }
+
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+
+  /* Hide UI elements when printing */
+  nav, header, footer, .navbar, .sidebar, .buttons, .action-buttons,
+  .btn, button, .print-btn, .no-print {
+    display: none !important;
+  }
+
+  /* Print-specific visibility */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Document container styles */
+  .print-container, .quotation-a4, .invoice-a4 {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: #222 !important;
+  }
+
+  /* Table styles for print */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: avoid !important;
+    margin: 10px 0 !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  th, td {
+    border: 1px solid #bbb !important;
+    padding: 8px !important;
+    text-align: left !important;
+    page-break-inside: avoid !important;
+  }
+
+  th {
+    background-color: #f5f5f5 !important;
+    color: #222 !important;
+    font-weight: bold !important;
+  }
+
+  /* Headers */
+  h1, h2, h3 {
+    color: #2c3e50 !important;
+    page-break-after: avoid !important;
+    margin: 10px 0 5px 0 !important;
+  }
+
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 16px !important; }
+
+  /* Links and text */
+  a {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+  }
+
+  p {
+    margin: 5px 0 !important;
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Page breaks */
+  .page-break {
+    page-break-after: always !important;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid !important;
+  }
+
+  /* Pre-formatted text */
+  pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Code blocks */
+  code {
+    background: #f4f4f4 !important;
+    color: #222 !important;
+    padding: 2px 4px !important;
+  }
+
+  /* Forms - hide inputs */
+  input, textarea, select {
+    border: 1px solid #999 !important;
+    background: #fff !important;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 10px 0 !important;
+    padding-left: 20px !important;
+  }
+
+  li {
+    margin: 5px 0 !important;
+  }
+
+  /* Company details box */
+  .company-details {
+    background: #f2f2f2 !important;
+    border: 1px solid #999 !important;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    font-size: 12px !important;
+    color: #222 !important;
+  }
+
+  /* Summary sections */
+  .payment-summary, .summary-section {
+    background: #f9f9f9 !important;
+    border: 1px solid #ddd !important;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    page-break-inside: avoid !important;
+  }
+
+  .summary-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 5px 0 !important;
+    border-bottom: 1px dotted #ddd !important;
+  }
+
+  .summary-row:last-child {
+    border-bottom: none !important;
+  }
+
+  /* Mobile-specific adjustments */
+  @media print and (max-width: 768px) {
+    body {
+      font-size: 12px !important;
+    }
+
+    th, td {
+      padding: 6px !important;
+      font-size: 11px !important;
+    }
+
+    h1 { font-size: 18px !important; }
+    h2 { font-size: 16px !important; }
+    h3 { font-size: 14px !important; }
+
+    .company-header {
+      flex-direction: column !important;
+    }
+
+    .company-logo {
+      width: 60px !important;
+      height: 60px !important;
+      margin-right: 0 !important;
+      margin-bottom: 10px !important;
+    }
+  }
+
+  /* Reduce margins on mobile print */
+  @page {
+    margin: 10mm !important;
+  }
+
+  /* Prevent content from being cut off */
+  * {
+    box-shadow: none !important;
+  }
+}
+
+/* Print button styling (non-print) */
+.print-btn, .print-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 5px;
+  transition: background 0.3s;
+}
+
+.print-btn:hover, .print-button:hover {
+  background: #45a049;
+}
+
+.print-btn:active, .print-button:active {
+  background: #3d8b40;
+}
+
+/* Hidden by default, shown only during print */
+@media print {
+  .print-only {
+    display: block !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Screen display */
+@media screen {
+  .print-only {
+    display: none;
+  }
+
+  .no-print {
+    display: block;
+  }
 }
 /* CSS Variables for Consistent Theming */
 :root {

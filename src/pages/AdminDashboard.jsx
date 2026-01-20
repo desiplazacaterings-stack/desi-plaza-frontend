@@ -446,8 +446,12 @@ function AdminDashboard() {
                   name="mobile"
                   placeholder="Enter phone number"
                   value={formData.mobile || ''}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    handleInputChange(e);
+                  }}
                   required
+                  maxLength="10"
                 />
               </div>
 

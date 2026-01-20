@@ -75,6 +75,9 @@ function Quotation() {
   const location = useLocation();
   const navigate = useNavigate();
   const enquiry = location.state?.enquiry;
+  const quotationToEdit = location.state?.quotation;
+  const [isEditMode] = useState(!!quotationToEdit);
+  const [editingQuotationId] = useState(quotationToEdit?._id);
 
 
   // If no enquiry, allow manual entry of customer details
@@ -92,6 +95,22 @@ function Quotation() {
   const [price, setPrice] = useState(0);
   const [availableUnits, setAvailableUnits] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
+  const [salesTaxRate, setSalesTaxRate] = useState(0);
+  const [serviceChargeRate, setServiceChargeRate] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [labourCharges, setLabourCharges] = useState(0);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // Initialize items if editing
+  useEffect(() => {
+    if (isEditMode && quotationToEdit?.items) {
+      setAddedItems(quotationToEdit.items);
+      setSalesTaxRate(quotationToEdit.salesTaxRate || 0);
+      setServiceChargeRate(quotationToEdit.serviceChargeRate || 0);
+      setDiscount(quotationToEdit.discount || 0);
+      setLabourCharges(quotationToEdit.labourCharges || 0);
+    }
+  }, [isEditMode, quotationToEdit]);
 
   useEffect(() => {
     if (!selectedItem) {
@@ -165,8 +184,6 @@ function Quotation() {
   });
 
   const printQuotation = async () => {
-    const total = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
-    
     // Fetch and convert logo to data URL
     let logoDataUrl = '';
     try {
@@ -199,6 +216,9 @@ function Quotation() {
       th, td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 13px; }
       th { background: #f5f5f5; font-weight: bold; }
       td { background: #fff; }
+      tr.summary-row td { border: none; padding: 6px 8px; background: #fafafa; text-align: right; }
+      tr.summary-row td:first-child { text-align: right; font-weight: bold; }
+      tr.total-row td { border: none; padding: 8px; background: #e8f5e9; font-weight: bold; font-size: 14px; color: #2e7d32; }
       @media (max-width: 768px) {
         .quotation-a4 { padding: 12px; }
         .company-header { flex-direction: column; }
@@ -206,7 +226,6 @@ function Quotation() {
         table { font-size: 12px; }
         th, td { padding: 6px; }
       }
-      tfoot td { font-weight: bold; text-align: right; background: #f9f9f9; }
     </style>
     </head><body><div class="quotation-a4">
       <div class="company-header">
@@ -251,7 +270,27 @@ function Quotation() {
           `).join('')}
         </tbody>
         <tfoot>
-          <tr>
+          <tr class="summary-row">
+            <td colspan="5" style="text-align:right;">Subtotal</td>
+            <td>$${subtotal.toFixed(2)}</td>
+          </tr>
+          ${salesTaxRate > 0 ? `<tr class="summary-row">
+            <td colspan="5" style="text-align:right;">Sales Tax (${salesTaxRate}%)</td>
+            <td>$${salesTaxAmount.toFixed(2)}</td>
+          </tr>` : ''}
+          ${serviceChargeRate > 0 ? `<tr class="summary-row">
+            <td colspan="5" style="text-align:right;">Service Charges (${serviceChargeRate}%)</td>
+            <td>$${serviceChargeAmount.toFixed(2)}</td>
+          </tr>` : ''}
+          ${labourCharges > 0 ? `<tr class="summary-row">
+            <td colspan="5" style="text-align:right;">Labour Charges</td>
+            <td>$${labourCharges.toFixed(2)}</td>
+          </tr>` : ''}
+          ${discount > 0 ? `<tr class="summary-row">
+            <td colspan="5" style="text-align:right;">Discount (${discount}%)</td>
+            <td style="color: #e74c3c;">-$${discountAmount.toFixed(2)}</td>
+          </tr>` : ''}
+          <tr class="total-row">
             <td colspan="5" style="text-align:right;">Total</td>
             <td>$${total.toFixed(2)}</td>
           </tr>
@@ -271,6 +310,14 @@ function Quotation() {
     }
   };
 
+  // Calculate totals with tax and charges
+  const subtotal = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const salesTaxAmount = subtotal * (salesTaxRate / 100);
+  const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
+  const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + labourCharges;
+  const discountAmount = subtotalWithCharges * (discount / 100);
+  const total = subtotalWithCharges - discountAmount;
+
   // Get unique categories from menuItems
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
@@ -281,8 +328,6 @@ function Quotation() {
       item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
     )
     .sort((a, b) => a.itemName.localeCompare(b.itemName));
-
-  // ...existing code...
 
   function saveQuotation() {
     let customerData = null;
@@ -297,6 +342,8 @@ function Quotation() {
         guests: enquiry.guests,
         notes: enquiry.notes
       };
+    } else if (isEditMode && quotationToEdit?.enquiry) {
+      customerData = quotationToEdit.enquiry;
     } else {
       if (!manualCustomer.customerName || !manualCustomer.mobile) {
         alert('Please enter customer name and mobile.');
@@ -308,7 +355,7 @@ function Quotation() {
       };
     }
     const data = {
-      quotationId,
+      enquiryId: enquiry?._id || null,
       enquiry: customerData,
       items: addedItems.map(item => ({
         itemName: item.itemName,
@@ -316,21 +363,53 @@ function Quotation() {
         qty: item.qty,
         price: item.price
       })),
-      total: addedItems.reduce((sum, item) => sum + item.price * item.qty, 0)
+      subtotal,
+      salesTaxRate,
+      salesTax: salesTaxAmount,
+      serviceChargeRate,
+      serviceCharge: serviceChargeAmount,
+      labourCharges,
+      discount,
+      discountAmount,
+      total
     };
-    axios.post(API_ENDPOINTS.QUOTATIONS.CREATE, data)
-      .then(res => {
-        alert("Quotation saved successfully!");
-        navigate("/quotations");
-      })
-      .catch(err => {
-        let msg = "Failed to save quotation.";
-        if (err.response && err.response.data && err.response.data.message) {
-          msg += `\n${err.response.data.message}`;
-        }
-        alert(msg);
-        console.error(err);
-      });
+
+    console.log('Sending quotation data:', data);
+
+    if (isEditMode) {
+      // Update existing quotation
+      axios.patch(API_ENDPOINTS.QUOTATIONS.UPDATE(editingQuotationId), data)
+        .then(res => {
+          alert("Quotation updated successfully!");
+          navigate("/quotations");
+        })
+        .catch(err => {
+          let msg = "Failed to update quotation.";
+          if (err.response && err.response.data && err.response.data.message) {
+            msg += `\n${err.response.data.message}`;
+          }
+          alert(msg);
+          console.error(err);
+        });
+    } else {
+      // Create new quotation
+      data.quotationId = quotationId;
+      axios.post(API_ENDPOINTS.QUOTATIONS.CREATE, data)
+        .then(res => {
+          alert("Quotation saved successfully!");
+          // Dispatch event to notify enquiries table to refresh
+          window.dispatchEvent(new Event('quotationCreated'));
+          navigate("/quotations");
+        })
+        .catch(err => {
+          let msg = "Failed to save quotation.";
+          if (err.response && err.response.data && err.response.data.message) {
+            msg += `\n${err.response.data.message}`;
+          }
+          alert(msg);
+          console.error(err);
+        });
+    }
   }
 
   return (
@@ -343,20 +422,22 @@ function Quotation() {
       </div>
 
 
-      <div style={{ marginBottom: 10, fontWeight: 'bold', color: '#222' }}>Quotation ID: {quotationId}</div>
-      {enquiry ? (
+      <div style={{ marginBottom: 10, fontWeight: 'bold', color: '#222' }}>
+        {isEditMode ? `Editing Quotation: ${quotationToEdit.quotationId}` : `Quotation ID: ${quotationId}`}
+      </div>
+      {enquiry || isEditMode ? (
         <div style={{ marginBottom: 20, textAlign: 'left', display: 'flex', flexWrap: 'wrap', gap: '32px 48px' }}>
           <div style={{ minWidth: 220 }}>
-            <strong>Customer:</strong> {enquiry.customerName}<br />
-            <strong>Mobile:</strong> {enquiry.mobile}<br />
-            <strong>Email:</strong> {enquiry.email}<br />
-            <strong>Event:</strong> {enquiry.eventType}<br />
+            <strong>Customer:</strong> {enquiry?.customerName || quotationToEdit?.enquiry?.customerName}<br />
+            <strong>Mobile:</strong> {enquiry?.mobile || quotationToEdit?.enquiry?.mobile}<br />
+            <strong>Email:</strong> {enquiry?.email || quotationToEdit?.enquiry?.email}<br />
+            <strong>Event:</strong> {enquiry?.eventType || quotationToEdit?.enquiry?.eventType}<br />
           </div>
           <div style={{ minWidth: 220 }}>
-            <strong>Date:</strong> {enquiry.eventDate}<br />
-            <strong>Location:</strong> {enquiry.location}<br />
-            <strong>Guests:</strong> {enquiry.guests}<br />
-            <strong>Notes:</strong> {enquiry.notes}<br />
+            <strong>Date:</strong> {enquiry?.eventDate || quotationToEdit?.enquiry?.eventDate}<br />
+            <strong>Location:</strong> {enquiry?.location || quotationToEdit?.enquiry?.location}<br />
+            <strong>Guests:</strong> {enquiry?.guests || quotationToEdit?.enquiry?.guests}<br />
+            <strong>Notes:</strong> {enquiry?.notes || quotationToEdit?.enquiry?.notes}<br />
           </div>
         </div>
       ) : (
@@ -377,12 +458,16 @@ function Quotation() {
             <div style={{ display: 'flex', flexDirection: 'column', minWidth: 180 }}>
               <label style={{ display: 'block', marginBottom: 4 }}>Mobile:</label>
               <input
-                type="text"
+                type="tel"
                 value={manualCustomer.mobile}
-                onChange={e => setManualCustomer({ ...manualCustomer, mobile: e.target.value })}
+                onChange={e => {
+                  const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setManualCustomer({ ...manualCustomer, mobile: value });
+                }}
                 placeholder="Enter mobile number"
                 style={{ marginBottom: 8, width: '100%' }}
                 required
+                maxLength="10"
               />
             </div>
           </div>
@@ -467,6 +552,90 @@ function Quotation() {
         />
         <button className="button" onClick={addMenuItem}>Add</button>
       </div>
+
+      {/* ADVANCED OPTIONS */}
+      <div style={{ marginBottom: 20 }}>
+        <button
+          type="button"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          style={{
+            background: '#f5f5f5',
+            border: '1px solid #ddd',
+            padding: '8px 16px',
+            borderRadius: 4,
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            color: '#333'
+          }}
+        >
+          {showAdvanced ? '▼' : '▶'} Advanced Options
+        </button>
+
+        {showAdvanced && (
+          <div style={{
+            background: '#fffbe6',
+            border: '1px solid #ffe58f',
+            padding: 12,
+            borderRadius: 4,
+            marginTop: 8,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: 12
+          }}>
+            <label style={{ display: 'flex', flexDirection: 'column' }}>
+              Sales Tax %:
+              <input
+                type="number"
+                value={salesTaxRate}
+                onChange={e => setSalesTaxRate(Number(e.target.value))}
+                min="0"
+                step="0.1"
+                placeholder="0"
+                style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+              />
+            </label>
+
+            <label style={{ display: 'flex', flexDirection: 'column' }}>
+              Service Charges %:
+              <input
+                type="number"
+                value={serviceChargeRate}
+                onChange={e => setServiceChargeRate(Number(e.target.value))}
+                min="0"
+                step="0.1"
+                placeholder="0"
+                style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+              />
+            </label>
+
+            <label style={{ display: 'flex', flexDirection: 'column' }}>
+              Discount %:
+              <input
+                type="number"
+                value={discount}
+                onChange={e => setDiscount(Number(e.target.value))}
+                min="0"
+                step="0.1"
+                placeholder="0"
+                style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+              />
+            </label>
+
+            <label style={{ display: 'flex', flexDirection: 'column' }}>
+              Labour Charges (Fixed Amount):
+              <input
+                type="number"
+                value={labourCharges}
+                onChange={e => setLabourCharges(Number(e.target.value))}
+                min="0"
+                step="0.01"
+                placeholder="0"
+                style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+              />
+            </label>
+          </div>
+        )}
+      </div>
       <div style={{ marginBottom: 20 }}>
         <h3>Menu Items</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -513,9 +682,39 @@ function Quotation() {
               });
               if (addedItems.length > 0) {
                 rows.push(
-                  <tr key="total-row">
-                    <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total</td>
-                    <td style={{ fontWeight: 'bold' }}>${addedItems.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</td>
+                  <tr key="subtotal-row">
+                    <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Subtotal</td>
+                    <td style={{ fontWeight: 'bold' }}>${subtotal.toFixed(2)}</td>
+                  </tr>
+                );
+                if (salesTaxRate > 0) {
+                  rows.push(
+                    <tr key="tax-row" style={{ background: '#f0f0f0' }}>
+                      <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Sales Tax ({salesTaxRate}%)</td>
+                      <td style={{ fontWeight: 'bold' }}>${salesTaxAmount.toFixed(2)}</td>
+                    </tr>
+                  );
+                }
+                if (serviceChargeRate > 0) {
+                  rows.push(
+                    <tr key="charge-row" style={{ background: '#f0f0f0' }}>
+                      <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Service Charges ({serviceChargeRate}%)</td>
+                      <td style={{ fontWeight: 'bold' }}>${serviceChargeAmount.toFixed(2)}</td>
+                    </tr>
+                  );
+                }
+                if (discount > 0) {
+                  rows.push(
+                    <tr key="discount-row" style={{ background: '#f0f0f0' }}>
+                      <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Discount ({discount}%)</td>
+                      <td style={{ fontWeight: 'bold', color: '#e74c3c' }}>-${discountAmount.toFixed(2)}</td>
+                    </tr>
+                  );
+                }
+                rows.push(
+                  <tr key="total-row" style={{ background: '#e8f5e9' }}>
+                    <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.1em' }}>Total</td>
+                    <td style={{ fontWeight: 'bold', fontSize: '1.1em', color: '#2e7d32' }}>${total.toFixed(2)}</td>
                   </tr>
                 );
               }

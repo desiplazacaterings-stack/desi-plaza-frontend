@@ -78,6 +78,7 @@
 }
 
 .quotation-container input[type="text"],
+.quotation-container input[type="tel"],
 .quotation-container input[type="number"],
 .quotation-container input[type="date"],
 .quotation-container textarea,

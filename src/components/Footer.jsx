@@ -78,19 +78,21 @@ function Footer() {
           </div>
         </div>
 
-        {/* Quick Links Section */}
-        <div className="footer-section">
-          <h3 className="footer-heading">Quick Links</h3>
-          <ul className="footer-links">
-            {quickLinks.map((link) => (
-              <li key={link.label}>
-                <Link to={link.path} className="footer-link">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Quick Links Section - Only for authenticated users */}
+        {userRole && (
+          <div className="footer-section">
+            <h3 className="footer-heading">Quick Links</h3>
+            <ul className="footer-links">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
+                  <Link to={link.path} className="footer-link">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Services Section - Only for authenticated users */}
         {userRole && (
@@ -108,25 +110,27 @@ function Footer() {
           </div>
         )}
 
-        {/* Support Section */}
-        <div className="footer-section">
-          <h3 className="footer-heading">Support</h3>
-          <ul className="footer-links">
-            {supportLinks.map((link) => (
-              <li key={link.label}>
-                {link.url ? (
-                  <a href={link.url} className="footer-link">
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link to={link.href} className="footer-link">
-                    {link.label}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Support Section - Only for authenticated users */}
+        {userRole && (
+          <div className="footer-section">
+            <h3 className="footer-heading">Support</h3>
+            <ul className="footer-links">
+              {supportLinks.map((link) => (
+                <li key={link.label}>
+                  {link.url ? (
+                    <a href={link.url} className="footer-link">
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link to={link.href} className="footer-link">
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Footer Bottom */}

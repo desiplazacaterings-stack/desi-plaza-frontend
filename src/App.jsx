@@ -27,7 +27,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import StaffPermissions from "./pages/StaffPermissions";
 import Reports from "./pages/Reports";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import CustomerPage from "./pages/CustomerPage";
 import SignAgreement from "./pages/SignAgreement";
 import APITest from "./pages/APITest";
@@ -256,7 +255,6 @@ function App() {
 
             {/* Auth Pages */}
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             
             {/* API Diagnostic Test */}
             <Route path="/api-test" element={<APITest />} />

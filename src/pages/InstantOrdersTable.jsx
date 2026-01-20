@@ -103,7 +103,7 @@ function InstantOrdersTable() {
         >
           All ({orders.length})
         </button>
-        {["Placed", "Preparing", "Ready", "Delivered"].map(status => (
+        {["Pickup", "Delivery"].map(status => (
           <button 
             key={status}
             onClick={() => setFilter(status)}
@@ -143,10 +143,8 @@ function InstantOrdersTable() {
                       value={order.status} 
                       onChange={(e) => updateOrderStatus(order._id, e.target.value)}
                     >
-                      <option>Placed</option>
-                      <option>Preparing</option>
-                      <option>Ready</option>
-                      <option>Delivered</option>
+                      <option>Pickup</option>
+                      <option>Delivery</option>
                     </select>
                   ) : (
                     <select 

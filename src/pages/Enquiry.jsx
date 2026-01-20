@@ -25,6 +25,8 @@ function Enquiry() {
     notes: ""
   });
 
+  const [otherEventType, setOtherEventType] = useState("");
+
   // Fetch user permissions
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -60,22 +62,41 @@ function Enquiry() {
   }, []);
 
   function handleChange(e) {
+    const { name, value } = e.target;
+    
+    // If event type is being changed, reset otherEventType if not "Other"
+    if (name === 'eventType' && value !== 'Other') {
+      setOtherEventType("");
+    }
+    
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [name]: value
     });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    // Prepare form data with other event type if applicable
+    const submissionData = {
+      ...form,
+      eventType: form.eventType === 'Other' ? otherEventType : form.eventType
+    };
+
+    // Validate that other event type is filled if selected
+    if (form.eventType === 'Other' && !otherEventType.trim()) {
+      alert('Please specify the event type');
+      return;
+    }
+
     // Save enquiry globally
-    setEnquiry(form);
+    setEnquiry(submissionData);
 
       // Log form data before sending to backend
-      console.log('Form data before submit:', form);
+      console.log('Form data before submit:', submissionData);
       // Send to backend
-      axios.post(API_ENDPOINTS.ENQUIRIES.CREATE, form)
+      axios.post(API_ENDPOINTS.ENQUIRIES.CREATE, submissionData)
         .then((res) => {
           console.log('Enquiry submitted:', res.data);
           // Check if user is logged in
@@ -100,6 +121,7 @@ function Enquiry() {
               guests: "",
               notes: ""
             });
+            setOtherEventType("");
           }
         })
         .catch(err => {
@@ -153,8 +175,12 @@ function Enquiry() {
             type="tel"
             name="mobile"
             value={form.mobile}
-            onChange={handleChange}
+            onChange={(e) => {
+              e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+              handleChange(e);
+            }}
             required
+            maxLength="10"
           />
         </div>
 
@@ -180,11 +206,26 @@ function Enquiry() {
             <option value="">Select</option>
             <option>Wedding</option>
             <option>Reception</option>
+            <option>Sangeeth</option>
+            <option>Mehendi</option>
             <option>Birthday</option>
-            <option>Corporate</option>
-            <option>House Party</option>
+            <option>Graduation Party</option>
+            <option>Other</option>
           </select>
         </div>
+
+        {form.eventType === 'Other' && (
+          <div>
+            <label>Specify Event Type</label>
+            <input
+              type="text"
+              value={otherEventType}
+              onChange={(e) => setOtherEventType(e.target.value)}
+              placeholder="Enter your event type"
+              required
+            />
+          </div>
+        )}
 
         <div>
           <label>Event Date</label>
@@ -218,7 +259,7 @@ function Enquiry() {
           />
         </div>
 
-        <div style={{ gridColumn: "1 / -1" }}>
+        <div>
           <label>Location</label>
           <input
             type="text"
@@ -228,7 +269,7 @@ function Enquiry() {
           />
         </div>
 
-        <div style={{ gridColumn: "1 / -1" }}>
+        <div className="full-width">
           <label>Notes / Requirements</label>
           <textarea
             name="notes"

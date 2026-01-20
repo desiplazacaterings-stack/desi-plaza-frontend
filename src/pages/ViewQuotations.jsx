@@ -162,13 +162,32 @@ const ViewQuotations = () => {
                 </td>
                 <td data-label="Total">${q.total?.toFixed(2) || 'N/A'}</td>
                 <td data-label="Action">
-                  {permissions.canCreateInstantOrder ? (
-                    <button className="confirm-order-btn" onClick={() => handleConfirmOrder(q)} title="Confirm Order">✓</button>
-                  ) : (
-                    <button className="confirm-order-btn" disabled title="You don't have permission to confirm orders">
-                      ✓
+                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                    <button 
+                      className="edit-quotation-btn"
+                      onClick={() => navigate("/quotation", { state: { quotation: q } })}
+                      title="Edit Quotation"
+                      style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#17a2b8',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        fontSize: '0.85em'
+                      }}
+                    >
+                      ✏️ Edit
                     </button>
-                  )}
+                    {permissions.canCreateInstantOrder ? (
+                      <button className="confirm-order-btn" onClick={() => handleConfirmOrder(q)} title="Confirm Order" style={{ padding: '6px 12px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85em' }}>✓ Confirm</button>
+                    ) : (
+                      <button className="confirm-order-btn" disabled title="You don't have permission to confirm orders" style={{ padding: '6px 12px', backgroundColor: '#ccc', cursor: 'not-allowed', border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '0.85em' }}>
+                        ✓ Confirm
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

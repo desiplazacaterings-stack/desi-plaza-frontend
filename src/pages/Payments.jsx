@@ -15,6 +15,10 @@ function Payments() {
   const [filterStatus, setFilterStatus] = useState("pending");
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
+  const [showShortCloseModal, setShowShortCloseModal] = useState(false);
+  const [selectedOrderForShortClose, setSelectedOrderForShortClose] = useState(null);
+  const [shortCloseAmount, setShortCloseAmount] = useState("");
+  const [shortCloseReason, setShortCloseReason] = useState("");
 
   // Fetch user permissions on mount
   useEffect(() => {
@@ -108,6 +112,43 @@ function Payments() {
     }
   };
 
+  const handleShortClose = async () => {
+    if (!selectedOrderForShortClose) return;
+
+    if (!shortCloseAmount || isNaN(shortCloseAmount) || parseFloat(shortCloseAmount) < 0) {
+      alert("Please enter a valid final amount");
+      return;
+    }
+
+    const finalAmount = parseFloat(shortCloseAmount);
+    const totalAmount = selectedOrderForShortClose.totalAmount || 0;
+
+    if (finalAmount > totalAmount) {
+      alert("Final amount cannot exceed total event amount");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        API_ENDPOINTS.ORDERS.SHORT_CLOSE(selectedOrderForShortClose._id),
+        {
+          finalAmount: finalAmount,
+          reason: shortCloseReason
+        }
+      );
+
+      setOrders(orders.map(o => o._id === selectedOrderForShortClose._id ? response.data.order : o));
+      setShowShortCloseModal(false);
+      setSelectedOrderForShortClose(null);
+      setShortCloseAmount("");
+      setShortCloseReason("");
+      alert("Event short closed successfully!");
+    } catch (error) {
+      console.error("Error short closing event:", error);
+      alert("Error short closing event");
+    }
+  };
+
   const calculateBalanceDue = (order) => {
     const total = roundAmount(order.totalAmount || 0);
     const received = roundAmount(order.amountReceived || 0);
@@ -188,13 +229,36 @@ function Payments() {
                     </td>
                     <td data-label="Action">
                       {balanceDue > 0 && (
-                        <button
-                          className="add-payment-btn"
-                          onClick={() => setSelectedOrderId(selectedOrderId === order._id ? null : order._id)}
-                          title="Add Payment"
-                        >
-                          💰 Add Payment
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          <button
+                            className="add-payment-btn"
+                            onClick={() => setSelectedOrderId(selectedOrderId === order._id ? null : order._id)}
+                            title="Add Payment"
+                          >
+                            💰 Add Payment
+                          </button>
+                          <button
+                            className="short-close-btn"
+                            onClick={() => {
+                              setSelectedOrderForShortClose(order);
+                              setShortCloseAmount(roundAmount(order.amountReceived || 0).toString());
+                              setShowShortCloseModal(true);
+                            }}
+                            title="Short Close Event"
+                            style={{
+                              padding: '8px 12px',
+                              backgroundColor: '#ffc107',
+                              color: '#000',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontWeight: '600',
+                              fontSize: '0.9em'
+                            }}
+                          >
+                            🔑 Short Close
+                          </button>
+                        </div>
                       )}
                       {balanceDue === 0 && (
                         <span className="paid-badge">✓ Paid</span>
@@ -331,6 +395,123 @@ function Payments() {
               </div>
             );
           })()}
+        </div>
+      )}
+
+      {/* Short Close Modal */}
+      {showShortCloseModal && selectedOrderForShortClose && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1001
+        }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '30px',
+            borderRadius: '8px',
+            maxWidth: '450px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+          }}>
+            <h3 style={{ marginTop: 0, marginBottom: '20px' }}>🔑 Short Close Event</h3>
+            
+            <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '6px', marginBottom: '20px' }}>
+              <div style={{ marginBottom: '10px' }}>
+                <strong>Customer:</strong> {selectedOrderForShortClose.customerName}
+              </div>
+              <div style={{ marginBottom: '10px' }}>
+                <strong>Total Amount:</strong> ${roundAmount(selectedOrderForShortClose.totalAmount).toLocaleString()}
+              </div>
+              <div style={{ marginBottom: '10px' }}>
+                <strong>Already Received:</strong> ${roundAmount(selectedOrderForShortClose.amountReceived).toLocaleString()}
+              </div>
+              <div style={{ color: '#e74c3c', fontWeight: '600' }}>
+                <strong>Short Close Amount:</strong> ${roundAmount((selectedOrderForShortClose.totalAmount || 0) - parseFloat(shortCloseAmount || 0)).toLocaleString()}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                Final Amount to Accept (₹):
+              </label>
+              <input
+                type="number"
+                value={shortCloseAmount}
+                onChange={(e) => setShortCloseAmount(e.target.value)}
+                placeholder="Enter final amount"
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  boxSizing: 'border-box',
+                  fontSize: '1em'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                Reason for Short Close (Optional):
+              </label>
+              <textarea
+                value={shortCloseReason}
+                onChange={(e) => setShortCloseReason(e.target.value)}
+                placeholder="Enter reason..."
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  boxSizing: 'border-box',
+                  fontFamily: 'inherit',
+                  minHeight: '80px'
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => {
+                  setShowShortCloseModal(false);
+                  setSelectedOrderForShortClose(null);
+                  setShortCloseAmount("");
+                  setShortCloseReason("");
+                }}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#6c757d',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleShortClose}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#ffc107',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                ✓ Short Close Event
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
