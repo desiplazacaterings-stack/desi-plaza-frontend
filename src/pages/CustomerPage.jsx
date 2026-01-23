@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Enquiry from "./Enquiry";
-import Menu from "./Menu";
 import "./CustomerPage.css";
 
 function CustomerPage() {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("menu");
 
   return (
@@ -38,7 +39,18 @@ function CustomerPage() {
             <p className="section-desc">
               Browse through our wide variety of dishes and cuisines
             </p>
-            <Menu />
+            <div style={{ marginTop: '1.5rem' }}>
+              <p style={{ fontSize: '1rem', color: '#666', marginBottom: '1rem' }}>
+                👉 Click the button below to view our complete menu with all dishes and pricing
+              </p>
+              <button
+                className="nav-btn"
+                onClick={() => navigate("/menu")}
+                style={{ padding: '12px 24px', fontSize: '1rem', cursor: 'pointer' }}
+              >
+                📋 Go to Full Menu →
+              </button>
+            </div>
           </div>
         )}
 

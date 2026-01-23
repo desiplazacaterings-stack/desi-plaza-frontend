@@ -1,6 +1,6 @@
 
 import menuData from "../data/menu.json";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
 import "./Menu.css";
@@ -25,7 +25,7 @@ export default function Menu({ hidePrice = false }) {
   const [userRole, setUserRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const menuFetched = useRef(false);
+  const fetchInProgress = useRef(false);
 
   useEffect(() => {
     // Check user authentication
@@ -47,10 +47,17 @@ export default function Menu({ hidePrice = false }) {
       setIsAuthenticated(false);
       setUserRole(null);
     }
+  }, []);
 
-    // Fetch menu only once
-    if (menuFetched.current) return;
-    menuFetched.current = true;
+  useEffect(() => {
+    // ✅ CRITICAL FIX: Double-guard against multiple mounts
+    // If data already loaded OR fetch is in progress, skip
+    if (menuItems.length > 0 || fetchInProgress.current) {
+      setLoading(false);
+      return;
+    }
+
+    fetchInProgress.current = true;
 
     const fetchMenu = async () => {
       try {
@@ -68,25 +75,33 @@ export default function Menu({ hidePrice = false }) {
           items = menuData;
         }
         
-        // ✅ Deduplicate items
+        // ✅ Deduplicate items - REPLACE state, don't append
         const cleanItems = dedupeMenuItems(items);
         console.log(`✓ Menu items loaded: ${cleanItems.length} items`);
         setMenuItems(cleanItems);
       } catch (error) {
         console.error('❌ Error fetching menu:', error.message, 'Using local data instead');
-        setMenuItems(menuData || []);
+        setMenuItems(dedupeMenuItems(menuData || []));
       } finally {
         setLoading(false);
+        fetchInProgress.current = false;
       }
     };
+    
     fetchMenu();
-  }, []);
+  }, []); // Empty dependency - runs ONCE at mount
+
+  // ✅ SAFETY NET: Deduplicate again in render in case of concurrent mounts
+  const displayItems = useMemo(
+    () => dedupeMenuItems(menuItems),
+    [menuItems]
+  );
 
   // Filter items by veg/non-veg
   let filteredMenu =
     filter === "All"
-      ? menuItems
-      : menuItems.filter(item => item.veg_nonveg === filter);
+      ? displayItems
+      : displayItems.filter(item => item.veg_nonveg === filter);
 
   // Filter items by selected category
   if (selectedCategory !== "All") {
@@ -113,7 +128,7 @@ export default function Menu({ hidePrice = false }) {
   }, {});
 
   // Get all unique categories from original menu for category buttons
-  const allCategories = [...new Set(menuItems.map(item => item.category || "Other"))].sort();
+  const allCategories = [...new Set(displayItems.map(item => item.category || "Other"))].sort();
   
   const categories = Object.keys(groupedByCategory).sort();
 
@@ -220,9 +235,9 @@ export default function Menu({ hidePrice = false }) {
       ) : (
         <div className="no-items">
           <p>No menu items found</p>
-          {menuItems.length > 0 && (
+          {displayItems.length > 0 && (
             <p style={{ fontSize: '0.9em', color: '#666', marginTop: '10px' }}>
-              (Total items loaded: {menuItems.length}, but none match current filter)
+              (Total items loaded: {displayItems.length}, but none match current filter)
             </p>
           )}
         </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Enquiry from "./Enquiry";
-import Menu from "./Menu";
 import backgroundImage from "../Background.jpg";
 
 function Home() {
@@ -99,20 +98,6 @@ function Home() {
     );
   }
 
-  if (activeSection === "menu") {
-    return (
-      <>
-        <button className="back-btn" onClick={() => setActiveSection(null)}>
-          ← Back to Home
-        </button>
-        <section className="menu-preview-section">
-          <h2>Browse Our Menu</h2>
-          <Menu hidePrice={false} />
-        </section>
-      </>
-    );
-  }
-
   return (
     <div className="home-container">
       {/* ADMIN/LOGGED-IN USER VIEW */}
@@ -167,7 +152,7 @@ function Home() {
                   <p style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Browse our offerings</p>
                   <button
                     className="btn"
-                    onClick={() => setActiveSection("menu")}
+                    onClick={() => navigate("/menu")}
                   >
                     Browse
                   </button>
@@ -224,7 +209,7 @@ function Home() {
                 <p style={{ color: '#ffffff' }}>Browse our<br />delicious menu</p>
                 <button
                   className="btn"
-                  onClick={() => setActiveSection("menu")}
+                  onClick={() => navigate("/menu")}
                   style={{ width: '140px', padding: '12px 24px', fontSize: '0.95rem', whiteSpace: 'nowrap' }}
                 >
                   Browse
