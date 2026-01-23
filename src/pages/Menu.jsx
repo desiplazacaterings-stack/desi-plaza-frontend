@@ -1,9 +1,20 @@
 
 import menuData from "../data/menu.json";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
 import "./Menu.css";
+
+// ✅ Deduplication utility
+const dedupeMenuItems = (items = []) => {
+  const map = new Map();
+  (items || []).forEach(item => {
+    if (item?._id) {
+      map.set(item._id, { ...item });
+    }
+  });
+  return Array.from(map.values());
+};
 
 export default function Menu({ hidePrice = false }) {
   const [filter, setFilter] = useState("All");
@@ -13,6 +24,8 @@ export default function Menu({ hidePrice = false }) {
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const menuFetched = useRef(false);
 
   useEffect(() => {
     // Check user authentication
@@ -24,7 +37,7 @@ export default function Menu({ hidePrice = false }) {
         const user = JSON.parse(userData);
         setIsAuthenticated(true);
         setUserRole(user.role);
-        console.log('User authenticated:', user.role);
+        console.log('✓ User authenticated:', user.role);
       } catch (error) {
         console.error('Error parsing user data:', error);
         setIsAuthenticated(false);
@@ -35,26 +48,32 @@ export default function Menu({ hidePrice = false }) {
       setUserRole(null);
     }
 
+    // Fetch menu only once
+    if (menuFetched.current) return;
+    menuFetched.current = true;
+
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        console.log('Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
+        console.log('🔄 Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
         const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        console.log('Menu data fetched:', response.data);
         
+        let items = [];
         if (response.data && Array.isArray(response.data)) {
-          console.log('Items count:', response.data.length);
-          setMenuItems(response.data);
+          items = response.data;
         } else if (response.data && typeof response.data === 'object' && response.data.items) {
-          // If backend returns wrapped in an object
-          console.log('Items count:', response.data.items.length);
-          setMenuItems(response.data.items);
+          items = response.data.items;
         } else {
-          console.warn('Unexpected response format, using local data');
-          setMenuItems(menuData);
+          console.warn('⚠️ Unexpected response format, using local data');
+          items = menuData;
         }
+        
+        // ✅ Deduplicate items
+        const cleanItems = dedupeMenuItems(items);
+        console.log(`✓ Menu items loaded: ${cleanItems.length} items`);
+        setMenuItems(cleanItems);
       } catch (error) {
-        console.error('Error fetching menu:', error.message, 'Using local data instead');
+        console.error('❌ Error fetching menu:', error.message, 'Using local data instead');
         setMenuItems(menuData || []);
       } finally {
         setLoading(false);

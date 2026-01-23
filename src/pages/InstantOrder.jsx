@@ -1,9 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
 import useMenuItems from "../hooks/useMenuItems";
 import "./InstantOrder.css";
+
+// ✅ Deduplication utility
+const dedupeMenuItems = (items = []) => {
+  const map = new Map();
+  (items || []).forEach(item => {
+    if (item?._id) {
+      map.set(item._id, { ...item });
+    }
+  });
+  return Array.from(map.values());
+};
 
 function InstantOrder() {
   const navigate = useNavigate();
@@ -60,11 +71,15 @@ function InstantOrder() {
     }
   }, []);
 
-  // Sync hook menu items to component state
+  // Sync hook menu items to component state (only once)
+  const menuItemsSynced = useRef(false);
+  
   useEffect(() => {
-    if (hookMenuItems && hookMenuItems.length > 0) {
-      console.log(`✓ Menu items synced: ${hookMenuItems.length} items loaded`);
-      setMenuItems(hookMenuItems);
+    if (!menuItemsSynced.current && hookMenuItems && hookMenuItems.length > 0) {
+      menuItemsSynced.current = true;
+      const cleanItems = dedupeMenuItems(hookMenuItems);
+      console.log(`✓ Menu items synced: ${cleanItems.length} items loaded`);
+      setMenuItems(cleanItems);
       setMenuItemsLoadError(null);
     } else if (menuError) {
       console.error('❌ Failed to load menu items:', menuError);

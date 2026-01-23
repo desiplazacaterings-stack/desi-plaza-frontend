@@ -1,9 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
 import menuData from "../data/menu.json";
 import "./CreateEvent.css";
+
+// ✅ Deduplication utility
+const dedupeMenuItems = (items = []) => {
+  const map = new Map();
+  (items || []).forEach(item => {
+    if (item?._id) {
+      map.set(item._id, { ...item });
+    }
+  });
+  return Array.from(map.values());
+};
 
 function getCurrentYear() {
   return new Date().getFullYear();
@@ -51,14 +62,18 @@ function CreateEvent() {
     return generateUniqueQuotationId();
   });
 
-  // Fetch menu items on mount
+  // Fetch menu items on mount (only once)
+  const menuFetched = useRef(false);
+  
   useEffect(() => {
+    if (menuFetched.current) return;
+    menuFetched.current = true;
+
     const fetchMenu = async () => {
       try {
         setMenuLoading(true);
-        console.log('Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
+        console.log('🔄 Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
         const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        console.log('Menu data fetched:', response.data);
         
         let items = [];
         if (response.data && Array.isArray(response.data)) {
@@ -66,19 +81,23 @@ function CreateEvent() {
         } else if (response.data && typeof response.data === 'object' && response.data.items) {
           items = response.data.items;
         } else {
-          console.warn('Unexpected response format, using local data');
+          console.warn('⚠️ Unexpected response format, using local data');
           items = menuData || [];
         }
-        console.log('Menu items loaded:', items.length, 'items');
-        setMenuItems(items);
+        
+        // ✅ Deduplicate items
+        const cleanItems = dedupeMenuItems(items);
+        console.log(`✓ Menu items loaded: ${cleanItems.length} items`);
+        setMenuItems(cleanItems);
       } catch (error) {
-        console.error('Error fetching menu:', error.message, 'Using local data instead');
-        console.log('Fallback to menu.json with', menuData?.length || 0, 'items');
-        setMenuItems(menuData || []);
+        console.error('❌ Error fetching menu:', error.message, 'Using local data instead');
+        const fallbackItems = menuData || [];
+        setMenuItems(fallbackItems);
       } finally {
         setMenuLoading(false);
       }
     };
+    
     fetchMenu();
   }, []);
 

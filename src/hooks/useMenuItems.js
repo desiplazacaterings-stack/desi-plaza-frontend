@@ -82,7 +82,7 @@ export const useMenuItems = () => {
 
   useEffect(() => {
     fetchMenuItems(true); // 🔥 force clean load on first mount
-  }, [fetchMenuItems]);
+  }, []);
 
   return {
     menuItems,
