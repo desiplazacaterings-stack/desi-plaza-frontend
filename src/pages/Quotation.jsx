@@ -1,10 +1,42 @@
 import "./Quotation.css";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
 import useMenuItems from "../hooks/useMenuItems";
+
+/**
+ * 🔹 GROUP MENU ITEMS BY NAME AND MERGE PRICES
+ */
+const groupMenuItemsByName = (items = []) => {
+  const groupedMap = new Map();
+  (items || []).forEach(item => {
+    if (!item?.itemName) return;
+    const key = item.itemName.toLowerCase();
+    if (!groupedMap.has(key)) {
+      groupedMap.set(key, {
+        itemName: item.itemName,
+        category: item.category || "",
+        allPrices: [],
+        _ids: []
+      });
+    }
+    const grouped = groupedMap.get(key);
+    if (!grouped.category && item.category) {
+      grouped.category = item.category;
+    }
+    (item.prices || []).forEach(priceObj => {
+      if (!grouped.allPrices.find(p => p.unit === priceObj.unit)) {
+        grouped.allPrices.push({ ...priceObj });
+      }
+    });
+    if (item._id && !grouped._ids.includes(item._id)) {
+      grouped._ids.push(item._id);
+    }
+  });
+  return Array.from(groupedMap.values()).sort((a, b) => a.itemName.localeCompare(b.itemName));
+};
 
 let quotationSerial = 1;
 
@@ -119,23 +151,14 @@ function Quotation() {
       setAvailableUnits([]);
       return;
     }
-    // Find all menu items with the selected name
-    const items = menuItems.filter(i => i.itemName === selectedItem);
-    if (items.length > 0) {
-      // Collect all unique units from all price objects
-      const units = [];
-      items.forEach(item => {
-        (item.prices || []).forEach(priceObj => {
-          if (!units.find(u => u.unit === priceObj.unit)) {
-            units.push({ unit: priceObj.unit, price: priceObj.price });
-          }
-        });
-      });
-      setAvailableUnits(units);
+    // Find grouped item (already merged prices)
+    const item = menuItems.find(i => i.itemName === selectedItem);
+    if (item && item.allPrices) {
+      setAvailableUnits(item.allPrices);
       // Default to first unit
-      if (units.length > 0) {
-        setUnit(units[0].unit);
-        setPrice(units[0].price);
+      if (item.allPrices.length > 0) {
+        setUnit(item.allPrices[0].unit);
+        setPrice(item.allPrices[0].price);
       } else {
         setUnit("");
         setPrice(0);
@@ -321,17 +344,13 @@ function Quotation() {
   // Get unique categories from menuItems
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
-  // Filter menu items by selected category and search - deduplicate by itemName for UI
-  const filteredMenuItems = Array.from(
-    new Map(
-      menuItems
-        .filter(item =>
-          (!selectedCategory || item.category === selectedCategory) &&
-          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-        )
-        .map(item => [item.itemName, item])
-    ).values()
-  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
+  // Filter menu items by selected category and search (already grouped - no duplicate itemNames)
+  const filteredMenuItems = menuItems
+    .filter(item =>
+      (!selectedCategory || item.category === selectedCategory) &&
+      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+    )
+    .sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   function saveQuotation() {
     let customerData = null;

@@ -1,18 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useMenuItems from "../hooks/useMenuItems";
 import menuData from "../data/menu.json";
 import "./CreateEvent.css";
 
-// ✅ Deduplication utility
-const dedupeMenuItems = (items = []) => {
-  const map = new Map();
+/**
+ * 🔹 GROUP MENU ITEMS BY NAME AND MERGE PRICES
+ */
+const groupMenuItemsByName = (items = []) => {
+  const groupedMap = new Map();
   (items || []).forEach(item => {
-    if (item?._id) {
-      map.set(item._id, { ...item });
+    if (!item?.itemName) return;
+    const key = item.itemName.toLowerCase();
+    if (!groupedMap.has(key)) {
+      groupedMap.set(key, {
+        itemName: item.itemName,
+        category: item.category || "",
+        allPrices: [],
+        _ids: []
+      });
+    }
+    const grouped = groupedMap.get(key);
+    if (!grouped.category && item.category) {
+      grouped.category = item.category;
+    }
+    (item.prices || []).forEach(priceObj => {
+      if (!grouped.allPrices.find(p => p.unit === priceObj.unit)) {
+        grouped.allPrices.push({ ...priceObj });
+      }
+    });
+    if (item._id && !grouped._ids.includes(item._id)) {
+      grouped._ids.push(item._id);
     }
   });
-  return Array.from(map.values());
+  return Array.from(groupedMap.values()).sort((a, b) => a.itemName.localeCompare(b.itemName));
 };
 
 function getCurrentYear() {
@@ -63,15 +84,18 @@ function CreateEvent() {
     return generateUniqueQuotationId();
   });
 
-  // ✅ Sync hook menu to local state
+  // ✅ GROUP MENU ITEMS BY NAME (single source of truth)
+  const menuItemsSynced = useRef(false);
+  
   useEffect(() => {
-    if (hookMenuItems && hookMenuItems.length > 0) {
-      const cleanItems = dedupeMenuItems(hookMenuItems);
-      console.log(`✓ Menu items synced: ${cleanItems.length} items`);
-      setMenuItems(cleanItems);
+    if (!menuItemsSynced.current && hookMenuItems && hookMenuItems.length > 0) {
+      menuItemsSynced.current = true;
+      const grouped = groupMenuItemsByName(hookMenuItems);
+      console.log(`✓ Menu items grouped: ${hookMenuItems.length} raw → ${grouped.length} unique`);
+      setMenuItems(grouped);
     } else if (!hookLoading && hookError) {
       console.error('❌ Error loading menu:', hookError);
-      setMenuItems(dedupeMenuItems(menuData || []));
+      setMenuItems(groupMenuItemsByName(menuData || []));
     }
   }, [hookMenuItems, hookLoading, hookError]);
 
@@ -127,20 +151,12 @@ function CreateEvent() {
       setAvailableUnits([]);
       return;
     }
-    const items = menuItems.filter(i => i.itemName === selectedItem);
-    if (items.length > 0) {
-      const units = [];
-      items.forEach(item => {
-        (item.prices || []).forEach(priceObj => {
-          if (!units.find(u => u.unit === priceObj.unit)) {
-            units.push({ unit: priceObj.unit, price: priceObj.price });
-          }
-        });
-      });
-      setAvailableUnits(units);
-      if (units.length > 0) {
-        setUnit(units[0].unit);
-        setPrice(units[0].price);
+    const item = menuItems.find(i => i.itemName === selectedItem);
+    if (item && item.allPrices) {
+      setAvailableUnits(item.allPrices);
+      if (item.allPrices.length > 0) {
+        setUnit(item.allPrices[0].unit);
+        setPrice(item.allPrices[0].price);
       } else {
         setUnit("");
         setPrice(0);
@@ -197,17 +213,13 @@ function CreateEvent() {
   // Get unique categories
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
-  // Filter menu items - deduplicate by itemName for UI
-  const filteredMenuItems = Array.from(
-    new Map(
-      menuItems
-        .filter(item =>
-          (!selectedCategory || item.category === selectedCategory) &&
-          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-        )
-        .map(item => [item.itemName, item])
-    ).values()
-  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
+  // Filter menu items (already grouped - no duplicate itemNames)
+  const filteredMenuItems = menuItems
+    .filter(item =>
+      (!selectedCategory || item.category === selectedCategory) &&
+      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+    )
+    .sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   // Validate form data
   function validateForms() {
