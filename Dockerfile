@@ -6,13 +6,9 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Production stage - Pure Static Serving
+# Serve stage - Pure static file server
 FROM nginx:alpine
-
-# Remove any default nginx config
 RUN rm -rf /etc/nginx/conf.d/*
-
-# Copy built app to nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Health check
