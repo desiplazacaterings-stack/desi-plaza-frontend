@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import API_ENDPOINTS from "../config";
+import useMenuItems from "../hooks/useMenuItems";
 import menuData from "../data/menu.json";
 import "./CreateEvent.css";
 
@@ -30,6 +29,9 @@ function generateUniqueQuotationId() {
 
 function CreateEvent() {
   const navigate = useNavigate();
+  // ✅ USE HOOK - Single source of truth for menu
+  const { menuItems: hookMenuItems, loading: hookLoading, error: hookError } = useMenuItems();
+  
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -49,7 +51,6 @@ function CreateEvent() {
 
   // Quotation Form State
   const [menuItems, setMenuItems] = useState([]);
-  const [menuLoading, setMenuLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
   const [menuSearch, setMenuSearch] = useState("");
@@ -62,44 +63,17 @@ function CreateEvent() {
     return generateUniqueQuotationId();
   });
 
-  // Fetch menu items on mount (only once)
-  const menuFetched = useRef(false);
-  
+  // ✅ Sync hook menu to local state
   useEffect(() => {
-    if (menuFetched.current) return;
-    menuFetched.current = true;
-
-    const fetchMenu = async () => {
-      try {
-        setMenuLoading(true);
-        console.log('🔄 Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
-        const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        
-        let items = [];
-        if (response.data && Array.isArray(response.data)) {
-          items = response.data;
-        } else if (response.data && typeof response.data === 'object' && response.data.items) {
-          items = response.data.items;
-        } else {
-          console.warn('⚠️ Unexpected response format, using local data');
-          items = menuData || [];
-        }
-        
-        // ✅ Deduplicate items
-        const cleanItems = dedupeMenuItems(items);
-        console.log(`✓ Menu items loaded: ${cleanItems.length} items`);
-        setMenuItems(cleanItems);
-      } catch (error) {
-        console.error('❌ Error fetching menu:', error.message, 'Using local data instead');
-        const fallbackItems = menuData || [];
-        setMenuItems(fallbackItems);
-      } finally {
-        setMenuLoading(false);
-      }
-    };
-    
-    fetchMenu();
-  }, []);
+    if (hookMenuItems && hookMenuItems.length > 0) {
+      const cleanItems = dedupeMenuItems(hookMenuItems);
+      console.log(`✓ Menu items synced: ${cleanItems.length} items`);
+      setMenuItems(cleanItems);
+    } else if (!hookLoading && hookError) {
+      console.error('❌ Error loading menu:', hookError);
+      setMenuItems(dedupeMenuItems(menuData || []));
+    }
+  }, [hookMenuItems, hookLoading, hookError]);
 
   // Fetch user permissions on mount
   useEffect(() => {

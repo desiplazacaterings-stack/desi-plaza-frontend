@@ -1,8 +1,6 @@
-
 import menuData from "../data/menu.json";
-import { useState, useEffect, useRef, useMemo } from "react";
-import axios from "axios";
-import API_ENDPOINTS from "../config";
+import { useState, useEffect, useMemo } from "react";
+import useMenuItems from "../hooks/useMenuItems";
 import "./Menu.css";
 
 // ✅ Deduplication utility
@@ -17,15 +15,14 @@ const dedupeMenuItems = (items = []) => {
 };
 
 export default function Menu({ hidePrice = false }) {
+  // ✅ USE HOOK - Single source of truth for menu
+  const { menuItems: hookMenuItems, loading: hookLoading, error: hookError } = useMenuItems();
+  
   const [filter, setFilter] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const fetchInProgress = useRef(false);
 
   useEffect(() => {
     // Check user authentication
@@ -49,52 +46,10 @@ export default function Menu({ hidePrice = false }) {
     }
   }, []);
 
-  useEffect(() => {
-    // ✅ CRITICAL FIX: Double-guard against multiple mounts
-    // If data already loaded OR fetch is in progress, skip
-    if (menuItems.length > 0 || fetchInProgress.current) {
-      setLoading(false);
-      return;
-    }
-
-    fetchInProgress.current = true;
-
-    const fetchMenu = async () => {
-      try {
-        setLoading(true);
-        console.log('🔄 Fetching menu from:', API_ENDPOINTS.ITEMS.GET_ALL);
-        const response = await axios.get(API_ENDPOINTS.ITEMS.GET_ALL);
-        
-        let items = [];
-        if (response.data && Array.isArray(response.data)) {
-          items = response.data;
-        } else if (response.data && typeof response.data === 'object' && response.data.items) {
-          items = response.data.items;
-        } else {
-          console.warn('⚠️ Unexpected response format, using local data');
-          items = menuData;
-        }
-        
-        // ✅ Deduplicate items - REPLACE state, don't append
-        const cleanItems = dedupeMenuItems(items);
-        console.log(`✓ Menu items loaded: ${cleanItems.length} items`);
-        setMenuItems(cleanItems);
-      } catch (error) {
-        console.error('❌ Error fetching menu:', error.message, 'Using local data instead');
-        setMenuItems(dedupeMenuItems(menuData || []));
-      } finally {
-        setLoading(false);
-        fetchInProgress.current = false;
-      }
-    };
-    
-    fetchMenu();
-  }, []); // Empty dependency - runs ONCE at mount
-
-  // ✅ SAFETY NET: Deduplicate again in render in case of concurrent mounts
+  // ✅ SAFETY NET: Deduplicate hook data in render
   const displayItems = useMemo(
-    () => dedupeMenuItems(menuItems),
-    [menuItems]
+    () => dedupeMenuItems(hookMenuItems || []),
+    [hookMenuItems]
   );
 
   // Filter items by veg/non-veg
