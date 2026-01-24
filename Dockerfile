@@ -3,7 +3,8 @@ FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN npm run build
+COPY . .
+RUN npm run build 2>&1
 
 # Serve stage - Pure static file server
 FROM nginx:alpine
