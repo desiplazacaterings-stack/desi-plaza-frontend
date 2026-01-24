@@ -1,10 +1,10 @@
 # Build stage
-FROM node:20-alpine AS build
+FROM node:18-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --omit=dev
 COPY . .
-RUN npm run build
+RUN npm run build && [ -d dist ] || (echo "Build failed" && exit 1)
 
 # Serve stage - Pure static file server
 FROM nginx:alpine
