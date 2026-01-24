@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build 2>&1 || exit 1
 
 # Serve stage
 FROM nginx:alpine
