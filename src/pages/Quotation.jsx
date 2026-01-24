@@ -336,8 +336,8 @@ function Quotation() {
   // Get unique categories from menuItems
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
-  // Filter menu items by selected category and search (already grouped - no duplicate itemNames)
-  const filteredMenuItems = menuItems
+  // Filter menu items by selected category and search - deduplicate by itemName
+  const filteredMenuItems = dedupeByItemName(menuItems)
     .filter(item =>
       (!selectedCategory || item.category === selectedCategory) &&
       item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
