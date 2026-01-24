@@ -5,12 +5,16 @@ import API_ENDPOINTS from "../config";
 import useMenuItems from "../hooks/useMenuItems";
 import "./InstantOrder.css";
 
-// ✅ Deduplication utility
-const dedupeMenuItems = (items = []) => {
+/**
+ * 🔹 DEDUPLICATE BY ITEMNAME (UI-level only)
+ * Shows each itemName only once in dropdown
+ * Units still come from prices[] as normal
+ */
+const dedupeByItemName = (items = []) => {
   const map = new Map();
-  (items || []).forEach(item => {
-    if (item?._id) {
-      map.set(item._id, { ...item });
+  items.forEach(item => {
+    if (!map.has(item.itemName)) {
+      map.set(item.itemName, item);
     }
   });
   return Array.from(map.values());
@@ -63,7 +67,8 @@ function InstantOrder() {
   // Use the menu items hook to fetch items
   const { menuItems: hookMenuItems, loading: menuLoading, error: menuError, fetchMenuItems: refetchMenuItems, clearCache } = useMenuItems();
 
-  // Generate KOT serial number on mount
+  // 🔹 GROUP MENU ITEMS BY NAME (single source of truth)
+  const [groupedMenuItems, setGroupedMenuItems] = useState([]);
   useEffect(() => {
     const lastSerialNumber = localStorage.getItem('lastKOTSerialNumber');
     if (lastSerialNumber) {
@@ -77,9 +82,8 @@ function InstantOrder() {
   useEffect(() => {
     if (!menuItemsSynced.current && hookMenuItems && hookMenuItems.length > 0) {
       menuItemsSynced.current = true;
-      const cleanItems = dedupeMenuItems(hookMenuItems);
-      console.log(`✓ Menu items synced: ${cleanItems.length} items loaded`);
-      setMenuItems(cleanItems);
+      console.log(`✓ Menu items loaded: ${hookMenuItems.length} items`);
+      setMenuItems(hookMenuItems);
       setMenuItemsLoadError(null);
     } else if (menuError) {
       console.error('❌ Failed to load menu items:', menuError);
@@ -123,16 +127,12 @@ function InstantOrder() {
     }
   }, []);
 
-  /* 🔹 Filter items based on search query - deduplicate by itemName for UI */
-  const filteredMenuItems = Array.from(
-    new Map(
-      menuItems
-        .filter(item =>
-          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-        )
-        .map(item => [item.itemName, item])
-    ).values()
-  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
+  /* 🔹 Filter items based on search query - deduplicate by itemName */
+  const filteredMenuItems = dedupeByItemName(menuItems)
+    .filter(item =>
+      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+    )
+    .sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   /* 🔹 Check authentication on mount */
   useEffect(() => {
@@ -167,7 +167,7 @@ function InstantOrder() {
       setAvailableUnits([]);
       return;
     }
-    // Find all menu items with the selected name
+    // Find all menu items with the selected name (they all have the same itemName)
     const items = menuItems.filter(i => i.itemName === selectedItem);
     if (items.length > 0) {
       // Collect all unique units from all price objects

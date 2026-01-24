@@ -5,35 +5,18 @@ import menuData from "../data/menu.json";
 import "./CreateEvent.css";
 
 /**
- * 🔹 GROUP MENU ITEMS BY NAME AND MERGE PRICES
+ * 🔹 DEDUPLICATE BY ITEMNAME (UI-level only)
+ * Shows each itemName only once in dropdown
+ * Units still come from prices[] as normal
  */
-const groupMenuItemsByName = (items = []) => {
-  const groupedMap = new Map();
-  (items || []).forEach(item => {
-    if (!item?.itemName) return;
-    const key = item.itemName.toLowerCase();
-    if (!groupedMap.has(key)) {
-      groupedMap.set(key, {
-        itemName: item.itemName,
-        category: item.category || "",
-        allPrices: [],
-        _ids: []
-      });
-    }
-    const grouped = groupedMap.get(key);
-    if (!grouped.category && item.category) {
-      grouped.category = item.category;
-    }
-    (item.prices || []).forEach(priceObj => {
-      if (!grouped.allPrices.find(p => p.unit === priceObj.unit)) {
-        grouped.allPrices.push({ ...priceObj });
-      }
-    });
-    if (item._id && !grouped._ids.includes(item._id)) {
-      grouped._ids.push(item._id);
+const dedupeByItemName = (items = []) => {
+  const map = new Map();
+  items.forEach(item => {
+    if (!map.has(item.itemName)) {
+      map.set(item.itemName, item);
     }
   });
-  return Array.from(groupedMap.values()).sort((a, b) => a.itemName.localeCompare(b.itemName));
+  return Array.from(map.values());
 };
 
 function getCurrentYear() {
@@ -84,18 +67,14 @@ function CreateEvent() {
     return generateUniqueQuotationId();
   });
 
-  // ✅ GROUP MENU ITEMS BY NAME (single source of truth)
-  const menuItemsSynced = useRef(false);
-  
+  // ✅ Sync hook menu to local state
   useEffect(() => {
-    if (!menuItemsSynced.current && hookMenuItems && hookMenuItems.length > 0) {
-      menuItemsSynced.current = true;
-      const grouped = groupMenuItemsByName(hookMenuItems);
-      console.log(`✓ Menu items grouped: ${hookMenuItems.length} raw → ${grouped.length} unique`);
-      setMenuItems(grouped);
+    if (hookMenuItems && hookMenuItems.length > 0) {
+      console.log(`✓ Menu items loaded: ${hookMenuItems.length} items`);
+      setMenuItems(hookMenuItems);
     } else if (!hookLoading && hookError) {
       console.error('❌ Error loading menu:', hookError);
-      setMenuItems(groupMenuItemsByName(menuData || []));
+      setMenuItems(menuData || []);
     }
   }, [hookMenuItems, hookLoading, hookError]);
 
@@ -151,12 +130,20 @@ function CreateEvent() {
       setAvailableUnits([]);
       return;
     }
-    const item = menuItems.find(i => i.itemName === selectedItem);
-    if (item && item.allPrices) {
-      setAvailableUnits(item.allPrices);
-      if (item.allPrices.length > 0) {
-        setUnit(item.allPrices[0].unit);
-        setPrice(item.allPrices[0].price);
+    const items = menuItems.filter(i => i.itemName === selectedItem);
+    if (items.length > 0) {
+      const units = [];
+      items.forEach(item => {
+        (item.prices || []).forEach(priceObj => {
+          if (!units.find(u => u.unit === priceObj.unit)) {
+            units.push({ unit: priceObj.unit, price: priceObj.price });
+          }
+        });
+      });
+      setAvailableUnits(units);
+      if (units.length > 0) {
+        setUnit(units[0].unit);
+        setPrice(units[0].price);
       } else {
         setUnit("");
         setPrice(0);
@@ -214,7 +201,7 @@ function CreateEvent() {
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
   // Filter menu items (already grouped - no duplicate itemNames)
-  const filteredMenuItems = menuItems
+  const filteredMenuItems = dedupeByItemName(menuItems)
     .filter(item =>
       (!selectedCategory || item.category === selectedCategory) &&
       item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
