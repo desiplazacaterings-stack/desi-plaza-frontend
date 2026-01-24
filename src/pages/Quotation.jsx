@@ -321,13 +321,17 @@ function Quotation() {
   // Get unique categories from menuItems
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
-  // Filter menu items by selected category and search
-  const filteredMenuItems = menuItems
-    .filter(item =>
-      (!selectedCategory || item.category === selectedCategory) &&
-      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-    )
-    .sort((a, b) => a.itemName.localeCompare(b.itemName));
+  // Filter menu items by selected category and search - deduplicate by itemName for UI
+  const filteredMenuItems = Array.from(
+    new Map(
+      menuItems
+        .filter(item =>
+          (!selectedCategory || item.category === selectedCategory) &&
+          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+        )
+        .map(item => [item.itemName, item])
+    ).values()
+  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   function saveQuotation() {
     let customerData = null;
@@ -493,9 +497,9 @@ function Quotation() {
               {filteredMenuItems.length === 0 ? (
                 <div style={{ padding: 8, color: '#888' }}>No items found</div>
               ) : (
-                filteredMenuItems.map((item, i) => (
+                filteredMenuItems.map((item) => (
                   <div
-                    key={i}
+                    key={item.itemName}
                     style={{ padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid #eee' }}
                     onMouseDown={() => {
                       setSelectedItem(item.itemName);

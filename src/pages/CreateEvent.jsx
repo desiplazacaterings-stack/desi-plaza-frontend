@@ -197,13 +197,17 @@ function CreateEvent() {
   // Get unique categories
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
-  // Filter menu items
-  const filteredMenuItems = menuItems
-    .filter(item =>
-      (!selectedCategory || item.category === selectedCategory) &&
-      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-    )
-    .sort((a, b) => a.itemName.localeCompare(b.itemName));
+  // Filter menu items - deduplicate by itemName for UI
+  const filteredMenuItems = Array.from(
+    new Map(
+      menuItems
+        .filter(item =>
+          (!selectedCategory || item.category === selectedCategory) &&
+          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+        )
+        .map(item => [item.itemName, item])
+    ).values()
+  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   // Validate form data
   function validateForms() {
@@ -517,9 +521,9 @@ function CreateEvent() {
                           {filteredMenuItems.length === 0 ? (
                             <div className="dropdown-item-empty">No items found</div>
                           ) : (
-                            filteredMenuItems.map((item, i) => (
+                            filteredMenuItems.map((item) => (
                               <div
-                                key={i}
+                                key={item.itemName}
                                 className="dropdown-item"
                                 onMouseDown={() => {
                                   setSelectedItem(item.itemName);

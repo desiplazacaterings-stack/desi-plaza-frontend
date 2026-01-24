@@ -123,12 +123,16 @@ function InstantOrder() {
     }
   }, []);
 
-  /* 🔹 Filter items based on search query */
-  const filteredMenuItems = menuItems
-    .filter(item =>
-      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-    )
-    .sort((a, b) => a.itemName.localeCompare(b.itemName));
+  /* 🔹 Filter items based on search query - deduplicate by itemName for UI */
+  const filteredMenuItems = Array.from(
+    new Map(
+      menuItems
+        .filter(item =>
+          item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
+        )
+        .map(item => [item.itemName, item])
+    ).values()
+  ).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   /* 🔹 Check authentication on mount */
   useEffect(() => {
@@ -491,9 +495,9 @@ function InstantOrder() {
                   {menuItems.length === 0 ? 'No menu items available' : 'No items found'}
                 </div>
               ) : (
-                filteredMenuItems.map((item, i) => (
+                filteredMenuItems.map((item) => (
                   <div
-                    key={i}
+                    key={item.itemName}
                     style={{ padding: '10px 14px', cursor: 'pointer', borderBottom: '1px solid #eee', fontSize: '0.9rem', transition: 'all 0.2s' }}
                     onMouseDown={() => {
                       setSelectedItem(item.itemName);
