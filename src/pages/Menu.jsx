@@ -3,15 +3,24 @@ import { useState, useEffect, useMemo } from "react";
 import useMenuItems from "../hooks/useMenuItems";
 import "./Menu.css";
 
-// ✅ Deduplication utility
+// ✅ Improved deduplication utility - handles missing _id
 const dedupeMenuItems = (items = []) => {
-  const map = new Map();
-  (items || []).forEach(item => {
-    if (item?._id) {
-      map.set(item._id, { ...item });
+  const seen = new Set();
+  const result = [];
+
+  (items || []).forEach((item, index) => {
+    // Create unique identifier: prefer _id, fallback to itemName+category combo
+    const uniqueKey = item?._id 
+      ? String(item._id)
+      : `${item?.itemName}-${item?.category}`;
+
+    if (!seen.has(uniqueKey)) {
+      seen.add(uniqueKey);
+      result.push({ ...item, __uniqueKey: uniqueKey });
     }
   });
-  return Array.from(map.values());
+
+  return result;
 };
 
 export default function Menu({ hidePrice = false }) {
@@ -46,11 +55,18 @@ export default function Menu({ hidePrice = false }) {
     }
   }, []);
 
-  // ✅ SAFETY NET: Deduplicate hook data in render
+  // ✅ DEDUPLICATION: Remove exact duplicates from hook data
   const displayItems = useMemo(
     () => dedupeMenuItems(hookMenuItems || []),
     [hookMenuItems]
   );
+
+  // ✅ DEBUG: Log deduplication results
+  useEffect(() => {
+    if (hookMenuItems && displayItems) {
+      console.log(`📊 Menu deduplication: ${hookMenuItems.length} items → ${displayItems.length} unique items`);
+    }
+  }, [hookMenuItems, displayItems]);
 
   // Filter items by veg/non-veg
   let filteredMenu =
@@ -143,9 +159,14 @@ export default function Menu({ hidePrice = false }) {
         </div>
       </div>
 
-      {loading ? (
+      {/* ✅ FIX: Changed 'loading' to 'hookLoading' */}
+      {hookLoading ? (
         <div className="no-items">
           <p>Loading menu...</p>
+        </div>
+      ) : hookError ? (
+        <div className="no-items">
+          <p>Error loading menu: {hookError}</p>
         </div>
       ) : categories.length > 0 ? (
         <div className="categories-grid">
@@ -157,8 +178,11 @@ export default function Menu({ hidePrice = false }) {
               </div>
 
               <div className="items-list">
-                {groupedByCategory[category].map((item, index) => (
-                  <div key={index} className="menu-card">
+                {groupedByCategory[category].map((item) => (
+                  <div 
+                    key={item.__uniqueKey || item._id || `${item.itemName}-${item.category}`} 
+                    className="menu-card"
+                  >
                     <div className="card-header">
                       <h4>{item.itemName}</h4>
                     </div>
@@ -166,7 +190,7 @@ export default function Menu({ hidePrice = false }) {
                     {isAuthenticated && item.prices && item.prices.length > 0 ? (
                       <div className="prices-container">
                         {item.prices.map((priceObj, i) => (
-                          <div key={i} className="price-option">
+                          <div key={`${item.__uniqueKey}-price-${i}`} className="price-option">
                             <span className="price-label">
                               {priceObj.units} {priceObj.unit}
                             </span>
