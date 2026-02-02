@@ -128,7 +128,9 @@ function InstantOrder() {
   }, []);
 
   /* 🔹 Filter items based on search query - deduplicate by itemName */
-  const filteredMenuItems = dedupeByItemName(menuItems)
+  const uniqueItemNames = Array.from(new Set(menuItems.map(item => item.itemName)));
+  const filteredMenuItems = uniqueItemNames
+    .map(name => menuItems.find(item => item.itemName === name))
     .filter(item =>
       item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
     )

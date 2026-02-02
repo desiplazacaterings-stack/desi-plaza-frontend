@@ -201,11 +201,10 @@ function CreateEvent() {
   const categories = Array.from(new Set(menuItems.map(item => item.category))).sort();
 
   // Filter menu items (already grouped - no duplicate itemNames)
-  const filteredMenuItems = dedupeByItemName(menuItems)
-    .filter(item =>
-      (!selectedCategory || item.category === selectedCategory) &&
-      item.itemName.toLowerCase().includes(menuSearch.toLowerCase())
-    )
+  const uniqueItemNames = Array.from(new Set(menuItems.map(item => item.itemName)));
+  const filteredMenuItems = uniqueItemNames
+    .map(name => menuItems.find(item => item.itemName === name && (!selectedCategory || item.category === selectedCategory)))
+    .filter(item => item && item.itemName.toLowerCase().includes(menuSearch.toLowerCase()))
     .sort((a, b) => a.itemName.localeCompare(b.itemName));
 
   // Validate form data
