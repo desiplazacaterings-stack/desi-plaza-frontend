@@ -477,7 +477,7 @@ function CreateEvent() {
             <div className="menu-add-section">
               <h3>Add Menu Items</h3>
               
-              {menuLoading ? (
+              {hookLoading ? (
                 <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>Loading menu items...</div>
               ) : menuItems.length === 0 ? (
                 <div style={{ padding: '20px', textAlign: 'center', color: '#d32f2f', background: '#ffebee', borderRadius: '6px' }}>No menu items available. Please check your connection.</div>
