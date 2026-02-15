@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 import ViewSignedAgreement from "../components/ViewSignedAgreement";
 import "./Event.css";
 
@@ -20,8 +22,11 @@ function Event() {
     role: '',
     phone: ''
   });
+  const [useManualEntry, setUseManualEntry] = useState(false);
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('today');
 
   const teamOptions = [
     { name: 'Raj Kumar', role: 'Event Manager', phone: '9876543210' },
@@ -80,6 +85,19 @@ function Event() {
     }
   }, []);
 
+  // Filter orders based on search
+  const getFilteredOrders = () => {
+    return orders.filter(order => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        (order._id && order._id.toLowerCase().includes(searchLower)) ||
+        (order.customerName && order.customerName.toLowerCase().includes(searchLower))
+      );
+    });
+  };
+
+  const filteredOrders = getFilteredOrders();
+
   // Categorize orders by date
   const categorizeOrders = () => {
     const today = new Date();
@@ -92,7 +110,7 @@ function Event() {
     };
 
     // Filter out cancelled events
-    const activeOrders = orders.filter(order => order.status !== 'Cancelled');
+    const activeOrders = filteredOrders.filter(order => order.status !== 'Cancelled');
 
     activeOrders.forEach(order => {
       if (order.eventDate) {
@@ -124,6 +142,7 @@ function Event() {
   const handleAssign = (order) => {
     setSelectedOrder(order);
     setTeamMember({ name: '', role: '', phone: '' });
+    setUseManualEntry(false);
     setShowAssignModal(true);
   };
 
@@ -307,7 +326,7 @@ function Event() {
           </tr>
           <tr>
             <td colspan="5" style="text-align:right;"><strong>Balance Due</strong></td>
-            <td><strong>$${(order.balanceDue || 0).toFixed(2)}</strong></td>
+            <td><strong>${(order.balanceDue || 0) > 0.01 ? '$' + (order.balanceDue || 0).toFixed(2) : '$0.00'}</strong></td>
           </tr>
         </tfoot>
       </table>
@@ -322,7 +341,7 @@ function Event() {
         </div>
         <div class="summary-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
           <span><strong>Balance Due:</strong></span>
-          <span><strong>$${(order.balanceDue || 0).toFixed(2)}</strong></span>
+          <span><strong>${(order.balanceDue || 0) > 0.01 ? '$' + (order.balanceDue || 0).toFixed(2) : '$0.00'}</strong></span>
         </div>
         <div class="summary-row" style="margin-top: 8px;">
           <span><strong>Payment Status:</strong></span>
@@ -332,9 +351,11 @@ function Event() {
           <span><strong>Payment Mode:</strong></span>
           <span>${order.paymentMode || 'Not Specified'}</span>
         </div>
+        ${(order.paymentStatus !== 'Short Closed' && (order.balanceDue || 0) > 0.01) ? `
         <div class="summary-row" style="border-top: 1px solid #ddd; padding-top: 8px; margin-top: 12px; font-size: 12px; color: #666;">
           <span>Note: Remaining balance due by event date</span>
         </div>
+        ` : ''}
       </div>
     </div></body></html>`;
     const printWindow = window.open('', '', 'width=900,height=1200');
@@ -357,7 +378,11 @@ function Event() {
 
   const [expandedOrder, setExpandedOrder] = useState(null);
 
-  const EventCategory = ({ title, orders, icon }) => (
+  const EventCategory = ({ title, orders, icon }) => {
+    // Setup pagination for this category with 10 events per page
+    const categoryPagination = usePagination(orders, 10);
+    
+    return (
     <div className="event-category">
       <div className="category-header">
         <h3>{icon} {title}</h3>
@@ -365,6 +390,7 @@ function Event() {
       </div>
 
       {orders.length > 0 ? (
+        <>
         <div className="table-wrapper">
           <table className="events-table">
             <thead>
@@ -383,7 +409,7 @@ function Event() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order, index) => (
+              {categoryPagination.currentItems.map((order, index) => (
                 <React.Fragment key={order._id}>
                   <tr>
                     <td data-label="#" className="serial-number">{index + 1}</td>
@@ -409,19 +435,19 @@ function Event() {
                       </button>
                     </td>
                     <td className="amount-gold" data-label="Total Amount">${roundAmount(order.totalAmount).toFixed(2)}</td>
-                    <td className="amount-green" data-label="Balance">${roundAmount(order.balanceDue || order.totalAmount).toFixed(2)}</td>
+                    <td className="amount-green" data-label="Balance">${roundAmount(order.balanceDue || order.totalAmount) > 0.01 ? roundAmount(order.balanceDue || order.totalAmount).toFixed(2) : '0.00'}</td>
                     <td data-label="Status">
                       <span className={`status-badge status-${order.status?.toLowerCase() || 'placed'}`}>
                         {order.status || 'Placed'}
                       </span>
-                      {order.status === 'Completed' && (
+                      {(order.status === 'Completed' || order.paymentStatus === 'Short Closed') && (
                         <div className="payment-status">
                           <span className={`payment-badge payment-${order.paymentStatus?.toLowerCase() || 'pending'}`}>
                             {order.paymentStatus || 'Pending'}
                           </span>
-                          {order.paymentStatus !== 'Paid' && (
+                          {order.paymentStatus !== 'Paid' && order.paymentStatus !== 'Short Closed' && (
                             <div className="payment-alert">
-                              Due: ${roundAmount(order.balanceDue).toFixed(2)}
+                              Due: ${roundAmount(order.balanceDue) > 0.01 ? roundAmount(order.balanceDue).toFixed(2) : '0.00'}
                             </div>
                           )}
                         </div>
@@ -554,16 +580,63 @@ function Event() {
             </tbody>
           </table>
         </div>
+
+        {orders.length > 0 && (
+          <Pagination 
+            currentPage={categoryPagination.currentPage}
+            totalPages={categoryPagination.totalPages}
+            totalItems={categoryPagination.totalItems}
+            itemsPerPage={categoryPagination.itemsPerPage}
+            onPageChange={categoryPagination.goToPage}
+          />
+        )}
+        </>
       ) : (
         <p className="no-events">No {title.toLowerCase()}</p>
       )}
     </div>
-  );
+    );
+  };
 
   return (
     <div className="event-container">
       <div className="event-header">
         <h2>Events</h2>
+      </div>
+
+      {/* Search Bar */}
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'center', maxWidth: '1200px', margin: '0 auto 20px' }}>
+        <input
+          type="text"
+          placeholder="🔍 Search by customer name or order ID..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            flex: 1,
+            padding: '10px 12px',
+            border: '1px solid #ddd',
+            borderRadius: '6px',
+            fontSize: '0.95rem',
+            fontFamily: 'inherit'
+          }}
+        />
+        {searchTerm && (
+          <button
+            onClick={() => setSearchTerm("")}
+            style={{
+              padding: '10px 16px',
+              backgroundColor: '#f5ba4a',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            ✕ Clear
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -574,9 +647,37 @@ function Event() {
         </div>
       ) : (
         <>
-          <EventCategory title="Today Events" orders={categorized.today} icon="📅" />
-          <EventCategory title="Upcoming Events" orders={categorized.upcoming} icon="📆" />
-          <EventCategory title="Past Events" orders={categorized.past} icon="✓" />
+          {/* Tab Navigation */}
+          <div className="event-tabs">
+            <button
+              className={`tab-button ${activeTab === 'today' ? 'active' : ''}`}
+              onClick={() => setActiveTab('today')}
+            >
+              📅 Today Event
+              <span className="tab-count">{categorized.today.length}</span>
+            </button>
+            <button
+              className={`tab-button ${activeTab === 'upcoming' ? 'active' : ''}`}
+              onClick={() => setActiveTab('upcoming')}
+            >
+              📆 Upcoming Events
+              <span className="tab-count">{categorized.upcoming.length}</span>
+            </button>
+            <button
+              className={`tab-button ${activeTab === 'past' ? 'active' : ''}`}
+              onClick={() => setActiveTab('past')}
+            >
+              ✓ Past Events
+              <span className="tab-count">{categorized.past.length}</span>
+            </button>
+          </div>
+
+          {/* Tab Content */}
+          <div className="tab-content">
+            {activeTab === 'today' && <EventCategory title="Today Events" orders={categorized.today} icon="📅" />}
+            {activeTab === 'upcoming' && <EventCategory title="Upcoming Events" orders={categorized.upcoming} icon="📆" />}
+            {activeTab === 'past' && <EventCategory title="Past Events" orders={categorized.past} icon="✓" />}
+          </div>
         </>
       )}
 
@@ -597,22 +698,142 @@ function Event() {
                 <p><strong>Location:</strong> {selectedOrder.eventPlace}</p>
               </div>
 
-              <div className="team-selection">
-                <h4>Select Team Member</h4>
-                <div className="team-list">
-                  {teamOptions.map((team, idx) => (
-                    <div 
-                      key={idx}
-                      className={`team-option ${teamMember.name === team.name ? 'selected' : ''}`}
-                      onClick={() => handleSelectTeam(team)}
-                    >
-                      <div className="team-name">{team.name}</div>
-                      <div className="team-role">{team.role}</div>
-                      <div className="team-phone">{team.phone}</div>
-                    </div>
-                  ))}
+              {/* Toggle between preset and manual entry */}
+              <div style={{ marginBottom: 20, borderBottom: '1px solid #e0e0e0', paddingBottom: 16 }}>
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+                  <button
+                    onClick={() => {
+                      setUseManualEntry(false);
+                      setTeamMember({ name: '', role: '', phone: '' });
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      border: !useManualEntry ? '2px solid #f5ba4a' : '1px solid #ddd',
+                      background: !useManualEntry ? '#fffbe6' : '#f9f9f9',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontWeight: !useManualEntry ? '600' : '500',
+                      color: !useManualEntry ? '#f5ba4a' : '#666',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    📋 Select from List
+                  </button>
+                  <button
+                    onClick={() => {
+                      setUseManualEntry(true);
+                      setTeamMember({ name: '', role: '', phone: '' });
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      border: useManualEntry ? '2px solid #f5ba4a' : '1px solid #ddd',
+                      background: useManualEntry ? '#fffbe6' : '#f9f9f9',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontWeight: useManualEntry ? '600' : '500',
+                      color: useManualEntry ? '#f5ba4a' : '#666',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    ✏️ Enter Manually
+                  </button>
                 </div>
               </div>
+
+              {/* Preset List Option */}
+              {!useManualEntry && (
+                <div className="team-selection">
+                  <h4>Select Team Member</h4>
+                  <div className="team-list">
+                    {teamOptions.map((team, idx) => (
+                      <div 
+                        key={idx}
+                        className={`team-option ${teamMember.name === team.name ? 'selected' : ''}`}
+                        onClick={() => handleSelectTeam(team)}
+                      >
+                        <div className="team-name">{team.name}</div>
+                        <div className="team-role">{team.role}</div>
+                        <div className="team-phone">{team.phone}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Manual Entry Option */}
+              {useManualEntry && (
+                <div className="team-selection">
+                  <h4>Enter Team Member Details</h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: 6, fontSize: '14px', fontWeight: '500', color: '#333' }}>
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter team member name"
+                        value={teamMember.name}
+                        onChange={(e) => setTeamMember({ ...teamMember, name: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          border: '1px solid #ddd',
+                          borderRadius: '6px',
+                          fontSize: '14px',
+                          boxSizing: 'border-box',
+                          fontFamily: 'inherit'
+                        }}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: 6, fontSize: '14px', fontWeight: '500', color: '#333' }}>
+                        Role/Position *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g., Chef, Event Manager, Coordinator"
+                        value={teamMember.role}
+                        onChange={(e) => setTeamMember({ ...teamMember, role: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          border: '1px solid #ddd',
+                          borderRadius: '6px',
+                          fontSize: '14px',
+                          boxSizing: 'border-box',
+                          fontFamily: 'inherit'
+                        }}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: 6, fontSize: '14px', fontWeight: '500', color: '#333' }}>
+                        Mobile Number (10 digits)
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="10-digit mobile number"
+                        value={teamMember.phone}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          setTeamMember({ ...teamMember, phone: value });
+                        }}
+                        maxLength="10"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          border: '1px solid #ddd',
+                          borderRadius: '6px',
+                          fontSize: '14px',
+                          boxSizing: 'border-box',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="modal-footer">

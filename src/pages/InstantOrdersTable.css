@@ -16,6 +16,248 @@
   border-bottom: 3px solid #f5ba4a;
 }
 
+/* New Card-Based Layout */
+.instant-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.order-card {
+  background: #fff;
+  border: 1.5px solid #e8e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-color: #f5ba4a;
+}
+
+.order-header {
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #f9f9fb 0%, #f5f5fa 100%);
+  border-bottom: 1.5px solid #e8e8f0;
+  transition: all 0.3s ease;
+}
+
+.order-header:hover {
+  background: linear-gradient(135deg, #f5f5fa 0%, #f0f0f8 100%);
+}
+
+.order-summary-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto auto;
+  gap: 20px;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.order-summary-row > div {
+  display: flex;
+  align-items: center;
+}
+
+.order-summary-row > div:first-child {
+  font-weight: 600;
+  color: #232a36;
+  min-width: 150px;
+}
+
+.order-summary-row > div:nth-child(2) {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.order-summary-row > div:nth-child(3) {
+  background: #e8f5e9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.order-summary-row > div:nth-child(4) {
+  color: #d4a574;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pickup {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-delivery {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-placed,
+.status-pending {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-preparing {
+  background: #fce7d0;
+  color: #d96e10;
+}
+
+.status-ready {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-delivered,
+.status-completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+/* Expanded Details */
+.order-details {
+  padding: 28px;
+  background: #fff;
+  border-top: 2px solid #f0f0f0;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.detail-section {
+  padding: 20px;
+  background: #f9f9fb;
+  border-radius: 10px;
+  border-left: 4px solid #f5ba4a;
+}
+
+.detail-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  color: #232a36;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-section p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.detail-section p strong {
+  color: #232a36;
+  min-width: 100px;
+  display: inline-block;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.items-table thead {
+  background: #f0f0f0;
+  border-bottom: 2px solid #ddd;
+}
+
+.items-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #232a36;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.items-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e8e8f0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.items-table tr:hover {
+  background: #f5f5fa;
+}
+
+.order-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e8f0;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.order-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-edit {
+  background: linear-gradient(135deg, #f5ba4a, #ffc757);
+  color: #232a36;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 186, 74, 0.3);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  color: #fff;
+}
+
+.btn-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.btn-close {
+  background: #e8e8f0;
+  color: #232a36;
+}
+
+.btn-close:hover {
+  background: #d8d8e0;
+}
+
 .instant-orders-filters {
   display: flex;
   gap: 14px;
@@ -50,6 +292,52 @@
 
 .instant-orders-filters button:hover {
   opacity: 0.8;
+}
+
+/* Date Filter & Export Section */
+.date-export-section {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border-radius: 10px;
+  border: 1.5px solid #bbdefb;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.date-inputs {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.date-inputs label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #232a36;
+  font-size: 0.95rem;
+}
+
+.date-inputs input[type="date"] {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1.5px solid #ddd;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.date-inputs input[type="date"]:focus {
+  outline: none;
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
 }
 
 .instant-orders-table {
@@ -134,6 +422,31 @@
 
 .instant-orders-table button:hover {
   background: #cc0000;
+}
+
+/* Add specific styles for Edit and Delete buttons */
+.table-action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.instant-orders-table .edit-btn {
+  background: linear-gradient(135deg, #f5ba4a, #ffc757);
+  color: #232a36;
+  box-shadow: 0 2px 8px rgba(245, 186, 74, 0.2);
+}
+
+.instant-orders-table .edit-btn:hover {
+  background: #f5a820;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 186, 74, 0.3);
+}
+
+.instant-orders-table .delete-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  color: white;
 }
 
 /* Mobile Responsive Styles for Instant Orders Table */
@@ -240,6 +553,25 @@
     font-size: 11px;
   }
 
+  .date-export-section {
+    flex-direction: column;
+    padding: 12px 10px;
+    gap: 10px;
+  }
+
+  .date-inputs {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .date-inputs label {
+    width: 100%;
+  }
+
+  .date-inputs input[type="date"] {
+    width: 100%;
+  }
+
   .instant-orders-table {
     margin: 0 10px;
     min-width: 950px;
@@ -263,5 +595,28 @@
   .instant-orders-table button {
     padding: 4px 6px;
     font-size: 10px;
+  }
+
+  /* Card layout responsive */
+  .order-card {
+    margin-bottom: 12px;
+  }
+
+  .order-summary-row {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .detail-section {
+    margin-bottom: 16px;
+  }
+
+  .items-table {
+    font-size: 0.85rem;
+  }
+
+  .order-actions button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 }

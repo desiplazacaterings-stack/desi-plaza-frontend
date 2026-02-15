@@ -228,6 +228,26 @@
   z-index: 1;
 }
 
+.price-input {
+  width: 75px;
+  padding: 8px 6px;
+  border: 1.5px solid var(--primary-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(245, 186, 74, 0.15);
+  height: 36px;
+  box-sizing: border-box;
+  background-color: #fef9f0;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #f59f1d;
+  box-shadow: 0 0 0 3px rgba(245, 186, 74, 0.2);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .quotation-container {
@@ -314,11 +334,11 @@
     width: 100%;
     padding: 8px;
     margin: 0;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   table td {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 

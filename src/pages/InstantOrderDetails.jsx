@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
+import { useNavigate } from "react-router-dom";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
+import "./InstantOrderDetails.css";
+
+function InstantOrderDetails() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   // Print KOT for a single order (mobile-friendly)
   const kotPrintOrder = (order) => {
@@ -141,35 +152,22 @@ import API_ENDPOINTS from "../config";
     }
   };
 
-function InstantOrderDetails() {
-    // Responsive styles for mobile view
-    const tableStyle = {
-      width: '100%',
-      borderCollapse: 'collapse',
-      marginTop: '20px',
-      fontSize: '14px',
-      minWidth: '320px',
-      overflowX: 'auto',
-      display: 'block',
-      whiteSpace: 'nowrap',
-    };
-    const thTdStyle = {
-      border: '1px solid #ddd',
-      padding: '8px',
-      minWidth: '90px',
-      textAlign: 'left',
-      fontSize: '14px',
-      wordBreak: 'break-word',
-    };
-    const mobileHeaderStyle = {
-      backgroundColor: '#f2f2f2',
-      fontWeight: 'bold',
-      fontSize: '15px',
-    };
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [search, setSearch] = useState("");
+  const getOrderTotal = (order) => {
+    // Return totalAmount if available, otherwise try total, otherwise calculate from items
+    if (order.totalAmount && order.totalAmount > 0) {
+      return order.totalAmount;
+    }
+    if (order.total && order.total > 0) {
+      return order.total;
+    }
+    // Fallback: calculate from items
+    if (order.items && Array.isArray(order.items)) {
+      return order.items.reduce((sum, item) => {
+        return sum + ((item.price || 0) * (item.qty || 0));
+      }, 0);
+    }
+    return 0;
+  };
 
   useEffect(() => {
     fetchOrders();
@@ -183,6 +181,10 @@ function InstantOrderDetails() {
       });
       // Filter for instant orders
       const instantOrders = response.data.filter(order => order.orderType === 'Instant');
+      console.log('Fetched orders:', instantOrders);
+      instantOrders.forEach(order => {
+        console.log(`Order ${order._id}: totalAmount=${order.totalAmount}, total=${order.total}, items=${order.items?.length}`);
+      });
       setOrders(instantOrders);
     } catch (err) {
       setError('Failed to fetch orders');
@@ -192,8 +194,28 @@ function InstantOrderDetails() {
     }
   };
 
-  if (loading) return <p>Loading instant orders...</p>;
-  if (error) return <p>{error}</p>;
+  const deleteOrder = async (orderId) => {
+    if (window.confirm('Are you sure you want to delete this order?')) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(API_ENDPOINTS.ORDERS.DELETE(orderId), {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setOrders(orders.filter(order => order._id !== orderId));
+        alert('✅ Order deleted successfully');
+      } catch (err) {
+        console.error(err);
+        alert('❌ Failed to delete order');
+      }
+    }
+  };
+
+  const editOrder = (orderId) => {
+    navigate(`/instantorder/edit/${orderId}`);
+  };
+
+  if (loading) return <div className="instant-orders-loading">Loading instant orders...</div>;
+  if (error) return <div className="instant-orders-error">{error}</div>;
 
   // Print a single order's details
   const printOrder = (order) => {
@@ -221,71 +243,64 @@ function InstantOrderDetails() {
 
   // Filter orders by customer name
   const filteredOrders = orders.filter(order =>
-    order.customer.name.toLowerCase().includes(search.toLowerCase())
+    order.customerName.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Setup pagination with 15 orders per page
+  const pagination = usePagination(filteredOrders, 15);
+
   return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-        <h2 style={{ margin: 0 }}>Instant Order Details</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <div className="instant-orders-container">
+      <div className="instant-orders-header">
+        <h2>📦 Instant Orders</h2>
+        <div className="instant-orders-search-group">
           <input
             type="text"
             placeholder="Search by customer name..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ padding: '8px', borderRadius: 4, border: '1px solid #ccc', fontSize: 15 }}
+            className="instant-orders-search-input"
           />
-          <button onClick={() => window.print()} style={{ padding: '8px 16px', fontSize: '16px', cursor: 'pointer' }}>🖨️ Print</button>
+          <button onClick={() => window.print()} className="instant-orders-print-btn">🖨️ Print All</button>
         </div>
       </div>
       {filteredOrders.length === 0 ? (
-        <p>No instant orders found.</p>
+        <div className="instant-orders-empty">No instant orders found.</div>
       ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table style={tableStyle}>
+        <div className="instant-orders-table-wrapper">
+          <table className="instant-orders-table">
             <thead>
-              <tr style={mobileHeaderStyle}>
-                <th style={thTdStyle}>Order ID</th>
-                <th style={thTdStyle}>Customer Name</th>
-                <th style={thTdStyle}>Mobile</th>
-                <th style={thTdStyle}>Items</th>
-                <th style={thTdStyle}>Category</th>
-                <th style={thTdStyle}>Amount</th>
-                <th style={thTdStyle}>Total</th>
-                <th style={thTdStyle}>Status</th>
-                <th style={thTdStyle}>Created</th>
-                <th style={thTdStyle}></th>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Mobile</th>
+                <th>Items (Qty)</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map(order => (
+              {pagination.currentItems.map(order => (
                 <tr key={order._id}>
-                  <td style={thTdStyle} data-label="Order ID">{order._id}</td>
-                  <td style={thTdStyle} data-label="Customer Name">{order.customer.name}</td>
-                  <td style={thTdStyle} data-label="Mobile">{order.customer.mobile}</td>
-                  <td style={thTdStyle} data-label="Items">
-                    {order.items.map((item, index) => (
-                      <div key={index}>{item.qty} x {item.itemName}</div>
-                    ))}
+                  <td data-label="Order ID">{order._id?.slice(-6) || 'N/A'}</td>
+                  <td data-label="Customer Name">{order.customerName}</td>
+                  <td data-label="Mobile">{order.mobile}</td>
+                  <td data-label="Items (Qty)">
+                    {order.items?.length || 0} item{(order.items?.length || 0) !== 1 ? 's' : ''} ({order.items?.reduce((sum, item) => sum + (item.qty || 0), 0) || 0} qty)
                   </td>
-                  <td style={thTdStyle} data-label="Category">
-                    {order.items.map((item, index) => (
-                      <div key={index}>{item.category || ''}</div>
-                    ))}
+                  <td data-label="Total Amount" style={{ fontWeight: '600', color: getOrderTotal(order) > 0 ? '#2e7d32' : '#d32f2f' }}>
+                    ${getOrderTotal(order).toFixed(2)}
                   </td>
-                  <td style={thTdStyle} data-label="Amount">
-                    {order.items.map((item, index) => (
-                      <div key={index}>${(item.qty * item.price).toFixed(2)}</div>
-                    ))}
-                  </td>
-                  <td style={thTdStyle} data-label="Total">${order.total}</td>
-                  <td style={thTdStyle} data-label="Status">{order.status}</td>
-                  <td style={thTdStyle} data-label="Created">{new Date(order.createdAt).toLocaleString()}</td>
-                  <td style={thTdStyle} data-label="Actions">
-                    <div className="table-action-buttons">
-                      <button className="button" onClick={() => printOrder(order)}>🖨️ Print</button>
-                      <button className="button" onClick={() => kotPrintOrder(order)} style={{ backgroundColor: '#f0ad4e', color: '#fff' }}>🧾 KOT Print</button>
+                  <td data-label="Status"><strong>{order.status}</strong></td>
+                  <td data-label="Order Date">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>
+                  <td data-label="Actions">
+                    <div className="instant-order-actions">
+                      <button className="instant-order-btn instant-order-btn-print" onClick={() => printOrder(order)}>🖨️ Print</button>
+                      <button className="instant-order-btn instant-order-btn-kot" onClick={() => kotPrintOrder(order)}>🧾 KOT</button>
+                      <button className="instant-order-btn instant-order-btn-edit" onClick={() => editOrder(order._id)}>✏️ Edit</button>
+                      <button className="instant-order-btn instant-order-btn-delete" onClick={() => deleteOrder(order._id)}>🗑️ Delete</button>
                     </div>
                   </td>
                 </tr>
@@ -293,6 +308,16 @@ function InstantOrderDetails() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {filteredOrders.length > 0 && (
+        <Pagination 
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          totalItems={pagination.totalItems}
+          itemsPerPage={pagination.itemsPerPage}
+          onPageChange={pagination.goToPage}
+        />
       )}
     </div>
   );

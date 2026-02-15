@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import API_ENDPOINTS from "../config";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 import "./Payments.css";
 
 // Helper function to round amounts to nearest rupee
@@ -13,6 +15,7 @@ function Payments() {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [paymentNotes, setPaymentNotes] = useState("");
   const [filterStatus, setFilterStatus] = useState("pending");
+  const [searchTerm, setSearchTerm] = useState("");
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
   const [showShortCloseModal, setShowShortCloseModal] = useState(false);
@@ -69,15 +72,24 @@ function Payments() {
     fetchOrders();
   }, []);
 
-  // Filter orders based on payment status
+  // Filter orders based on payment status and search term
   const getFilteredOrders = () => {
     return orders.filter(order => {
+      // Status filter
+      let statusMatch = true;
       if (filterStatus === "pending") {
-        return order.paymentStatus === "Pending" || order.paymentStatus === "Partial";
+        statusMatch = order.paymentStatus === "Pending" || order.paymentStatus === "Partial";
       } else if (filterStatus === "paid") {
-        return order.paymentStatus === "Paid";
+        statusMatch = order.paymentStatus === "Paid";
       }
-      return true;
+      
+      // Search filter
+      const searchLower = searchTerm.toLowerCase();
+      const searchMatch = 
+        (order._id && order._id.toLowerCase().includes(searchLower)) ||
+        (order.customerName && order.customerName.toLowerCase().includes(searchLower));
+      
+      return statusMatch && (searchTerm === "" || searchMatch);
     });
   };
 
@@ -156,6 +168,12 @@ function Payments() {
   };
 
   const filteredOrders = getFilteredOrders();
+  const pagination = usePagination(filteredOrders, 15);
+
+  // Reset to page 1 when search term or filter changes
+  useEffect(() => {
+    pagination.goToPage(1);
+  }, [searchTerm, filterStatus]);
 
   if (loading) {
     return <div className="loading">Loading payments...</div>;
@@ -187,18 +205,59 @@ function Payments() {
         </button>
       </div>
 
+      {/* Search Bar */}
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <input
+          type="text"
+          placeholder="🔍 Search by customer name or order ID..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+          style={{
+            flex: 1,
+            padding: '10px 12px',
+            border: '1px solid #ddd',
+            borderRadius: '6px',
+            fontSize: '0.95rem',
+            fontFamily: 'inherit'
+          }}
+        />
+        {searchTerm && (
+          <button
+            onClick={() => {
+              setSearchTerm("");
+            }}
+            style={{
+              padding: '10px 16px',
+              backgroundColor: '#f5ba4a',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            ✕ Clear
+          </button>
+        )}
+      </div>
+
       {/* Payments Table */}
       {filteredOrders.length === 0 ? (
         <div className="no-data">
           {filterStatus === "paid" ? "No paid payments" : "No pending payments"}
         </div>
       ) : (
-        <div className="payments-table-wrapper">
+        <>
+          <div className="payments-table-wrapper">
           <table className="payments-table">
             <thead>
               <tr>
                 <th>Order ID</th>
                 <th>Customer</th>
+                <th>Type</th>
                 <th>Event Date</th>
                 <th>Total Amount</th>
                 <th>Amount Received</th>
@@ -208,18 +267,30 @@ function Payments() {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map(order => {
+              {pagination.currentItems.map(order => {
                 const balanceDue = calculateBalanceDue(order);
                 return (
                   <tr key={order._id}>
                     <td className="order-id" data-label="Order ID">{order._id?.substring(0, 8) || "N/A"}...</td>
                     <td data-label="Customer">{order.customerName || "N/A"}</td>
+                    <td data-label="Type">
+                      <span style={{
+                        padding: '4px 10px',
+                        borderRadius: '4px',
+                        fontSize: '0.85rem',
+                        fontWeight: '600',
+                        backgroundColor: order.orderType === 'Event' ? '#e8f5e9' : '#f3e5f5',
+                        color: order.orderType === 'Event' ? '#2e7d32' : '#6a1b9a'
+                      }}>
+                        {order.orderType || 'Event'}
+                      </span>
+                    </td>
                     <td data-label="Event Date">{order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A"}</td>
                     <td className="amount" data-label="Total Amount">${roundAmount(order.totalAmount).toLocaleString()}</td>
                     <td className="amount-received" data-label="Amount Received">${roundAmount(order.amountReceived).toLocaleString()}</td>
                     <td className="balance-due" data-label="Balance Due">
-                      <span className={balanceDue > 0 ? "warning" : "success"}>
-                        ${roundAmount(balanceDue).toLocaleString()}
+                      <span className={balanceDue > 0.01 ? "warning" : "success"}>
+                        ${balanceDue > 0.01 ? roundAmount(balanceDue).toLocaleString() : '0'}
                       </span>
                     </td>
                     <td data-label="Status">
@@ -269,7 +340,21 @@ function Payments() {
               })}
             </tbody>
           </table>
-        </div>
+          </div>
+
+          {/* Pagination */}
+          {filteredOrders.length > 0 && (
+            <div style={{ marginTop: '20px' }}>
+              <Pagination 
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                totalItems={pagination.totalItems}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={pagination.goToPage}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {/* Payment Entry Form */}
@@ -317,7 +402,7 @@ function Payments() {
                   </div>
                   <div className="summary-item highlight">
                     <span className="label">Balance Due:</span>
-                    <span className="value balance">${roundAmount(balanceDue).toLocaleString()}</span>
+                    <span className="value balance">${balanceDue > 0.01 ? roundAmount(balanceDue).toLocaleString() : '0'}</span>
                   </div>
                 </div>
 

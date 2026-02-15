@@ -90,6 +90,59 @@
   font-weight: 600;
 }
 
+/* Event Tabs */
+.event-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #e8e8f0;
+  overflow-x: auto;
+  padding-bottom: 0;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  color: #232a36;
+}
+
+.tab-button.active {
+  color: #232a36;
+  border-bottom-color: #f5ba4a;
+  font-weight: 600;
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5ba4a 0%, #ffc757 100%);
+  color: #232a36;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 24px;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
 /* Events Grid & Table */
 .events-grid {
   display: grid;
@@ -259,7 +312,7 @@
   padding: 10px;
   border-bottom: 1px solid #e8e8f0;
   color: #555;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .items-table td:nth-child(1) { text-align: center; }

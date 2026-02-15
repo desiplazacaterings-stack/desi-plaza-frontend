@@ -39,6 +39,7 @@ function Quotation() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
+  const printingRef = useRef(false);
 
   // Remove item by index
   const removeMenuItem = (idxToRemove) => {
@@ -110,6 +111,7 @@ function Quotation() {
   const [price, setPrice] = useState(0);
   const [availableUnits, setAvailableUnits] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
+  const [editPricesMode, setEditPricesMode] = useState(false);
   const [salesTaxRate, setSalesTaxRate] = useState(0);
   const [serviceChargeRate, setServiceChargeRate] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -199,129 +201,140 @@ function Quotation() {
   });
 
   const printQuotation = async () => {
-    // Fetch and convert logo to data URL
-    let logoDataUrl = '';
-    try {
-      const response = await fetch('/logo.png');
-      const blob = await response.blob();
-      logoDataUrl = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-    } catch (error) {
-      console.log('Logo could not be loaded');
-    }
+    // Prevent printing if already in progress
+    if (printingRef.current) return;
+    printingRef.current = true;
 
-    let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quotation Print</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      @media print {
-        @page { size: A4; margin: 20mm; }
-        body { background: #fff !important; margin: 0; padding: 20mm; }
+    try {
+      // Fetch and convert logo to data URL
+      let logoDataUrl = '';
+      try {
+        const response = await fetch('/logo.png');
+        const blob = await response.blob();
+        logoDataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        console.log('Logo could not be loaded');
       }
-      body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 20px; }
-      .quotation-a4 { max-width: 900px; margin: 0 auto; padding: 20px; background: #fff; }
-      .company-header { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
-      .company-logo { width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; background: #fff; }
-      .company-details { font-size: 12px; background: #f2f2f2; color: #222; border-radius: 4px; padding: 10px; flex: 1; }
-      .quotation-title { text-align: left; font-size: 20px; font-weight: bold; margin: 15px 0 10px 0; }
-      .quotation-info { margin-bottom: 15px; text-align: left; font-size: 13px; line-height: 1.6; }
-      table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-      th, td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 13px; }
-      th { background: #f5f5f5; font-weight: bold; }
-      td { background: #fff; }
-      tr.summary-row td { border: none; padding: 6px 8px; background: #fafafa; text-align: right; }
-      tr.summary-row td:first-child { text-align: right; font-weight: bold; }
-      tr.total-row td { border: none; padding: 8px; background: #e8f5e9; font-weight: bold; font-size: 14px; color: #2e7d32; }
-      @media (max-width: 768px) {
-        .quotation-a4 { padding: 12px; }
-        .company-header { flex-direction: column; }
-        .company-details { font-size: 11px; }
-        table { font-size: 12px; }
-        th, td { padding: 6px; }
-      }
-    </style>
-    </head><body><div class="quotation-a4">
-      <div class="company-header">
-        <img src="${logoDataUrl}" alt="Desi Plaza Caterings Logo" class="company-logo" />
-        <div class="company-details">
-          <strong>Desi Plaza Caterings</strong><br>9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States<br>Phone: +1 513 7773374<br>Email: desiplazacaterings@gmail.com
+
+      let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quotation Print</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @media print {
+          @page { size: A4; margin: 20mm; }
+          body { background: #fff !important; margin: 0; padding: 20mm; }
+        }
+        body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 20px; }
+        .quotation-a4 { max-width: 900px; margin: 0 auto; padding: 20px; background: #fff; }
+        .company-header { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
+        .company-logo { width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; background: #fff; }
+        .company-details { font-size: 12px; background: #f2f2f2; color: #222; border-radius: 4px; padding: 10px; flex: 1; }
+        .quotation-title { text-align: left; font-size: 20px; font-weight: bold; margin: 15px 0 10px 0; }
+        .quotation-info { margin-bottom: 15px; text-align: left; font-size: 13px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #f5f5f5; font-weight: bold; }
+        td { background: #fff; }
+        tr.summary-row td { border: none; padding: 6px 8px; background: #fafafa; text-align: right; }
+        tr.summary-row td:first-child { text-align: right; font-weight: bold; }
+        tr.total-row td { border: none; padding: 8px; background: #e8f5e9; font-weight: bold; font-size: 14px; color: #2e7d32; }
+        @media (max-width: 768px) {
+          .quotation-a4 { padding: 12px; }
+          .company-header { flex-direction: column; }
+          .company-details { font-size: 11px; }
+          table { font-size: 12px; }
+          th, td { padding: 6px; }
+        }
+      </style>
+      </head><body><div class="quotation-a4">
+        <div class="company-header">
+          <img src="${logoDataUrl}" alt="Desi Plaza Caterings Logo" class="company-logo" />
+          <div class="company-details">
+            <strong>Desi Plaza Caterings</strong><br>9405 Cincinnati Columbus Rd, West Chester Township, OH 45069, United States<br>Phone: +1 513 7773374<br>Email: desiplazacaterings@gmail.com
+          </div>
         </div>
-      </div>
-      <div class="quotation-title">Quotation</div>
-      <div class="quotation-info">
-        <strong>Quotation ID:</strong> ${quotationId}<br />
-        ${enquiry ? `<strong>Customer:</strong> ${enquiry.customerName}<br />
-        <strong>Mobile:</strong> ${enquiry.mobile}<br />
-        <strong>Email:</strong> ${enquiry.email}<br />
-        <strong>Event:</strong> ${enquiry.eventType}<br />
-        <strong>Date:</strong> ${enquiry.eventDate}<br />
-        <strong>Location:</strong> ${enquiry.location}<br />
-        <strong>Guests:</strong> ${enquiry.guests}<br />
-        <strong>Notes:</strong> ${enquiry.notes}<br />` : ''}
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item Name</th>
-            <th>Unit</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${addedItems.map((item, idx) => `
+        <div class="quotation-title">Quotation</div>
+        <div class="quotation-info">
+          <strong>Quotation ID:</strong> ${quotationId}<br />
+          ${enquiry ? `<strong>Customer:</strong> ${enquiry.customerName}<br />
+          <strong>Mobile:</strong> ${enquiry.mobile}<br />
+          <strong>Email:</strong> ${enquiry.email}<br />
+          <strong>Event:</strong> ${enquiry.eventType}<br />
+          <strong>Date:</strong> ${enquiry.eventDate}<br />
+          <strong>Location:</strong> ${enquiry.location}<br />
+          <strong>Guests:</strong> ${enquiry.guests}<br />
+          <strong>Notes:</strong> ${enquiry.notes}<br />` : ''}
+        </div>
+        <table>
+          <thead>
             <tr>
-              <td>${idx + 1}</td>
-              <td>${item.itemName}</td>
-              <td>${item.unit}</td>
-              <td>${item.qty}</td>
-              <td>$${item.price.toFixed(2)}</td>
-              <td>$${(item.price * item.qty).toFixed(2)}</td>
+              <th>#</th>
+              <th>Item Name</th>
+              <th>Unit</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
             </tr>
-          `).join('')}
-        </tbody>
-        <tfoot>
-          <tr class="summary-row">
-            <td colspan="5" style="text-align:right;">Subtotal</td>
-            <td>$${subtotal.toFixed(2)}</td>
-          </tr>
-          ${salesTaxRate > 0 ? `<tr class="summary-row">
-            <td colspan="5" style="text-align:right;">Sales Tax (${salesTaxRate}%)</td>
-            <td>$${salesTaxAmount.toFixed(2)}</td>
-          </tr>` : ''}
-          ${serviceChargeRate > 0 ? `<tr class="summary-row">
-            <td colspan="5" style="text-align:right;">Service Charges (${serviceChargeRate}%)</td>
-            <td>$${serviceChargeAmount.toFixed(2)}</td>
-          </tr>` : ''}
-          ${labourCharges > 0 ? `<tr class="summary-row">
-            <td colspan="5" style="text-align:right;">Labour Charges</td>
-            <td>$${labourCharges.toFixed(2)}</td>
-          </tr>` : ''}
-          ${discount > 0 ? `<tr class="summary-row">
-            <td colspan="5" style="text-align:right;">Discount (${discount}%)</td>
-            <td style="color: #e74c3c;">-$${discountAmount.toFixed(2)}</td>
-          </tr>` : ''}
-          <tr class="total-row">
-            <td colspan="5" style="text-align:right;">Total</td>
-            <td>$${total.toFixed(2)}</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div></body></html>`;
-    const printWindow = window.open('', '', 'width=900,height=1200');
-    if (printWindow) {
-      printWindow.document.write(html);
-      printWindow.document.close();
-      setTimeout(() => {
-        printWindow.focus();
-        printWindow.print();
-      }, 300);
-    } else {
-      alert('Please enable pop-ups to print. Alternatively, use your browser\'s print menu.');
+          </thead>
+          <tbody>
+            ${addedItems.map((item, idx) => `
+              <tr>
+                <td>${idx + 1}</td>
+                <td>${item.itemName}</td>
+                <td>${item.unit}</td>
+                <td>${item.qty}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>$${(item.price * item.qty).toFixed(2)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr class="summary-row">
+              <td colspan="5" style="text-align:right;">Subtotal</td>
+              <td>$${subtotal.toFixed(2)}</td>
+            </tr>
+            ${salesTaxRate > 0 ? `<tr class="summary-row">
+              <td colspan="5" style="text-align:right;">Sales Tax (${salesTaxRate}%)</td>
+              <td>$${salesTaxAmount.toFixed(2)}</td>
+            </tr>` : ''}
+            ${serviceChargeRate > 0 ? `<tr class="summary-row">
+              <td colspan="5" style="text-align:right;">Service Charges (${serviceChargeRate}%)</td>
+              <td>$${serviceChargeAmount.toFixed(2)}</td>
+            </tr>` : ''}
+            ${labourCharges > 0 ? `<tr class="summary-row">
+              <td colspan="5" style="text-align:right;">Labour Charges</td>
+              <td>$${labourCharges.toFixed(2)}</td>
+            </tr>` : ''}
+            ${discount > 0 ? `<tr class="summary-row">
+              <td colspan="5" style="text-align:right;">Discount (${discount}%)</td>
+              <td style="color: #e74c3c;">-$${discountAmount.toFixed(2)}</td>
+            </tr>` : ''}
+            <tr class="total-row">
+              <td colspan="5" style="text-align:right;">Total</td>
+              <td>$${total.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div></body></html>`;
+      const printWindow = window.open('', '', 'width=900,height=1200');
+      if (printWindow) {
+        printWindow.document.write(html);
+        printWindow.document.close();
+        setTimeout(() => {
+          printWindow.focus();
+          printWindow.print();
+          printingRef.current = false;
+        }, 300);
+      } else {
+        alert('Please enable pop-ups to print. Alternatively, use your browser\'s print menu.');
+        printingRef.current = false;
+      }
+    } catch (error) {
+      console.error('Print error:', error);
+      printingRef.current = false;
     }
   };
 
@@ -554,7 +567,7 @@ function Quotation() {
           placeholder="Qty"
           value={qty}
           onChange={e => setQty(Number(e.target.value))}
-          style={{ marginRight: 8, width: 60 }}
+          style={{ marginRight: 8, width: 80, fontSize: '1rem', padding: '8px 10px' }}
         />
         <input
           type="number"
@@ -651,17 +664,30 @@ function Quotation() {
         )}
       </div>
       <div style={{ marginBottom: 20 }}>
-        <h3>Menu Items</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h3 style={{ margin: 0 }}>Menu Items</h3>
+          {addedItems.length > 0 && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 500 }}>
+              <input
+                type="checkbox"
+                checked={editPricesMode}
+                onChange={e => setEditPricesMode(e.target.checked)}
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
+              ✏️ Edit Prices
+            </label>
+          )}
+        </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               <th>#</th>
-              <th>Category</th>
               <th>Item Name</th>
               <th>Unit</th>
               <th>Qty</th>
-              <th>Price</th>
-              <th>Remove</th>
+              <th style={{ textAlign: 'right' }}>Price</th>
+              <th style={{ textAlign: 'right' }}>Total</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -677,18 +703,35 @@ function Quotation() {
               Object.keys(grouped).sort().forEach(category => {
                 rows.push(
                   <tr key={category} style={{ background: '#f5f5f5', fontWeight: 'bold' }}>
-                    <td colSpan={7}>{category || 'Uncategorized'}</td>
+                    <td colSpan={6}>{category || 'Uncategorized'}</td>
                   </tr>
                 );
                 grouped[category].forEach(item => {
                   rows.push(
                     <tr key={rowIdx + '-' + item.itemName}>
                       <td data-label="#">{rowIdx++}</td>
-                      <td data-label="Category">{item.category}</td>
                       <td data-label="Item Name">{item.itemName}</td>
                       <td data-label="Unit">{item.unit}</td>
                       <td data-label="Qty">{item.qty}</td>
-                      <td data-label="Total">${(item.price * item.qty).toFixed(2)}</td>
+                      <td data-label="Price" style={{ textAlign: 'right' }}>
+                        {editPricesMode ? (
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={item.price}
+                            onChange={e => {
+                              const updated = [...addedItems];
+                              updated[item._idx].price = Number(e.target.value);
+                              setAddedItems(updated);
+                            }}
+                            className="price-input"
+                          />
+                        ) : (
+                          `$${item.price.toFixed(2)}`
+                        )}
+                      </td>
+                      <td data-label="Total" style={{ textAlign: 'right' }}>${(item.price * item.qty).toFixed(2)}</td>
                       <td data-label="Action"><button onClick={() => removeMenuItem(item._idx)} style={{color:'#c00'}}>Remove</button></td>
                     </tr>
                   );
@@ -697,7 +740,7 @@ function Quotation() {
               if (addedItems.length > 0) {
                 rows.push(
                   <tr key="subtotal-row">
-                    <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Subtotal</td>
+                    <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Subtotal</td>
                     <td style={{ fontWeight: 'bold' }}>${subtotal.toFixed(2)}</td>
                   </tr>
                 );

@@ -337,6 +337,36 @@ function Navbar() {
                   <span className="nav-label">View Menu</span>
                 </NavLink>
               )}
+              
+              {permissions.canViewReports && (
+                <button
+                  className="sidebar-link protected-link"
+                  onClick={() => {
+                    handleProtectedNavigation("/confirm");
+                    setIsOpen(false);
+                  }}
+                  title="View Confirmed Orders"
+                  style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+                >
+                  <span className="nav-icon">✅</span>
+                  <span className="nav-label">View Confirmed Orders</span>
+                </button>
+              )}
+              
+              {permissions.canViewReports && (
+                <button
+                  className="sidebar-link protected-link"
+                  onClick={() => {
+                    handleProtectedNavigation("/event");
+                    setIsOpen(false);
+                  }}
+                  title="View Events"
+                  style={{ cursor: 'pointer', border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+                >
+                  <span className="nav-icon">🎉</span>
+                  <span className="nav-label">View Events</span>
+                </button>
+              )}
             </>
           )}
           

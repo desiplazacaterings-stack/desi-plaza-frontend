@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API_ENDPOINTS from "../config";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 import "./ViewQuotations.css";
 
 function QuotationsTable() {
@@ -19,6 +21,9 @@ function QuotationsTable() {
     setSelectedItems(items);
     setShowModal(true);
   };
+
+  // Setup pagination with 15 quotations per page
+  const pagination = usePagination(quotations, 15);
 
   return (
     <div>
@@ -40,7 +45,7 @@ function QuotationsTable() {
           </tr>
         </thead>
         <tbody>
-          {quotations.map((q, idx) => (
+          {pagination.currentItems.map((q, idx) => (
             <tr key={idx}>
               <td data-label="Quotation ID">{q.quotationId}</td>
               <td data-label="Customer Name">{q.enquiry?.customerName}</td>
@@ -71,6 +76,16 @@ function QuotationsTable() {
           ))}
         </tbody>
       </table>
+
+      {quotations.length > 0 && (
+        <Pagination 
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          totalItems={pagination.totalItems}
+          itemsPerPage={pagination.itemsPerPage}
+          onPageChange={pagination.goToPage}
+        />
+      )}
 
       {/* Modal for viewing items */}
       {showModal && (

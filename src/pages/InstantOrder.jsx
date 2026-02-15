@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API_ENDPOINTS from "../config";
 import useMenuItems from "../hooks/useMenuItems";
 import "./InstantOrder.css";
@@ -22,6 +22,9 @@ const dedupeByItemName = (items = []) => {
 
 function InstantOrder() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const orderToEdit = location.state?.orderToEdit;
+
   const [userRole, setUserRole] = useState(null);
   const [permissions, setPermissions] = useState({});
   const [selectedItem, setSelectedItem] = useState("");
@@ -31,6 +34,8 @@ function InstantOrder() {
   const [unit, setUnit] = useState("");
   const [price, setPrice] = useState(0);
   const [availableUnits, setAvailableUnits] = useState([]);
+  const [editPricesMode, setEditPricesMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const [customerName, setCustomerName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -47,11 +52,24 @@ function InstantOrder() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
+
+  // Helper to format ISO date string to datetime-local input format
+  const formatDateTimeForInput = (isoString) => {
+    if (!isoString) return getCurrentDateTime();
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
   
   const [deliveryTime, setDeliveryTime] = useState(getCurrentDateTime());
 
   const [salesTaxRate, setSalesTaxRate] = useState(5);
-  const [serviceChargeRate, setServiceChargeRate] = useState(0);
+  const [serviceChargeAmount, setServiceChargeAmount] = useState(0);
+  const [deliveryCharges, setDeliveryCharges] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [advance, setAdvance] = useState(0);
   const [paymentMode, setPaymentMode] = useState("Cash");
@@ -75,6 +93,43 @@ function InstantOrder() {
       setKotSerialNumber(parseInt(lastSerialNumber) + 1);
     }
   }, []);
+
+  // Effect to populate form when editing
+  useEffect(() => {
+    if (orderToEdit) {
+      setIsEditing(true);
+      setCustomerName(orderToEdit.customerName || "");
+      setMobile(orderToEdit.mobile || "");
+      setEmail(orderToEdit.email || "");
+      setAddress(orderToEdit.address || "");
+      
+      // Handle date
+      if (orderToEdit.deliveryTime || orderToEdit.createdAt) {
+        setDeliveryTime(formatDateTimeForInput(orderToEdit.deliveryTime || orderToEdit.createdAt));
+      }
+
+      // Handle items
+      if (orderToEdit.items && Array.isArray(orderToEdit.items)) {
+        setKotItems(orderToEdit.items);
+      }
+
+      // Handle financials
+      setSalesTaxRate(orderToEdit.salesTaxRate || 5);
+      setServiceChargeAmount(orderToEdit.serviceCharge || 0);
+      setDeliveryCharges(orderToEdit.deliveryCharges || 0);
+      setDiscount(orderToEdit.discountRate || 0);
+      setAdvance(orderToEdit.advance || 0);
+      
+      // Handle status & payment
+      setPaymentMode(orderToEdit.paymentMode || "Cash");
+      setStatus(orderToEdit.status || "Pickup");
+      
+      // Show advanced if any advanced fields are used
+      if ((orderToEdit.serviceCharge > 0) || (orderToEdit.deliveryCharges > 0) || (orderToEdit.discount > 0)) {
+        setShowAdvanced(true);
+      }
+    }
+  }, [orderToEdit]);
 
   // Sync hook menu items to component state (only once)
   const menuItemsSynced = useRef(false);
@@ -186,11 +241,14 @@ function InstantOrder() {
       if (units.length > 0) {
         setUnit(units[0].unit);
         setPrice(units[0].price);
+        console.log(`✓ Item selected: ${selectedItem}, Unit: ${units[0].unit}, Price: $${units[0].price}`);
       } else {
+        console.warn(`⚠️ No prices found for item: ${selectedItem}`);
         setUnit("");
         setPrice(0);
       }
     } else {
+      console.warn(`⚠️ Item not found in menu: ${selectedItem}`);
       setAvailableUnits([]);
       setUnit("");
       setPrice(0);
@@ -203,6 +261,13 @@ function InstantOrder() {
       alert('Please select a menu item before adding.');
       return;
     }
+    
+    // Warn if price is 0
+    if (price === 0 || price === '0') {
+      alert('⚠️ Price is $0.00! Please set a price first or check menu item prices.');
+      return;
+    }
+    
     setKotItems(prev => {
       const itemObj = menuItems.find(i => i.itemName === selectedItem);
       const category = itemObj ? itemObj.category : "";
@@ -216,8 +281,10 @@ function InstantOrder() {
           price: price, // keep unit price, show total below
           category
         };
+        console.log(`✓ Updated item: ${selectedItem}, new qty: ${updated[idx].qty}, price: $${price}`);
         return updated;
       } else {
+        console.log(`✓ Added item: ${selectedItem}, qty: ${qty}, unit: ${unit}, price: $${price}`);
         return [...prev, { itemName: selectedItem, qty, unit, price, category }];
       }
     });
@@ -253,8 +320,7 @@ function InstantOrder() {
     0
   );
   const salesTaxAmount = subtotal * (salesTaxRate / 100);
-  const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
-  const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount;
+  const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + deliveryCharges;
   const discountAmount = subtotalWithCharges * (discount / 100);
   const total = subtotalWithCharges - discountAmount;
   const balance = total - advance;
@@ -268,30 +334,73 @@ function InstantOrder() {
       return;
     }
 
+    console.log('📊 CALCULATION CHECK:');
+    console.log('  Items in KOT:', kotItems);
+    console.log('  Subtotal:', subtotal);
+    console.log('  Sales Tax:', salesTaxAmount);
+    console.log('  Service Charge:', serviceChargeAmount);
+    console.log('  Delivery Charges:', deliveryCharges);
+    console.log('  Discount:', discountAmount);
+    console.log('  Calculated Total:', total);
+
+    // Warn if total is 0
+    if (total === 0) {
+      const confirmZeroTotal = window.confirm(
+        `⚠️ The total amount is $0.00. This usually means items don't have prices set.\n\nDo you want to continue?\n\nYes = Submit anyway\nNo = Cancel and fix prices`
+      );
+      if (!confirmZeroTotal) return;
+    }
+
     const orderData = {
       customerName,
       mobile,
       email,
       address,
-      items: kotItems,
+      items: kotItems.map(item => ({
+        itemName: item.itemName,
+        qty: item.qty,
+        unit: item.unit,
+        price: item.price || 0,  // Ensure price is included
+        category: item.category
+      })),
       subtotal,
       salesTax: salesTaxAmount,
       serviceCharge: serviceChargeAmount,
       discount: discountAmount,
-      total,
+      totalAmount: total,  // This should be non-zero if items have prices
       advance,
-      balance,
-      deliveryTime: deliveryTime || null,
+      balanceDue: balance,
       paymentMode,
       status,
-      orderType: "Instant"
+      orderType: "Instant",
+      deliveryTime,
+      deliveryCharges
     };
 
-    try {
-      await axios.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
-      alert("✅ Order submitted");
+    console.log('📤 Submitting order data:', orderData);
+    console.log('Items being sent:', orderData.items);
+    console.log('🔍 Item Details:');
+    orderData.items.forEach((item, idx) => {
+      const itemTotal = item.price * item.qty;
+      console.log(`  Item ${idx + 1}: ${item.itemName} | Qty: ${item.qty} | Unit: ${item.unit} | Price: $${item.price} | Total: $${itemTotal}`);
+    });
+    console.log('Total calculation:', { subtotal, salesTaxAmount, serviceChargeAmount, deliveryCharges, discountAmount, total });
 
-      // Reset
+    try {
+      if (isEditing && orderToEdit._id) {
+        // Update existing order
+        await axios.patch(`${API_ENDPOINTS.ORDERS.GET_ALL}/${orderToEdit._id}`, orderData);
+        console.log('✅ Order updated successfully');
+        alert("✅ Order updated successfully");
+      } else {
+        // Create new order
+        const response = await axios.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
+        console.log('✅ Order created successfully:', response.data);
+        console.log('New order ID:', response.data._id);
+        alert("✅ Order submitted successfully!");
+      }
+
+      // Reset form immediately
       setCustomerName("");
       setMobile("");
       setEmail("");
@@ -301,18 +410,31 @@ function InstantOrder() {
       setAdvance(0);
       setPaymentMode("Cash");
       setStatus("Pickup");
+      setSalesTaxRate(5);
+      setServiceChargeAmount(0);
+      setDeliveryCharges(0);
+      setDiscount(0);
+      setIsEditing(false);
+      setSelectedItem("");
+      setMenuSearch("");
 
-      // Redirect to instant orders table
-      navigate("/instantorders");
+      // Give a moment for state to update, then navigate to instant orders list
+      // This allows the list page to fetch fresh data from the backend
+      setTimeout(() => {
+        console.log('🔄 Navigating to instant orders list...');
+        navigate("/instantorders");
+      }, 500);
     } catch (err) {
-      console.error(err);
-      alert("❌ Failed to submit order");
+      console.error("Full error:", err);
+      console.error("Error response:", err.response?.data);
+      const errorMsg = err.response?.data?.message || err.message || "Failed to submit order";
+      alert(`❌ Error: ${errorMsg}`);
     }
   };
 
   return (
     <div className="instant-order-container">
-      <h2>🧾 Instant Order (KOT)</h2>
+      <h2>{isEditing ? "✏️ Edit Instant Order" : "🧾 Instant Order (KOT)"}</h2>
 
       {/* CUSTOMER DETAILS */}
       <div className="customer-details">
@@ -331,19 +453,14 @@ function InstantOrder() {
               setMobile(value);
             }} type="tel" maxLength="10" />
           </label>
+        </div>
 
+        <div className="form-row">
           <label>
             Email:
             <input value={email} onChange={e => setEmail(e.target.value)} type="email" />
           </label>
-        </div>
 
-        <label>
-          Address:
-          <textarea value={address} onChange={e => setAddress(e.target.value)} placeholder="Delivery address" />
-        </label>
-
-        <div className="form-row">
           <label>
             📅 Order Date:
             <input
@@ -352,111 +469,12 @@ function InstantOrder() {
               onChange={e => setDeliveryTime(e.target.value)}
             />
           </label>
-
-          <label>
-            💰 Advance:
-            <input
-              type="number"
-              value={advance}
-              onChange={e => setAdvance(Number(e.target.value))}
-              min="0"
-            />
-          </label>
         </div>
 
-        <div className="payment-mode-group">
-          <label className="payment-mode-label">💳 Payment Mode:</label>
-          <div className="radio-group">
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="paymentMode"
-                value="Cash"
-                checked={paymentMode === "Cash"}
-                onChange={e => setPaymentMode(e.target.value)}
-              />
-              <span>💵 Cash</span>
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="paymentMode"
-                value="Card"
-                checked={paymentMode === "Card"}
-                onChange={e => setPaymentMode(e.target.value)}
-              />
-              <span>💳 Card</span>
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="paymentMode"
-                value="Cheque"
-                checked={paymentMode === "Cheque"}
-                onChange={e => setPaymentMode(e.target.value)}
-              />
-              <span>🏦 Cheque</span>
-            </label>
-          </div>
-        </div>
-
-        {/* ADVANCED OPTIONS - COLLAPSIBLE */}
-        <div className="advanced-section">
-          <button 
-            type="button"
-            className="toggle-advanced"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-          >
-            {showAdvanced ? '▼' : '▶'} Advanced Options
-          </button>
-
-          {showAdvanced && (
-            <div className="advanced-fields">
-              <div className="form-row">
-                <label>
-                  Sales Tax %:
-                  <input
-                    type="number"
-                    value={salesTaxRate}
-                    onChange={e => setSalesTaxRate(Number(e.target.value))}
-                    min="0"
-                    step="0.1"
-                  />
-                </label>
-
-                <label>
-                  Service Charges %:
-                  <input
-                    type="number"
-                    value={serviceChargeRate}
-                    onChange={e => setServiceChargeRate(Number(e.target.value))}
-                    min="0"
-                    step="0.1"
-                  />
-                </label>
-
-                <label>
-                  Discount %:
-                  <input
-                    type="number"
-                    value={discount}
-                    onChange={e => setDiscount(Number(e.target.value))}
-                    min="0"
-                    step="0.1"
-                  />
-                </label>
-              </div>
-
-              <label>
-                Status:
-                <select value={status} onChange={e => setStatus(e.target.value)}>
-                  <option>Pickup</option>
-                  <option>Delivery</option>
-                </select>
-              </label>
-            </div>
-          )}
-        </div>
+        <label>
+          Address:
+          <textarea value={address} onChange={e => setAddress(e.target.value)} placeholder="Delivery address" />
+        </label>
       </div>
 
       {/* ITEM INPUT WITH SEARCH */}
@@ -509,7 +527,18 @@ function InstantOrder() {
                     onMouseEnter={(e) => e.currentTarget.style.background = '#f5f5f5'}
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
-                    {item.itemName}
+                    <div style={{ fontWeight: '500' }}>{item.itemName}</div>
+                    <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                      {item.prices && item.prices.length > 0 ? (
+                        item.prices.map((p, i) => (
+                          <span key={i}>
+                            ${p.price} ({p.unit}){i < item.prices.length - 1 ? ', ' : ''}
+                          </span>
+                        ))
+                      ) : (
+                        <span style={{ color: '#d32f2f' }}>❌ No prices</span>
+                      )}
+                    </div>
                   </div>
                 ))
               )}
@@ -560,10 +589,92 @@ function InstantOrder() {
         <button className="button" onClick={addToKOT}>Add</button>
       </div>
 
+      {/* ADVANCED OPTIONS - COLLAPSIBLE */}
+      <div className="advanced-section">
+        <button 
+          type="button"
+          className="toggle-advanced"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+        >
+          {showAdvanced ? '▼' : '▶'} Advanced Options
+        </button>
+
+        {showAdvanced && (
+          <div className="advanced-fields">
+            <div className="form-row">
+              <label>
+                Sales Tax %:
+                <input
+                  type="number"
+                  value={salesTaxRate}
+                  onChange={e => setSalesTaxRate(Number(e.target.value))}
+                  min="0"
+                  step="0.1"
+                />
+              </label>
+
+              <label>
+                Service Charges (Amount):
+                <input
+                  type="number"
+                  value={serviceChargeAmount}
+                  onChange={e => setServiceChargeAmount(Number(e.target.value))}
+                  min="0"
+                  step="0.1"
+                />
+              </label>
+            </div>
+
+            <div className="form-row">
+              <label>
+                Delivery Charges:
+                <input
+                  type="number"
+                  value={deliveryCharges}
+                  onChange={e => setDeliveryCharges(Number(e.target.value))}
+                  min="0"
+                  step="0.1"
+                />
+              </label>
+
+              <label>
+                Discount %:
+                <input
+                  type="number"
+                  value={discount}
+                  onChange={e => setDiscount(Number(e.target.value))}
+                  min="0"
+                  step="0.1"
+                />
+              </label>
+            </div>
+
+            <label>
+              Status:
+              <select value={status} onChange={e => setStatus(e.target.value)}>
+                <option>Pickup</option>
+                <option>Delivery</option>
+              </select>
+            </label>
+          </div>
+        )}
+      </div>
+
       {/* KOT ITEMS TABLE */}
       {kotItems.length > 0 && (
         <div className="kot-items-table-container">
-          <h3>KOT Items</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ margin: 0 }}>KOT Items</h3>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 500 }}>
+              <input
+                type="checkbox"
+                checked={editPricesMode}
+                onChange={e => setEditPricesMode(e.target.checked)}
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
+              ✏️ Edit Prices
+            </label>
+          </div>
           <table className="kot-items-table">
             <thead>
               <tr>
@@ -610,7 +721,24 @@ function InstantOrder() {
                         className="qty-input"
                       />
                     </td>
-                    <td data-label="Price">${item.price.toFixed(2)}</td>
+                    <td data-label="Price">
+                      {editPricesMode ? (
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={item.price}
+                          onChange={e => {
+                            const updated = [...kotItems];
+                            updated[index].price = Number(e.target.value);
+                            setKotItems(updated);
+                          }}
+                          className="price-input"
+                        />
+                      ) : (
+                        `$${item.price.toFixed(2)}`
+                      )}
+                    </td>
                     <td data-label="Total">${(item.price * item.qty).toFixed(2)}</td>
                     <td data-label="Action">
                       <button
@@ -635,16 +763,16 @@ function InstantOrder() {
         <div className="summary-row">
           <p>Subtotal: ${subtotal.toFixed(2)}</p>
           <p>Sales Tax ({salesTaxRate}%): ${salesTaxAmount.toFixed(2)}</p>
-          <p>Service Charges ({serviceChargeRate}%): ${serviceChargeAmount.toFixed(2)}</p>
+          <p>Service Charges: ${serviceChargeAmount.toFixed(2)}</p>
+          <p>Delivery Charges: ${deliveryCharges.toFixed(2)}</p>
         </div>
         
-        <p style={{ fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '8px', marginTop: '8px' }}>
-          Subtotal with Charges: ${subtotalWithCharges.toFixed(2)}
-        </p>
-        
         <div className="summary-row">
+          <p style={{ fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '8px' }}>
+            Subtotal with Charges: ${subtotalWithCharges.toFixed(2)}
+          </p>
           <p>Discount ({discount}%): -${discountAmount.toFixed(2)}</p>
-          <p style={{ fontSize: '1.2em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px', marginTop: '8px' }}>
+          <p style={{ fontSize: '1.1em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px' }}>
             Total: ${total.toFixed(2)}
           </p>
         </div>
@@ -656,6 +784,54 @@ function InstantOrder() {
       </div>
 
       {/* ACTIONS */}
+
+      <div className="form-row">
+        <label>
+          💰 Advance:
+          <input
+            type="number"
+            value={advance}
+            onChange={e => setAdvance(Number(e.target.value))}
+            min="0"
+          />
+        </label>
+      </div>
+
+      <div className="payment-mode-group">
+        <label className="payment-mode-label">💳 Payment Mode:</label>
+        <div className="radio-group">
+          <label className="radio-label">
+            <input
+              type="radio"
+              name="paymentMode"
+              value="Cash"
+              checked={paymentMode === "Cash"}
+              onChange={e => setPaymentMode(e.target.value)}
+            />
+            <span>💵 Cash</span>
+          </label>
+          <label className="radio-label">
+            <input
+              type="radio"
+              name="paymentMode"
+              value="Card"
+              checked={paymentMode === "Card"}
+              onChange={e => setPaymentMode(e.target.value)}
+            />
+            <span>💳 Card</span>
+          </label>
+          <label className="radio-label">
+            <input
+              type="radio"
+              name="paymentMode"
+              value="Cheque"
+              checked={paymentMode === "Cheque"}
+              onChange={e => setPaymentMode(e.target.value)}
+            />
+            <span>🏦 Cheque</span>
+          </label>
+        </div>
+      </div>
 
       {/* ACTIONS */}
       <div className="instant-order-actions">
@@ -702,9 +878,16 @@ function InstantOrder() {
           printWindow.print();
           printWindow.close();
         }}>🖨️ Print KOT</button>
-        <button className="button" onClick={() => setKotItems([])}>🧹 Reset KOT</button>
+        <button className="button" onClick={() => {
+          setKotItems([]);
+          if (isEditing) {
+            navigate('/instantorders');
+          }
+        }}>
+          {isEditing ? "❌ Cancel Edit" : "🧹 Reset KOT"}
+        </button>
         {permissions.canCreateInstantOrder ? (
-          <button className="button" onClick={submitOrder}>Submit Order</button>
+          <button className="button" onClick={submitOrder}>{isEditing ? "💾 Update Order" : "Submit Order"}</button>
         ) : (
           <button 
             className="button" 

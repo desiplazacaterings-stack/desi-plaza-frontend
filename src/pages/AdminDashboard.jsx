@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_ENDPOINTS from '../config';
 import StaffPermissions from './StaffPermissions';
+import usePagination from '../hooks/usePagination';
+import Pagination from '../components/Pagination';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -202,6 +204,14 @@ function AdminDashboard() {
     setShowModal(true);
   };
 
+  // Setup pagination with 15 users per page
+  const pagination = usePagination(users, 15);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    pagination.goToPage(1);
+  }, [searchTerm, filterRole, filterStatus]);
+
   return (
     <div className="admin-dashboard">
       <h1>🔧 Admin Dashboard</h1>
@@ -320,7 +330,7 @@ function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map(user => (
+                  {pagination.currentItems.map(user => (
                     <tr key={user._id}>
                       <td data-label="Name"><strong>{user.name}</strong></td>
                       <td data-label="Email">{user.email}</td>
@@ -368,6 +378,16 @@ function AdminDashboard() {
                   ))}
                 </tbody>
               </table>
+            )}
+
+            {users.length > 0 && (
+              <Pagination 
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                totalItems={pagination.totalItems}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={pagination.goToPage}
+              />
             )}
           </div>
         </div>

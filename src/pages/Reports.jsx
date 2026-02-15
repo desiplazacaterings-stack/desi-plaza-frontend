@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_ENDPOINTS from '../config';
 import './Reports.css';
+import usePagination from '../hooks/usePagination';
+import Pagination from '../components/Pagination';
 import * as XLSX from 'xlsx';
 
 function Reports() {
@@ -427,6 +429,9 @@ function Reports() {
   const monthIndex = parseInt(monthStr) - 1;
   const monthName = monthNames[monthIndex];
 
+  // Setup pagination with 20 orders per page
+  const pagination = usePagination(reportData.orders || [], 20);
+
   return (
     <div className="reports-container">
       <div className="reports-header">
@@ -566,32 +571,6 @@ function Reports() {
           </div>
 
           <div className="breakdown-section">
-            <div className="breakdown-card tax-card">
-              <h3>📊 Sales Tax Collected</h3>
-              <p className="breakdown-amount">${reportData.totalSalesTax.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-              <p className="breakdown-label">Total sales tax from instant orders</p>
-            </div>
-
-            <div className="breakdown-card service-card">
-              <h3>⚙️ Service Charges Collected</h3>
-              <p className="breakdown-amount">${reportData.totalServiceCharge.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-              <p className="breakdown-label">Total service charges from instant orders</p>
-            </div>
-
-            <div className="breakdown-card discount-card">
-              <h3>🎁 Discounts Offered</h3>
-              <p className="breakdown-amount" style={{ color: '#e74c3c' }}>-${reportData.totalDiscount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-              <p className="breakdown-label">Total discounts on instant orders</p>
-            </div>
-
-            <div className="breakdown-card short-close-card">
-              <h3>🔒 Short Close Amount</h3>
-              <p className="breakdown-amount" style={{ color: '#f39c12' }}>-${reportData.totalShortCloseAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-              <p className="breakdown-label">Total event partial closures</p>
-            </div>
-          </div>
-
-          <div className="breakdown-section">
             <div className="breakdown-card payment-cash">
               <h3>💵 Cash Payments</h3>
               <p className="breakdown-amount">${reportData.cashRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
@@ -641,7 +620,7 @@ function Reports() {
                     </tr>
                   </thead>
                   <tbody>
-                    {reportData.orders.map((order) => (
+                    {pagination.currentItems.map((order) => (
                       <tr key={order._id}>
                         <td data-label="Customer">{order.customerName}</td>
                         <td data-label="Mobile">{order.mobile}</td>
@@ -677,6 +656,16 @@ function Reports() {
                   </tbody>
                 </table>
               </div>
+
+              {reportData.orders.length > 0 && (
+                <Pagination 
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  totalItems={pagination.totalItems}
+                  itemsPerPage={pagination.itemsPerPage}
+                  onPageChange={pagination.goToPage}
+                />
+              )}
             </div>
           )}
 

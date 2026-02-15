@@ -1,21 +1,19 @@
 import { useState, useMemo } from 'react';
 
-const ITEMS_PER_PAGE = 15;
-
-export const usePagination = (items = []) => {
+export const usePagination = (items = [], itemsPerPage = 15) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const paginationData = useMemo(() => {
     const totalItems = items.length;
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
     
     // Ensure current page is valid
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(1);
     }
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
     const currentItems = items.slice(startIndex, endIndex);
 
     return {
@@ -24,9 +22,10 @@ export const usePagination = (items = []) => {
       totalItems,
       currentItems,
       startIndex,
-      endIndex
+      endIndex,
+      itemsPerPage
     };
-  }, [items, currentPage]);
+  }, [items, currentPage, itemsPerPage]);
 
   const goToPage = (pageNum) => {
     const pageNumber = Math.max(1, Math.min(pageNum, paginationData.totalPages));

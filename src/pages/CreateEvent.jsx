@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import useMenuItems from "../hooks/useMenuItems";
 import menuData from "../data/menu.json";
+import API_ENDPOINTS from "../config";
 import "./CreateEvent.css";
 
 /**
