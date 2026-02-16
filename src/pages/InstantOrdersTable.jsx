@@ -77,7 +77,7 @@ function InstantOrdersTable() {
   const filteredOrders = (() => {
     let result = filter === "All" 
       ? orders 
-      : orders.filter(order => order.status === filter);
+      : orders.filter(order => order.deliveryMethod === filter);
     
     // Add search filtering
     if (searchTerm) {
@@ -232,13 +232,13 @@ function InstantOrdersTable() {
         >
           All ({orders.length})
         </button>
-        {["Pickup", "Delivery"].map(status => (
+        {["Pickup", "Delivery"].map(method => (
           <button 
-            key={status}
-            onClick={() => setFilter(status)}
-            className={filter === status ? "active" : ""}
+            key={method}
+            onClick={() => setFilter(method)}
+            className={filter === method ? "active" : ""}
           >
-            {status} ({orders.filter(o => o.status === status).length})
+            {method} ({orders.filter(o => o.deliveryMethod === method).length})
           </button>
         ))}
         <button 

@@ -73,7 +73,7 @@ function InstantOrder() {
   const [discount, setDiscount] = useState(0);
   const [advance, setAdvance] = useState(0);
   const [paymentMode, setPaymentMode] = useState("Cash");
-  const [status, setStatus] = useState("Pickup");
+  const [deliveryMethod, setDeliveryMethod] = useState("Pickup");
 
   const [menuItems, setMenuItems] = useState([]);
   const [kotItems, setKotItems] = useState([]);
@@ -371,7 +371,7 @@ function InstantOrder() {
       advance,
       balanceDue: balance,
       paymentMode,
-      status,
+      deliveryMethod,
       orderType: "Instant",
       deliveryTime,
       deliveryCharges
@@ -409,7 +409,7 @@ function InstantOrder() {
       setDeliveryTime(getCurrentDateTime());
       setAdvance(0);
       setPaymentMode("Cash");
-      setStatus("Pickup");
+      setDeliveryMethod("Pickup");
       setSalesTaxRate(5);
       setServiceChargeAmount(0);
       setDeliveryCharges(0);
@@ -650,10 +650,10 @@ function InstantOrder() {
             </div>
 
             <label>
-              Status:
-              <select value={status} onChange={e => setStatus(e.target.value)}>
-                <option>Pickup</option>
-                <option>Delivery</option>
+              Delivery Method:
+              <select value={deliveryMethod} onChange={e => setDeliveryMethod(e.target.value)}>
+                <option value="Pickup">Pickup</option>
+                <option value="Delivery">Delivery</option>
               </select>
             </label>
           </div>
