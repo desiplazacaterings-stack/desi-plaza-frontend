@@ -122,7 +122,7 @@ function InstantOrder() {
       
       // Handle status & payment
       setPaymentMode(orderToEdit.paymentMode || "Cash");
-      setStatus(orderToEdit.status || "Pickup");
+      setDeliveryMethod(orderToEdit.deliveryMethod || "Pickup");
       
       // Show advanced if any advanced fields are used
       if ((orderToEdit.serviceCharge > 0) || (orderToEdit.deliveryCharges > 0) || (orderToEdit.discount > 0)) {
