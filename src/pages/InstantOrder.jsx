@@ -779,7 +779,9 @@ function InstantOrder() {
         
         <div className="summary-row">
           <p>Advance: ${advance.toFixed(2)}</p>
-          <p>Balance Due: ${balance.toFixed(2)}</p>
+          <p style={balance > 0 ? { fontWeight: 'bold', color: '#e74c3c', backgroundColor: '#fadbd8', padding: '8px', borderRadius: '4px' } : {}}>
+            Balance Due: ${balance.toFixed(2)}
+          </p>
         </div>
       </div>
 
