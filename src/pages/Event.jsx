@@ -6,6 +6,7 @@ import usePagination from "../hooks/usePagination";
 import Pagination from "../components/Pagination";
 import ViewSignedAgreement from "../components/ViewSignedAgreement";
 import "./Event.css";
+import { formatDate, formatDateTime, getOrderDate } from "../utils/dateUtils";
 
 // Helper function to round amounts to nearest rupee
 const roundAmount = (amount) => Math.round((amount || 0) * 100) / 100;
@@ -114,10 +115,11 @@ function Event() {
 
     activeOrders.forEach(order => {
       if (order.eventDate) {
+        // Use utility to get proper date without timezone issues
         const eventDate = new Date(order.eventDate);
         eventDate.setHours(0, 0, 0, 0);
 
-        const timeDiff = eventDate - today;
+        const timeDiff = eventDate.getTime() - today.getTime();
 
         if (timeDiff === 0) {
           categorized.today.push(order);
@@ -129,10 +131,22 @@ function Event() {
       }
     });
 
-    // Sort dates
-    categorized.today.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
-    categorized.upcoming.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
-    categorized.past.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+    // Sort dates - compare DateObject properly
+    categorized.today.sort((a, b) => {
+      const dateA = new Date(b.eventDate);
+      const dateB = new Date(a.eventDate);
+      return dateB.getTime() - dateA.getTime();
+    });
+    categorized.upcoming.sort((a, b) => {
+      const dateA = new Date(a.eventDate);
+      const dateB = new Date(b.eventDate);
+      return dateA.getTime() - dateB.getTime();
+    });
+    categorized.past.sort((a, b) => {
+      const dateA = new Date(b.eventDate);
+      const dateB = new Date(a.eventDate);
+      return dateB.getTime() - dateA.getTime();
+    });
 
     return categorized;
   };
@@ -284,7 +298,7 @@ function Event() {
           </tr>
           <tr>
             <td style="border: none;"><strong>Event Type:</strong> ${order.eventType}</td>
-            <td style="border: none;"><strong>Event Date:</strong> ${new Date(order.eventDate).toLocaleDateString()}</td>
+            <td style="border: none;"><strong>Event Date:</strong> ${formatDate(order.eventDate)}</td>
           </tr>
           <tr>
             <td style="border: none;"><strong>Location:</strong> ${order.location}</td>
@@ -416,7 +430,7 @@ function Event() {
                     <td data-label="Event Type">{order.eventType}</td>
                     <td data-label="Customer Name">{order.customerName}</td>
                     <td data-label="Mobile">{order.mobile}</td>
-                    <td data-label="Event Date">{new Date(order.eventDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                    <td data-label="Event Date">{formatDate(order.eventDate)}</td>
                     <td data-label="Location">
                       <button 
                         className="view-location-btn"

@@ -5,6 +5,14 @@ import './Reports.css';
 import usePagination from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
 import * as XLSX from 'xlsx';
+import {
+  parseServerDate,
+  formatDate,
+  formatDateTime,
+  getOrderDate,
+  getStartOfDay,
+  getEndOfDay
+} from '../utils/dateUtils';
 
 function Reports() {
   const [monthYear, setMonthYear] = useState(new Date().toISOString().slice(0, 7));
@@ -35,6 +43,7 @@ function Reports() {
   const [message, setMessage] = useState('');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [userRole, setUserRole] = useState(null);
+  const [showOverallReports, setShowOverallReports] = useState(false);
 
   const token = localStorage.getItem('token');
 
@@ -78,10 +87,10 @@ function Reports() {
       const excelData = reportData.orders.map(order => ({
         'Customer Name': order.customerName,
         'Mobile': order.mobile,
-        'Event Date': order.eventDate ? new Date(order.eventDate).toLocaleDateString('en-IN') : 'N/A',
+        'Event Date': formatDate(getOrderDate(order)),
         'Event Type': order.eventType || 'N/A',
         'Order Type': order.orderType,
-        'Amount': order.totalAmount || order.total || 0,
+        'Amount': parseFloat((order.totalAmount || order.total || 0).toFixed(2)),
         'Payment Mode': order.paymentMode || 'Cash',
         'Status': order.status
       }));
@@ -99,23 +108,23 @@ function Reports() {
         ['Key Metrics', 'Value'],
         ['Instant Orders', reportData.instantOrders],
         ['Events Completed', reportData.eventsCompleted],
-        ['Total Revenue', `$${reportData.totalRevenue}`],
+        ['Total Revenue', `$${reportData.totalRevenue.toFixed(2)}`],
         ['Pending Orders', reportData.pendingOrders],
         ['Completed Orders', reportData.completedOrders],
         [],
         ['Revenue Breakdown', 'Amount'],
-        ['Instant Order Revenue', `$${reportData.totalInstantOrderRevenue}`],
-        ['Event Revenue', `$${reportData.totalEventRevenue}`],
+        ['Instant Order Revenue', `$${reportData.totalInstantOrderRevenue.toFixed(2)}`],
+        ['Event Revenue', `$${reportData.totalEventRevenue.toFixed(2)}`],
         [],
         ['Payment Wise Breakdown', 'Amount', 'Count'],
-        ['Cash Revenue', `$${reportData.cashRevenue}`, reportData.cashOrders],
-        ['Card Revenue', `$${reportData.cardRevenue}`, reportData.cardOrders],
-        ['Cheque Revenue', `$${reportData.chequeRevenue}`, reportData.chequeOrders],
+        ['Cash Revenue', `$${reportData.cashRevenue.toFixed(2)}`, reportData.cashOrders],
+        ['Card Revenue', `$${reportData.cardRevenue.toFixed(2)}`, reportData.cardOrders],
+        ['Cheque Revenue', `$${reportData.chequeRevenue.toFixed(2)}`, reportData.chequeOrders],
         [],
         ['Charges & Discounts', 'Amount'],
-        ['Sales Tax', `$${reportData.totalSalesTax}`],
-        ['Service Charge', `$${reportData.totalServiceCharge}`],
-        ['Discounts', `$${reportData.totalDiscount}`]
+        ['Sales Tax', `$${reportData.totalSalesTax.toFixed(2)}`],
+        ['Service Charge', `$${reportData.totalServiceCharge.toFixed(2)}`],
+        ['Discounts', `$${reportData.totalDiscount.toFixed(2)}`]
       ];
 
       const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
@@ -152,26 +161,20 @@ function Reports() {
 
       const orders = response.data.data || [];
 
-      // Parse dates
-      const fromDateTime = new Date(from);
-      const toDateTime = new Date(to);
-      toDateTime.setHours(23, 59, 59, 999); // Include entire day
-
       // Filter orders for the selected date range
+      // Create start and end dates with proper timezone handling
+      const fromDateStart = getStartOfDay(from);
+      const toDateEnd = getEndOfDay(to);
+      
       const filteredOrders = orders.filter(order => {
-        let orderDate = null;
+        const orderDate = getOrderDate(order);
         
-        if (order.eventDate) {
-          orderDate = new Date(order.eventDate);
-        } else if (order.createdAt) {
-          orderDate = new Date(order.createdAt);
-        } else if (order.deliveryTime) {
-          orderDate = new Date(order.deliveryTime);
-        } else {
+        if (!orderDate) {
+          console.log('Order missing date fields:', order);
           return false;
         }
 
-        return orderDate >= fromDateTime && orderDate <= toDateTime;
+        return orderDate >= fromDateStart && orderDate <= toDateEnd;
       });
 
       console.log('Filtered orders for date range', from, 'to', to, ':', filteredOrders);
@@ -266,6 +269,85 @@ function Reports() {
     setTimeout(() => setMessage(''), 2000);
   };
 
+  // Fetch overall reports (all time data)
+  const fetchOverallReportData = async () => {
+    setLoading(true);
+    setMessage('');
+    try {
+      // Get all orders
+      const response = await axios.get(
+        API_ENDPOINTS.ORDERS.GET_ALL,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const orders = Array.isArray(response.data) ? response.data : response.data?.data || [];
+      console.log('Fetched all orders for overall report:', orders);
+
+      // Use all orders without filtering by date
+      const filteredOrders = orders;
+
+      // Calculate statistics
+      const instantOrdersList = filteredOrders.filter(o => o.orderType === 'Instant');
+      const eventsList = filteredOrders.filter(o => o.orderType === 'Event');
+      
+      const instantOrders = instantOrdersList.length;
+      const eventsCompleted = eventsList.filter(o => o.status === 'Completed' || o.status === 'Delivered').length;
+      
+      const totalInstantOrderRevenue = instantOrdersList.reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      const totalEventRevenue = eventsList.reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+
+      const pendingOrders = filteredOrders.filter(o => o.status === 'Pending Payment' || o.status === 'Placed').length;
+      const completedOrders = filteredOrders.filter(o => o.status === 'Completed' || o.status === 'Delivered' || o.paymentStatus === 'Paid').length;
+
+      const totalSalesTax = instantOrdersList.reduce((sum, o) => sum + (o.salesTax || 0), 0);
+      const totalServiceCharge = instantOrdersList.reduce((sum, o) => sum + (o.serviceCharge || 0), 0);
+      const totalDiscount = instantOrdersList.reduce((sum, o) => sum + (o.discount || 0), 0);
+
+      const cashRevenue = filteredOrders.filter(o => o.paymentMode === 'Cash').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      const cardRevenue = filteredOrders.filter(o => o.paymentMode === 'Card').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      const chequeRevenue = filteredOrders.filter(o => o.paymentMode === 'Cheque').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      
+      const cashOrders = filteredOrders.filter(o => o.paymentMode === 'Cash').length;
+      const cardOrders = filteredOrders.filter(o => o.paymentMode === 'Card').length;
+      const chequeOrders = filteredOrders.filter(o => o.paymentMode === 'Cheque').length;
+
+      const totalShortCloseAmount = filteredOrders
+        .filter(o => o.isShortClosed === true)
+        .reduce((sum, o) => sum + (o.shortCloseAmount || 0), 0);
+
+      setReportData({
+        instantOrders,
+        eventsCompleted,
+        totalRevenue: totalInstantOrderRevenue + totalEventRevenue,
+        totalInstantOrderRevenue,
+        totalEventRevenue,
+        pendingOrders,
+        completedOrders,
+        totalSalesTax,
+        totalServiceCharge,
+        totalDiscount,
+        cashRevenue,
+        cardRevenue,
+        chequeRevenue,
+        cashOrders,
+        cardOrders,
+        chequeOrders,
+        totalShortCloseAmount,
+        orders: filteredOrders
+      });
+
+      setMessage('✓ Overall reports loaded successfully');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error fetching overall report data:', error);
+      setMessage('Error fetching report data: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Handle monthly report change
   const fetchReportData = async (month, year) => {
     setLoading(true);
@@ -290,20 +372,14 @@ function Reports() {
 
       // Filter orders for the selected month and year
       const filteredOrders = orders.filter(order => {
-        // For instant orders without eventDate, use createdAt or deliveryTime
-        let orderDate = null;
+        const orderDate = getOrderDate(order);
         
-        if (order.eventDate) {
-          orderDate = new Date(order.eventDate);
-        } else if (order.createdAt) {
-          orderDate = new Date(order.createdAt);
-        } else if (order.deliveryTime) {
-          orderDate = new Date(order.deliveryTime);
-        } else {
+        if (!orderDate) {
           console.log('Order missing date fields:', order);
           return false;
         }
 
+        // Use proper date comparison accounting for timezone
         const matches = (
           orderDate.getFullYear() === yearNum &&
           orderDate.getMonth() + 1 === monthNum
@@ -406,8 +482,12 @@ function Reports() {
   };
 
   useEffect(() => {
-    fetchReportData(monthYear, selectedYear);
-  }, [monthYear, selectedYear]);
+    if (showOverallReports) {
+      fetchOverallReportData();
+    } else {
+      fetchReportData(monthYear, selectedYear);
+    }
+  }, [monthYear, selectedYear, showOverallReports]);
 
   const handleMonthChange = (e) => {
     setMonthYear(e.target.value);
@@ -444,14 +524,26 @@ function Reports() {
           <label>
             <input 
               type="checkbox" 
+              checked={showOverallReports}
+              onChange={(e) => setShowOverallReports(e.target.checked)}
+            />
+            Show Overall Reports
+          </label>
+        </div>
+
+        <div className="filter-group">
+          <label>
+            <input 
+              type="checkbox" 
               checked={useCustomDateRange}
               onChange={(e) => setUseCustomDateRange(e.target.checked)}
+              disabled={showOverallReports}
             />
             Use Custom Date Range
           </label>
         </div>
 
-        {!useCustomDateRange ? (
+        {!showOverallReports && !useCustomDateRange ? (
           <div className="filter-group">
             <label htmlFor="month-select">Select Month & Year:</label>
             <input
@@ -462,7 +554,7 @@ function Reports() {
               className="month-input"
             />
           </div>
-        ) : (
+        ) : !showOverallReports && useCustomDateRange ? (
           <div className="filter-group date-range-group">
             <div className="date-inputs">
               <div className="date-field">
@@ -503,7 +595,7 @@ function Reports() {
               </button>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
 
       {message && <div className="message error-message">{message}</div>}
@@ -535,7 +627,7 @@ function Reports() {
               <div className="stat-icon">💰</div>
               <div className="stat-content">
                 <h3>Total Revenue</h3>
-                <p className="stat-number">${reportData.totalRevenue.toLocaleString('en-IN')}</p>
+                <p className="stat-number">${(Math.round(reportData.totalRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 <p className="stat-label">All Orders</p>
               </div>
             </div>
@@ -544,13 +636,13 @@ function Reports() {
           <div className="breakdown-section">
             <div className="breakdown-card">
               <h3>💳 Instant Orders Revenue</h3>
-              <p className="breakdown-amount">${reportData.totalInstantOrderRevenue.toLocaleString('en-IN')}</p>
+              <p className="breakdown-amount">${(Math.round(reportData.totalInstantOrderRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
               <p className="breakdown-label">From {reportData.instantOrders} instant orders</p>
             </div>
 
             <div className="breakdown-card">
               <h3>🎊 Event Orders Revenue</h3>
-              <p className="breakdown-amount">${reportData.totalEventRevenue.toLocaleString('en-IN')}</p>
+              <p className="breakdown-amount">${(Math.round(reportData.totalEventRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
               <p className="breakdown-label">From {reportData.eventsCompleted} completed events</p>
             </div>
 
@@ -564,19 +656,19 @@ function Reports() {
           <div className="breakdown-section">
             <div className="breakdown-card payment-cash">
               <h3>💵 Cash Payments</h3>
-              <p className="breakdown-amount">${reportData.cashRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+              <p className="breakdown-amount">${(Math.round(reportData.cashRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
               <p className="breakdown-label">{reportData.cashOrders} orders via cash</p>
             </div>
 
             <div className="breakdown-card payment-card">
               <h3>💳 Card Payments</h3>
-              <p className="breakdown-amount">${reportData.cardRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+              <p className="breakdown-amount">${(Math.round(reportData.cardRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
               <p className="breakdown-label">{reportData.cardOrders} orders via card</p>
             </div>
 
             <div className="breakdown-card payment-cheque">
               <h3>✓ Cheque Payments</h3>
-              <p className="breakdown-amount">${reportData.chequeRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+              <p className="breakdown-amount">${(Math.round(reportData.chequeRevenue * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
               <p className="breakdown-label">{reportData.chequeOrders} orders via cheque</p>
             </div>
           </div>
@@ -616,14 +708,7 @@ function Reports() {
                         <td data-label="Customer">{order.customerName}</td>
                         <td data-label="Mobile">{order.mobile}</td>
                         <td data-label="Event Date">
-                          {order.eventDate 
-                            ? new Date(order.eventDate).toLocaleDateString('en-IN')
-                            : order.createdAt
-                            ? new Date(order.createdAt).toLocaleDateString('en-IN')
-                            : order.deliveryTime
-                            ? new Date(order.deliveryTime).toLocaleDateString('en-IN')
-                            : 'N/A'
-                          }
+                          {formatDate(getOrderDate(order))}
                         </td>
                         <td data-label="Event Type">{order.eventType || 'N/A'}</td>
                         <td data-label="Order Type">
@@ -631,7 +716,7 @@ function Reports() {
                             {order.orderType}
                           </span>
                         </td>
-                        <td data-label="Amount">${(order.totalAmount || order.total || 0).toLocaleString('en-IN')}</td>
+                        <td data-label="Amount">${(order.totalAmount || order.total || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td data-label="Payment Mode">
                           <span className={`payment-mode-badge payment-${order.paymentMode?.toLowerCase() || 'cash'}`}>
                             {order.paymentMode || 'Cash'}

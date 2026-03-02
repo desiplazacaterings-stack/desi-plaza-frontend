@@ -1,4 +1,15 @@
 export default function generateAgreement(form) {
+  // Import formatDate as a utility function
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
   return `<div style="line-height: 1.6; font-size: 0.85em;">
 <h2 style="text-align: center; margin: 20px 0 10px 0; font-size: 1.3em;">CATERING SERVICE AGREEMENT</h2>
 
@@ -15,7 +26,7 @@ Email: ${form.email}
 <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 1.05em;">2. EVENT DETAILS</h3>
 <div style="margin-left: 20px; margin-bottom: 15px;">
 Event Type: ${form.eventType}<br>
-Event Date: ${form.eventDate}<br>
+Event Date: ${formatDate(form.eventDate)}<br>
 Event Time: ${form.eventTime}<br>
 Number of Guests: ${form.guests}<br>
 Location: ${form.location}

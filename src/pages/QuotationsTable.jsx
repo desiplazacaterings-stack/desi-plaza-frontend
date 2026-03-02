@@ -3,6 +3,7 @@ import API_ENDPOINTS from "../config";
 import usePagination from "../hooks/usePagination";
 import Pagination from "../components/Pagination";
 import "./ViewQuotations.css";
+import { formatDate } from "../utils/dateUtils";
 
 function QuotationsTable() {
   const [quotations, setQuotations] = useState([]);
@@ -52,7 +53,7 @@ function QuotationsTable() {
               <td data-label="Mobile">{q.enquiry?.mobile}</td>
               <td data-label="Email">{q.enquiry?.email}</td>
               <td data-label="Event Type">{q.enquiry?.eventType}</td>
-              <td data-label="Event Date">{q.enquiry?.eventDate}</td>
+              <td data-label="Event Date">{formatDate(q.enquiry?.eventDate)}</td>
               <td data-label="Location">{q.enquiry?.location}</td>
               <td data-label="Guests">{q.enquiry?.guests}</td>
               <td data-label="Line Items" style={{ textAlign: "center" }}>

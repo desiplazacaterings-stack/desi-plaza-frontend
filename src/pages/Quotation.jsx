@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
 import useMenuItems from "../hooks/useMenuItems";
+import { formatDate } from "../utils/dateUtils";
 
 /**
  * 🔹 DEDUPLICATE BY ITEMNAME (UI-level only)
@@ -263,7 +264,7 @@ function Quotation() {
           <strong>Mobile:</strong> ${enquiry.mobile}<br />
           <strong>Email:</strong> ${enquiry.email}<br />
           <strong>Event:</strong> ${enquiry.eventType}<br />
-          <strong>Date:</strong> ${enquiry.eventDate}<br />
+          <strong>Date:</strong> ${formatDate(enquiry.eventDate)}<br />
           <strong>Location:</strong> ${enquiry.location}<br />
           <strong>Guests:</strong> ${enquiry.guests}<br />
           <strong>Notes:</strong> ${enquiry.notes}<br />` : ''}

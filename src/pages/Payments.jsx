@@ -4,6 +4,7 @@ import API_ENDPOINTS from "../config";
 import usePagination from "../hooks/usePagination";
 import Pagination from "../components/Pagination";
 import "./Payments.css";
+import { formatDate, getOrderDate } from "../utils/dateUtils";
 
 // Helper function to round amounts to nearest rupee
 const roundAmount = (amount) => Math.round((amount || 0) * 100) / 100;
@@ -286,14 +287,7 @@ function Payments() {
                       </span>
                     </td>
                     <td data-label="Event Date">
-                      {order.orderType === 'Instant' 
-                        ? (order.deliveryTime 
-                          ? new Date(order.deliveryTime).toLocaleDateString() 
-                          : order.createdAt 
-                          ? new Date(order.createdAt).toLocaleDateString()
-                          : "N/A")
-                        : (order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A")
-                      }
+                      {formatDate(getOrderDate(order))}
                     </td>
                     <td className="amount" data-label="Total Amount">${roundAmount(order.totalAmount).toLocaleString()}</td>
                     <td className="amount-received" data-label="Amount Received">${roundAmount(order.amountReceived).toLocaleString()}</td>

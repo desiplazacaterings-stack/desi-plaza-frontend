@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS from "../config";
 import "./ViewQuotations.css";
+import { formatDate } from "../utils/dateUtils";
 
 const ViewQuotations = () => {
   const [quotations, setQuotations] = useState([]);
@@ -137,7 +138,7 @@ const ViewQuotations = () => {
                 <td data-label="Mobile">{q.enquiry?.mobile || 'N/A'}</td>
                 <td data-label="Email">{q.enquiry?.email || 'N/A'}</td>
                 <td data-label="Event Type">{q.enquiry?.eventType || 'N/A'}</td>
-                <td data-label="Event Date">{q.enquiry?.eventDate || 'N/A'}</td>
+                <td data-label="Event Date">{formatDate(q.enquiry?.eventDate)}</td>
                 <td data-label="Location">{q.enquiry?.location || 'N/A'}</td>
                 <td data-label="Guests">{q.enquiry?.guests || 'N/A'}</td>
                 <td data-label="Line Items">

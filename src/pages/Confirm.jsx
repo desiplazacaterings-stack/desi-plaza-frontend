@@ -4,6 +4,7 @@ import axios from "axios";
 import API_ENDPOINTS from "../config";
 import printAgreement from "../utils/printAgreement";
 import "./Confirm.css";
+import { formatDateTime, formatDate } from "../utils/dateUtils";
 
 function Confirm() {
   const location = useLocation();
@@ -97,7 +98,7 @@ function Confirm() {
                   <td>{order.mobile || 'N/A'}</td>
                   <td>{order.email || 'N/A'}</td>
                   <td>{order.address || 'N/A'}</td>
-                  <td>{order.eventDate ? new Date(order.eventDate).toLocaleString() : 'N/A'}</td>
+                  <td>{order.eventDate ? formatDateTime(order.eventDate) : 'N/A'}</td>
                   <td style={{ textAlign: 'right', color: '#1976d2', fontWeight: '600' }}>${order.total?.toFixed(2) || 'N/A'}</td>
                   <td style={{ textAlign: 'right', color: '#388e3c' }}>${order.advance?.toFixed(2) || 'N/A'}</td>
                   <td style={{ textAlign: 'right', color: '#d32f2f' }}>${order.balance?.toFixed(2) || 'N/A'}</td>
