@@ -14,7 +14,7 @@ function Payments() {
   const [paymentAmount, setPaymentAmount] = useState("");
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [paymentNotes, setPaymentNotes] = useState("");
-  const [filterStatus, setFilterStatus] = useState("pending");
+  const [filterTab, setFilterTab] = useState("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [permissions, setPermissions] = useState({});
   const [userRole, setUserRole] = useState(null);
@@ -72,15 +72,17 @@ function Payments() {
     fetchOrders();
   }, []);
 
-  // Filter orders based on payment status and search term
+  // Filter orders based on filter tab and search term
   const getFilteredOrders = () => {
     return orders.filter(order => {
-      // Status filter
-      let statusMatch = true;
-      if (filterStatus === "pending") {
-        statusMatch = order.paymentStatus === "Pending" || order.paymentStatus === "Partial";
-      } else if (filterStatus === "paid") {
-        statusMatch = order.paymentStatus === "Paid";
+      // Tab filter
+      let tabMatch = true;
+      if (filterTab === "pending") {
+        tabMatch = order.paymentStatus === "Pending" || order.paymentStatus === "Partial";
+      } else if (filterTab === "instant") {
+        tabMatch = order.orderType === "Instant";
+      } else if (filterTab === "event") {
+        tabMatch = order.orderType === "Event";
       }
       
       // Search filter
@@ -89,7 +91,7 @@ function Payments() {
         (order._id && order._id.toLowerCase().includes(searchLower)) ||
         (order.customerName && order.customerName.toLowerCase().includes(searchLower));
       
-      return statusMatch && (searchTerm === "" || searchMatch);
+      return tabMatch && (searchTerm === "" || searchMatch);
     });
   };
 
@@ -173,7 +175,7 @@ function Payments() {
   // Reset to page 1 when search term or filter changes
   useEffect(() => {
     pagination.goToPage(1);
-  }, [searchTerm, filterStatus]);
+  }, [searchTerm, filterTab]);
 
   if (loading) {
     return <div className="loading">Loading payments...</div>;
@@ -185,23 +187,21 @@ function Payments() {
       
       {/* Filter Tabs */}
       <div className="payment-filters">
-        <button
-          className={`filter-btn ${filterStatus === "pending" ? "active" : ""}`}
-          onClick={() => setFilterStatus("pending")}
+        <button className={`filter-btn ${filterTab === "pending" ? "active" : ""}`}
+          onClick={() => setFilterTab("pending")}
         >
-          ⏳ Pending ({orders.filter(o => o.paymentStatus === "Pending" || o.paymentStatus === "Partial").length})
+          ⏳ Pending Payments ({orders.filter(o => o.paymentStatus === "Pending" || o.paymentStatus === "Partial").length})
+        </button>
+        <button className={`filter-btn ${filterTab === "instant" ? "active" : ""}`}
+          onClick={() => setFilterTab("instant")}
+        >
+          🛒 Instant Order Payments ({orders.filter(o => o.orderType === "Instant").length})
         </button>
         <button
-          className={`filter-btn ${filterStatus === "paid" ? "active" : ""}`}
-          onClick={() => setFilterStatus("paid")}
+          className={`filter-btn ${filterTab === "event" ? "active" : ""}`}
+          onClick={() => setFilterTab("event")}
         >
-          ✓ Paid ({orders.filter(o => o.paymentStatus === "Paid").length})
-        </button>
-        <button
-          className={`filter-btn ${filterStatus === "all" ? "active" : ""}`}
-          onClick={() => setFilterStatus("all")}
-        >
-          📊 All ({orders.length})
+          🎉 Event Orders Payments ({orders.filter(o => o.orderType === "Event").length})
         </button>
       </div>
 
@@ -247,7 +247,7 @@ function Payments() {
       {/* Payments Table */}
       {filteredOrders.length === 0 ? (
         <div className="no-data">
-          {filterStatus === "paid" ? "No paid payments" : "No pending payments"}
+          {filterTab === "pending" ? "No pending payments" : filterTab === "instant" ? "No instant order payments" : "No event order payments"}
         </div>
       ) : (
         <>
@@ -285,7 +285,16 @@ function Payments() {
                         {order.orderType || 'Event'}
                       </span>
                     </td>
-                    <td data-label="Event Date">{order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A"}</td>
+                    <td data-label="Event Date">
+                      {order.orderType === 'Instant' 
+                        ? (order.deliveryTime 
+                          ? new Date(order.deliveryTime).toLocaleDateString() 
+                          : order.createdAt 
+                          ? new Date(order.createdAt).toLocaleDateString()
+                          : "N/A")
+                        : (order.eventDate ? new Date(order.eventDate).toLocaleDateString() : "N/A")
+                      }
+                    </td>
                     <td className="amount" data-label="Total Amount">${roundAmount(order.totalAmount).toLocaleString()}</td>
                     <td className="amount-received" data-label="Amount Received">${roundAmount(order.amountReceived).toLocaleString()}</td>
                     <td className="balance-due" data-label="Balance Due">

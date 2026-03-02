@@ -276,6 +276,7 @@ function InstantOrderDetails() {
                 <th>Mobile</th>
                 <th>Items (Qty)</th>
                 <th>Total Amount</th>
+                <th>Payment Status</th>
                 <th>Status</th>
                 <th>Order Date</th>
                 <th>Actions</th>
@@ -292,6 +293,18 @@ function InstantOrderDetails() {
                   </td>
                   <td data-label="Total Amount" style={{ fontWeight: '600', color: getOrderTotal(order) > 0 ? '#2e7d32' : '#d32f2f' }}>
                     ${getOrderTotal(order).toFixed(2)}
+                  </td>
+                  <td data-label="Payment Status">
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontWeight: '600',
+                      fontSize: '0.85rem',
+                      backgroundColor: order.paymentStatus === 'Paid' ? '#e8f5e9' : order.paymentStatus === 'Partial' ? '#fff3e0' : '#ffebee',
+                      color: order.paymentStatus === 'Paid' ? '#2e7d32' : order.paymentStatus === 'Partial' ? '#e65100' : '#c62828'
+                    }}>
+                      {order.paymentStatus || 'Pending'}
+                    </span>
                   </td>
                   <td data-label="Status"><strong>{order.status}</strong></td>
                   <td data-label="Order Date">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>

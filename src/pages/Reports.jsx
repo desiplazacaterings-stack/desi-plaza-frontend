@@ -24,10 +24,10 @@ function Reports() {
     totalDiscount: 0,
     cashRevenue: 0,
     cardRevenue: 0,
-    onlineRevenue: 0,
+    chequeRevenue: 0,
     cashOrders: 0,
     cardOrders: 0,
-    onlineOrders: 0,
+    chequeOrders: 0,
     totalShortCloseAmount: 0,
     orders: []
   });
@@ -110,7 +110,7 @@ function Reports() {
         ['Payment Wise Breakdown', 'Amount', 'Count'],
         ['Cash Revenue', `$${reportData.cashRevenue}`, reportData.cashOrders],
         ['Card Revenue', `$${reportData.cardRevenue}`, reportData.cardOrders],
-        ['Online Revenue', `$${reportData.onlineRevenue}`, reportData.onlineOrders],
+        ['Cheque Revenue', `$${reportData.chequeRevenue}`, reportData.chequeOrders],
         [],
         ['Charges & Discounts', 'Amount'],
         ['Sales Tax', `$${reportData.totalSalesTax}`],
@@ -181,13 +181,13 @@ function Reports() {
       const eventsList = filteredOrders.filter(o => o.orderType === 'Event');
       
       const instantOrders = instantOrdersList.length;
-      const eventsCompleted = eventsList.filter(o => o.status === 'Completed').length;
+      const eventsCompleted = eventsList.filter(o => o.status === 'Completed' || o.status === 'Delivered').length;
       
       const totalInstantOrderRevenue = instantOrdersList.reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
       const totalEventRevenue = eventsList.reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
 
       const pendingOrders = filteredOrders.filter(o => o.status === 'Pending Payment' || o.status === 'Placed').length;
-      const completedOrders = filteredOrders.filter(o => o.status === 'Completed' || o.status === 'Delivered').length;
+      const completedOrders = filteredOrders.filter(o => o.status === 'Completed' || o.status === 'Delivered' || o.paymentStatus === 'Paid').length;
 
       const totalSalesTax = instantOrdersList.reduce((sum, o) => sum + (o.salesTax || 0), 0);
       const totalServiceCharge = instantOrdersList.reduce((sum, o) => sum + (o.serviceCharge || 0), 0);
@@ -195,11 +195,11 @@ function Reports() {
 
       const cashRevenue = filteredOrders.filter(o => o.paymentMode === 'Cash').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
       const cardRevenue = filteredOrders.filter(o => o.paymentMode === 'Card').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
-      const onlineRevenue = filteredOrders.filter(o => o.paymentMode === 'Online').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      const chequeRevenue = filteredOrders.filter(o => o.paymentMode === 'Cheque').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
       
       const cashOrders = filteredOrders.filter(o => o.paymentMode === 'Cash').length;
       const cardOrders = filteredOrders.filter(o => o.paymentMode === 'Card').length;
-      const onlineOrders = filteredOrders.filter(o => o.paymentMode === 'Online').length;
+      const chequeOrders = filteredOrders.filter(o => o.paymentMode === 'Cheque').length;
 
       // Calculate short close amount (Event total - Amount received for short closed orders)
       const totalShortCloseAmount = filteredOrders
@@ -219,10 +219,10 @@ function Reports() {
         totalDiscount,
         cashRevenue,
         cardRevenue,
-        onlineRevenue,
+        chequeRevenue,
         cashOrders,
         cardOrders,
-        onlineOrders,
+        chequeOrders,
         totalShortCloseAmount,
         orders: filteredOrders
       });
@@ -318,7 +318,7 @@ function Reports() {
       const eventsList = filteredOrders.filter(o => o.orderType === 'Event');
       
       const instantOrders = instantOrdersList.length;
-      const eventsCompleted = eventsList.filter(o => o.status === 'Completed').length;
+      const eventsCompleted = eventsList.filter(o => o.status === 'Completed' || o.status === 'Delivered').length;
       
       const totalInstantOrderRevenue = instantOrdersList.reduce((sum, o) => {
         // Use totalAmount if available, otherwise calculate from total/total
@@ -330,7 +330,7 @@ function Reports() {
       const totalEventRevenue = eventsList.reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
 
       const pendingOrders = filteredOrders.filter(o => o.status === 'Pending Payment' || o.status === 'Placed').length;
-      const completedOrders = filteredOrders.filter(o => o.status === 'Completed' || o.status === 'Delivered').length;
+      const completedOrders = filteredOrders.filter(o => o.status === 'Completed' || o.status === 'Delivered' || o.paymentStatus === 'Paid').length;
 
       // Calculate total charges (tax + service charge)
       const totalSalesTax = instantOrdersList.reduce((sum, o) => sum + (o.salesTax || 0), 0);
@@ -340,11 +340,11 @@ function Reports() {
       // Calculate payment mode wise breakdown
       const cashRevenue = filteredOrders.filter(o => o.paymentMode === 'Cash').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
       const cardRevenue = filteredOrders.filter(o => o.paymentMode === 'Card').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
-      const onlineRevenue = filteredOrders.filter(o => o.paymentMode === 'Online').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
+      const chequeRevenue = filteredOrders.filter(o => o.paymentMode === 'Cheque').reduce((sum, o) => sum + (o.totalAmount || o.total || 0), 0);
       
       const cashOrders = filteredOrders.filter(o => o.paymentMode === 'Cash').length;
       const cardOrders = filteredOrders.filter(o => o.paymentMode === 'Card').length;
-      const onlineOrders = filteredOrders.filter(o => o.paymentMode === 'Online').length;
+      const chequeOrders = filteredOrders.filter(o => o.paymentMode === 'Cheque').length;
 
       // Calculate short close amount
       const totalShortCloseAmount = filteredOrders
@@ -371,10 +371,10 @@ function Reports() {
         totalDiscount,
         cashRevenue,
         cardRevenue,
-        onlineRevenue,
+        chequeRevenue,
         cashOrders,
         cardOrders,
-        onlineOrders,
+        chequeOrders,
         totalShortCloseAmount,
         orders: filteredOrders
       });
@@ -394,10 +394,10 @@ function Reports() {
         totalDiscount: 0,
         cashRevenue: 0,
         cardRevenue: 0,
-        onlineRevenue: 0,
+        chequeRevenue: 0,
         cashOrders: 0,
         cardOrders: 0,
-        onlineOrders: 0,
+        chequeOrders: 0,
         orders: []
       });
     } finally {
@@ -539,15 +539,6 @@ function Reports() {
                 <p className="stat-label">All Orders</p>
               </div>
             </div>
-
-            <div className="stat-card pending">
-              <div className="stat-icon">⏳</div>
-              <div className="stat-content">
-                <h3>Pending Orders</h3>
-                <p className="stat-number">{reportData.pendingOrders}</p>
-                <p className="stat-label">Awaiting Completion</p>
-              </div>
-            </div>
           </div>
 
           <div className="breakdown-section">
@@ -583,10 +574,10 @@ function Reports() {
               <p className="breakdown-label">{reportData.cardOrders} orders via card</p>
             </div>
 
-            <div className="breakdown-card payment-online">
-              <h3>📱 Online Payments</h3>
-              <p className="breakdown-amount">${reportData.onlineRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-              <p className="breakdown-label">{reportData.onlineOrders} orders via online</p>
+            <div className="breakdown-card payment-cheque">
+              <h3>✓ Cheque Payments</h3>
+              <p className="breakdown-amount">${reportData.chequeRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+              <p className="breakdown-label">{reportData.chequeOrders} orders via cheque</p>
             </div>
           </div>
 
@@ -647,8 +638,8 @@ function Reports() {
                           </span>
                         </td>
                         <td data-label="Status">
-                          <span className={`status-badge status-${order.status?.toLowerCase().replace(/\s+/g, '-')}`}>
-                            {order.status}
+                          <span className={`status-badge status-${(order.paymentStatus === 'Paid' || order.status === 'Completed' || order.status === 'Delivered' ? 'completed' : order.status?.toLowerCase().replace(/\s+/g, '-'))}`}>
+                            {order.paymentStatus === 'Paid' ? 'COMPLETED' : order.status}
                           </span>
                         </td>
                       </tr>

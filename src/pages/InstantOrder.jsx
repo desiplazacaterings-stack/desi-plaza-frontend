@@ -351,6 +351,9 @@ function InstantOrder() {
       if (!confirmZeroTotal) return;
     }
 
+    const paymentStatus = advance >= total ? "Paid" : (advance > 0 ? "Partial" : "Pending");
+    const orderStatus = paymentStatus === "Paid" ? "Completed" : "Placed";
+
     const orderData = {
       customerName,
       mobile,
@@ -367,9 +370,12 @@ function InstantOrder() {
       salesTax: salesTaxAmount,
       serviceCharge: serviceChargeAmount,
       discount: discountAmount,
-      totalAmount: total,  // This should be non-zero if items have prices
+      totalAmount: total,
       advance,
+      amountReceived: advance,
       balanceDue: balance,
+      paymentStatus: paymentStatus,
+      status: orderStatus,
       paymentMode,
       deliveryMethod,
       orderType: "Instant",
@@ -589,6 +595,37 @@ function InstantOrder() {
         <button className="button" onClick={addToKOT}>Add</button>
       </div>
 
+      {/* DELIVERY METHOD */}
+      <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '8px', border: '1px solid #ddd' }}>
+        <label style={{ display: 'block', marginBottom: '12px', fontWeight: '600', fontSize: '0.95rem' }}>
+          📦 Delivery Method:
+        </label>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '500' }}>
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="Pickup"
+              checked={deliveryMethod === "Pickup"}
+              onChange={e => setDeliveryMethod(e.target.value)}
+              style={{ cursor: 'pointer' }}
+            />
+            🏪 Pickup
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '500' }}>
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="Delivery"
+              checked={deliveryMethod === "Delivery"}
+              onChange={e => setDeliveryMethod(e.target.value)}
+              style={{ cursor: 'pointer' }}
+            />
+            🚗 Delivery
+          </label>
+        </div>
+      </div>
+
       {/* ADVANCED OPTIONS - COLLAPSIBLE */}
       <div className="advanced-section">
         <button 
@@ -648,14 +685,6 @@ function InstantOrder() {
                 />
               </label>
             </div>
-
-            <label>
-              Delivery Method:
-              <select value={deliveryMethod} onChange={e => setDeliveryMethod(e.target.value)}>
-                <option value="Pickup">Pickup</option>
-                <option value="Delivery">Delivery</option>
-              </select>
-            </label>
           </div>
         )}
       </div>
