@@ -406,7 +406,7 @@
   }
 
   .enquiries-table {
-    min-width: 1000px;
+    min-width: 100%;
     border-collapse: collapse;
     table-layout: auto;
   }
@@ -494,8 +494,9 @@
   }
 
   .enquiries-table {
-    min-width: 900px;
+    min-width: 100%;
     font-size: 11px;
+    table-layout: auto;
   }
 
   .enquiries-table tr {

@@ -468,9 +468,9 @@
   }
 
   .instant-orders-table {
-    min-width: 900px;
+    min-width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     margin: 0 10px;
   }
 
@@ -574,7 +574,8 @@
 
   .instant-orders-table {
     margin: 0 10px;
-    min-width: 950px;
+    min-width: 100%;
+    table-layout: auto;
   }
 
   .instant-orders-table th {

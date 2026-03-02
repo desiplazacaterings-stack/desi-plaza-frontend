@@ -482,8 +482,8 @@
   }
 
   .events-table {
-    min-width: 900px;
-    table-layout: fixed;
+    min-width: 100%;
+    table-layout: auto;
   }
 
   .events-table th, .events-table td {
@@ -1205,9 +1205,9 @@ tr:hover {
   }
 
   .events-table {
-    min-width: 1000px;
+    min-width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
   }
 
   .events-table thead {
