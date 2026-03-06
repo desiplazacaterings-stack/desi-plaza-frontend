@@ -67,8 +67,8 @@ function InstantOrder() {
   
   const [deliveryTime, setDeliveryTime] = useState(getCurrentDateTime());
 
-  const [salesTaxRate, setSalesTaxRate] = useState(5);
-  const [serviceChargeAmount, setServiceChargeAmount] = useState(0);
+  const [salesTaxRate, setSalesTaxRate] = useState(0);
+  const [serviceChargeRate, setServiceChargeRate] = useState(0);
   const [deliveryCharges, setDeliveryCharges] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [advance, setAdvance] = useState(0);
@@ -114,10 +114,10 @@ function InstantOrder() {
       }
 
       // Handle financials
-      setSalesTaxRate(orderToEdit.salesTaxRate || 5);
-      setServiceChargeAmount(orderToEdit.serviceCharge || 0);
+      setSalesTaxRate(orderToEdit.salesTaxRate || 0);
+      setServiceChargeRate(orderToEdit.serviceChargeRate || 0);
       setDeliveryCharges(orderToEdit.deliveryCharges || 0);
-      setDiscount(orderToEdit.discountRate || 0);
+      setDiscount(orderToEdit.discount || 0);
       setAdvance(orderToEdit.advance || 0);
       
       // Handle status & payment
@@ -320,8 +320,9 @@ function InstantOrder() {
     0
   );
   const salesTaxAmount = subtotal * (salesTaxRate / 100);
+  const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
   const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + deliveryCharges;
-  const discountAmount = subtotalWithCharges * (discount / 100);
+  const discountAmount = discount;
   const total = subtotalWithCharges - discountAmount;
   const balance = total - advance;
 
@@ -416,8 +417,8 @@ function InstantOrder() {
       setAdvance(0);
       setPaymentMode("Cash");
       setDeliveryMethod("Pickup");
-      setSalesTaxRate(5);
-      setServiceChargeAmount(0);
+      setSalesTaxRate(0);
+      setServiceChargeRate(0);
       setDeliveryCharges(0);
       setDiscount(0);
       setIsEditing(false);
@@ -651,11 +652,11 @@ function InstantOrder() {
               </label>
 
               <label>
-                Service Charges (Amount):
+                Service Charges %:
                 <input
                   type="number"
-                  value={serviceChargeAmount}
-                  onChange={e => setServiceChargeAmount(Number(e.target.value))}
+                  value={serviceChargeRate}
+                  onChange={e => setServiceChargeRate(Number(e.target.value))}
                   min="0"
                   step="0.1"
                 />
@@ -664,24 +665,24 @@ function InstantOrder() {
 
             <div className="form-row">
               <label>
-                Delivery Charges:
+                Delivery Charges (Labour):
                 <input
                   type="number"
                   value={deliveryCharges}
                   onChange={e => setDeliveryCharges(Number(e.target.value))}
                   min="0"
-                  step="0.1"
+                  step="0.01"
                 />
               </label>
 
               <label>
-                Discount %:
+                Discount (Amount):
                 <input
                   type="number"
                   value={discount}
                   onChange={e => setDiscount(Number(e.target.value))}
                   min="0"
-                  step="0.1"
+                  step="0.01"
                 />
               </label>
             </div>
@@ -792,7 +793,7 @@ function InstantOrder() {
         <div className="summary-row">
           <p>Subtotal: ${subtotal.toFixed(2)}</p>
           <p>Sales Tax ({salesTaxRate}%): ${salesTaxAmount.toFixed(2)}</p>
-          <p>Service Charges: ${serviceChargeAmount.toFixed(2)}</p>
+          <p>Service Charges ({serviceChargeRate}%): ${serviceChargeAmount.toFixed(2)}</p>
           <p>Delivery Charges: ${deliveryCharges.toFixed(2)}</p>
         </div>
         
@@ -800,7 +801,7 @@ function InstantOrder() {
           <p style={{ fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '8px' }}>
             Subtotal with Charges: ${subtotalWithCharges.toFixed(2)}
           </p>
-          <p>Discount ({discount}%): -${discountAmount.toFixed(2)}</p>
+          <p>Discount: -${discountAmount.toFixed(2)}</p>
           <p style={{ fontSize: '1.1em', fontWeight: 'bold', color: '#e74c3c', borderTop: '2px solid #e74c3c', paddingTop: '8px' }}>
             Total: ${total.toFixed(2)}
           </p>
