@@ -344,7 +344,7 @@ function Quotation() {
   const salesTaxAmount = subtotal * (salesTaxRate / 100);
   const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
   const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + labourCharges;
-  const discountAmount = subtotalWithCharges * (discount / 100);
+  const discountAmount = discount;
   const total = subtotalWithCharges - discountAmount;
 
   // Get unique categories from menuItems
@@ -637,13 +637,13 @@ function Quotation() {
             </label>
 
             <label style={{ display: 'flex', flexDirection: 'column' }}>
-              Discount %:
+              Discount (Amount):
               <input
                 type="number"
                 value={discount}
                 onChange={e => setDiscount(Number(e.target.value))}
                 min="0"
-                step="0.1"
+                step="0.01"
                 placeholder="0"
                 style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
               />
@@ -764,7 +764,7 @@ function Quotation() {
                 if (discount > 0) {
                   rows.push(
                     <tr key="discount-row" style={{ background: '#f0f0f0' }}>
-                      <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Discount ({discount}%)</td>
+                      <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Discount</td>
                       <td style={{ fontWeight: 'bold', color: '#e74c3c' }}>-${discountAmount.toFixed(2)}</td>
                     </tr>
                   );

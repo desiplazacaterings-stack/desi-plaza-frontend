@@ -15,6 +15,7 @@ function Payments() {
   const [paymentAmount, setPaymentAmount] = useState("");
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [paymentNotes, setPaymentNotes] = useState("");
+  const [paymentMode, setPaymentMode] = useState("Cash");
   const [filterTab, setFilterTab] = useState("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [permissions, setPermissions] = useState({});
@@ -112,6 +113,8 @@ function Payments() {
         `${API_ENDPOINTS.ORDERS.BASE}/${orderId}`,
         {
           amountReceived: amountReceived,
+          paymentStatus: amountReceived >= order.totalAmount ? "Paid" : "Partial",
+          paymentMode: paymentMode,
           paymentNotes: paymentNotes
         }
       );
@@ -119,6 +122,7 @@ function Payments() {
       setOrders(orders.map(o => o._id === orderId ? response.data : o));
       setPaymentAmount("");
       setPaymentNotes("");
+      setPaymentMode("Cash");
       setSelectedOrderId(null);
       alert("Payment recorded successfully!");
     } catch (error) {
@@ -360,24 +364,20 @@ function Payments() {
         </>
       )}
 
-      {/* Payment Entry Form */}
+      {/* Payment Entry Modal */}
       {selectedOrderId && (
-        <div className="payment-entry-form">
-          <div className="form-header">
-            <h3>💳 Record Payment</h3>
-            <button
-              className="close-btn"
-              onClick={() => {
-                setSelectedOrderId(null);
-                setPaymentAmount("");
-                setPaymentNotes("");
-              }}
-              title="Close"
-            >
-              ✕
-            </button>
-          </div>
-
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
           {(() => {
             const order = orders.find(o => o._id === selectedOrderId);
             if (!order) return null;
@@ -385,27 +385,87 @@ function Payments() {
             const balanceDue = calculateBalanceDue(order);
 
             return (
-              <div className="form-content">
-                <div className="order-summary">
-                  <div className="summary-item">
-                    <span className="label">Order ID:</span>
-                    <span className="value">{order._id?.substring(0, 12)}...</span>
+              <div style={{
+                backgroundColor: '#fff',
+                padding: '30px',
+                borderRadius: '12px',
+                maxWidth: '500px',
+                width: '90%',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                maxHeight: '90vh',
+                overflowY: 'auto'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '24px',
+                  gap: '16px'
+                }}>
+                  <h3 style={{ margin: 0, fontSize: '1.4rem', color: '#232a36' }}>💳 Record Payment</h3>
+                  <button
+                    onClick={() => {
+                      setSelectedOrderId(null);
+                      setPaymentAmount("");
+                      setPaymentNotes("");
+                      setPaymentMode("Cash");
+                    }}
+                    style={{
+                      background: '#ef4444',
+                      color: 'white',
+                      border: 'none',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      fontSize: '1.2rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minWidth: '36px',
+                      minHeight: '36px'
+                    }}
+                    title="Close"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* Order Summary */}
+                <div style={{
+                  background: '#f9f9f9',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  marginBottom: '24px',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
+                    <span style={{ fontWeight: '600', color: '#666' }}>Order ID:</span>
+                    <span style={{ fontWeight: '700', color: '#232a36' }}>{order._id?.substring(0, 12)}...</span>
                   </div>
-                  <div className="summary-item">
-                    <span className="label">Customer:</span>
-                    <span className="value">{order.customerName || "N/A"}</span>
+                  <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
+                    <span style={{ fontWeight: '600', color: '#666' }}>Customer:</span>
+                    <span style={{ fontWeight: '700', color: '#232a36' }}>{order.customerName || "N/A"}</span>
                   </div>
-                  <div className="summary-item">
-                    <span className="label">Total Amount:</span>
-                    <span className="value">${roundAmount(order.totalAmount).toLocaleString()}</span>
+                  <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
+                    <span style={{ fontWeight: '600', color: '#666' }}>Total Amount:</span>
+                    <span style={{ fontWeight: '700', color: '#232a36' }}>${roundAmount(order.totalAmount).toLocaleString()}</span>
                   </div>
-                  <div className="summary-item">
-                    <span className="label">Amount Received:</span>
-                    <span className="value">${roundAmount(order.amountReceived).toLocaleString()}</span>
+                  <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
+                    <span style={{ fontWeight: '600', color: '#666' }}>Amount Received:</span>
+                    <span style={{ fontWeight: '700', color: '#232a36' }}>${roundAmount(order.amountReceived).toLocaleString()}</span>
                   </div>
-                  <div className="summary-item highlight">
-                    <span className="label">Balance Due:</span>
-                    <span className="value balance">${balanceDue > 0.01 ? roundAmount(balanceDue).toLocaleString() : '0'}</span>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '0.95rem',
+                    background: 'linear-gradient(135deg, #fef3c7 0%, #fef08a 100%)',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    borderLeft: '4px solid #f59e0b'
+                  }}>
+                    <span style={{ fontWeight: '600', color: '#666' }}>Balance Due:</span>
+                    <span style={{ fontWeight: '700', color: '#ef4444' }}>${balanceDue > 0.01 ? roundAmount(balanceDue).toLocaleString() : '0'}</span>
                   </div>
                 </div>
 
@@ -414,11 +474,14 @@ function Payments() {
                     e.preventDefault();
                     handlePaymentSubmit(selectedOrderId);
                   }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
                 >
-                  <div className="form-group">
-                    <label htmlFor="paymentAmount">Payment Amount *</label>
+                  {/* Payment Amount */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontWeight: '600', color: '#232a36', fontSize: '0.95rem' }}>
+                      Payment Amount *
+                    </label>
                     <input
-                      id="paymentAmount"
                       type="number"
                       min="0"
                       step="0.01"
@@ -427,41 +490,137 @@ function Payments() {
                       placeholder={`Enter amount (Max: $${roundAmount(balanceDue)})`}
                       max={roundAmount(balanceDue)}
                       required
+                      style={{
+                        padding: '12px 14px',
+                        border: '2px solid #e0e0e0',
+                        borderRadius: '6px',
+                        fontSize: '1rem',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#f5ba4a'}
+                      onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
                     />
                     {paymentAmount && (
-                      <div className="hint">
+                      <div style={{
+                        fontSize: '0.85rem',
+                        padding: '8px 12px',
+                        borderRadius: '4px',
+                        background: parseFloat(paymentAmount) > roundAmount(balanceDue) ? '#fef2f2' : '#f0fdf4'
+                      }}>
                         {parseFloat(paymentAmount) > roundAmount(balanceDue) && (
-                          <span className="warning">⚠️ Amount exceeds balance due</span>
+                          <span style={{ color: '#dc2626', fontWeight: '600' }}>⚠️ Amount exceeds balance due</span>
                         )}
                         {parseFloat(paymentAmount) <= roundAmount(balanceDue) && parseFloat(paymentAmount) > 0 && (
-                          <span className="success">✓ New balance will be: ${roundAmount(balanceDue - parseFloat(paymentAmount)).toLocaleString()}</span>
+                          <span style={{ color: '#f5ba4a', fontWeight: '600' }}>✓ New balance will be: ${roundAmount(balanceDue - parseFloat(paymentAmount)).toLocaleString()}</span>
                         )}
                       </div>
                     )}
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="paymentNotes">Payment Notes</label>
+                  {/* Payment Method */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <label style={{ fontWeight: '600', color: '#232a36', fontSize: '0.95rem' }}>
+                      Payment Method *
+                    </label>
+                    <div style={{ display: 'flex', gap: '20px' }}>
+                      {['Cash', 'Card', 'Cheque'].map(method => (
+                        <label key={method} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          cursor: 'pointer',
+                          fontWeight: '500',
+                          color: '#232a36'
+                        }}>
+                          <input
+                            type="radio"
+                            name="paymentMode"
+                            value={method}
+                            checked={paymentMode === method}
+                            onChange={(e) => setPaymentMode(e.target.value)}
+                            style={{
+                              width: '18px',
+                              height: '18px',
+                              cursor: 'pointer'
+                            }}
+                          />
+                          {method}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Payment Notes */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontWeight: '600', color: '#232a36', fontSize: '0.95rem' }}>
+                      Payment Notes
+                    </label>
                     <textarea
-                      id="paymentNotes"
                       value={paymentNotes}
                       onChange={(e) => setPaymentNotes(e.target.value)}
                       placeholder="Add notes (optional) - e.g., Cheque No., Transaction ID, etc."
                       rows="3"
+                      style={{
+                        padding: '12px 14px',
+                        border: '2px solid #e0e0e0',
+                        borderRadius: '6px',
+                        fontSize: '1rem',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.3s ease',
+                        resize: 'none'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#f5ba4a'}
+                      onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
                     />
                   </div>
 
-                  <div className="form-actions">
+                  {/* Action Buttons */}
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
                     {permissions.canRecordPayment ? (
-                      <button type="submit" className="submit-btn">
+                      <button
+                        type="submit"
+                        style={{
+                          flex: 1,
+                          padding: '12px 20px',
+                          background: 'linear-gradient(90deg, #f5ba4a 0%, #ffc757 100%)',
+                          color: '#1a1a1a',
+                          border: 'none',
+                          borderRadius: '6px',
+                          fontWeight: '700',
+                          fontSize: '0.95rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          minHeight: '44px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.transform = 'translateY(-2px)';
+                          e.target.style.boxShadow = '0 4px 12px rgba(245, 186, 74, 0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.transform = 'translateY(0)';
+                          e.target.style.boxShadow = 'none';
+                        }}
+                      >
                         ✓ Record Payment
                       </button>
                     ) : (
-                      <button 
+                      <button
                         type="button"
-                        className="submit-btn" 
-                        style={{ opacity: 0.5, cursor: 'not-allowed', background: '#ccc' }} 
-                        disabled 
+                        style={{
+                          flex: 1,
+                          padding: '12px 20px',
+                          background: '#ccc',
+                          color: '#666',
+                          border: 'none',
+                          borderRadius: '6px',
+                          fontWeight: '700',
+                          fontSize: '0.95rem',
+                          cursor: 'not-allowed',
+                          opacity: 0.5,
+                          minHeight: '44px'
+                        }}
+                        disabled
                         title="You don't have permission to record payments"
                       >
                         ✓ Record Payment
@@ -469,11 +628,32 @@ function Payments() {
                     )}
                     <button
                       type="button"
-                      className="cancel-btn"
+                      style={{
+                        flex: 1,
+                        padding: '12px 20px',
+                        background: '#e5e7eb',
+                        color: '#232a36',
+                        border: '2px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontWeight: '700',
+                        fontSize: '0.95rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        minHeight: '44px'
+                      }}
                       onClick={() => {
                         setSelectedOrderId(null);
                         setPaymentAmount("");
                         setPaymentNotes("");
+                        setPaymentMode("Cash");
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#d1d5db';
+                        e.target.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#e5e7eb';
+                        e.target.style.transform = 'translateY(0)';
                       }}
                     >
                       ✕ Cancel
