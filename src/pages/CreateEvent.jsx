@@ -69,6 +69,13 @@ function CreateEvent() {
     return generateUniqueQuotationId();
   });
 
+  // Advance Options State
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [salesTaxRate, setSalesTaxRate] = useState(0);
+  const [serviceChargeRate, setServiceChargeRate] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [labourCharges, setLabourCharges] = useState(0);
+
   // ✅ Sync hook menu to local state
   useEffect(() => {
     if (hookMenuItems && hookMenuItems.length > 0) {
@@ -239,7 +246,14 @@ function CreateEvent() {
       const token = localStorage.getItem('token');
       const axiosConfig = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-      const total = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+      // Calculations
+      const subtotal = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const salesTaxAmount = subtotal * (salesTaxRate / 100);
+      const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
+      const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + labourCharges;
+      const discountAmount = discount;
+      const total = subtotalWithCharges - discountAmount;
+
 
       // Step 1: Create Enquiry
       const enquiryData = {
@@ -269,7 +283,15 @@ function CreateEvent() {
           qty: item.qty,
           price: item.price
         })),
-        total: total
+        subtotal,
+        salesTaxRate,
+        salesTax: salesTaxAmount,
+        serviceChargeRate,
+        serviceCharge: serviceChargeAmount,
+        labourCharges,
+        discount,
+        discountAmount,
+        total
       };
 
       console.log('Creating quotation:', quotationData);
@@ -296,7 +318,13 @@ function CreateEvent() {
           price: parseFloat(item.price),
           category: item.category
         })),
-        subtotal: parseFloat(total),
+        subtotal: parseFloat(subtotal),
+        salesTaxRate: parseFloat(salesTaxRate),
+        salesTax: parseFloat(salesTaxAmount),
+        serviceChargeRate: parseFloat(serviceChargeRate),
+        serviceCharge: parseFloat(serviceChargeAmount),
+        labourCharges: parseFloat(labourCharges),
+        discount: parseFloat(discount),
         total: parseFloat(total),
         totalAmount: parseFloat(total),
         status: 'Confirmed',
@@ -595,6 +623,90 @@ function CreateEvent() {
               )}
             </div>
 
+            {/* ADVANCED OPTIONS */}
+            <div style={{ marginBottom: 20 }}>
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                style={{
+                  background: '#f5f5f5',
+                  border: '1px solid #ddd',
+                  padding: '8px 16px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  color: '#333'
+                }}
+              >
+                {showAdvanced ? '▼' : '▶'} Advanced Options
+              </button>
+
+              {showAdvanced && (
+                <div style={{
+                  background: '#fffbe6',
+                  border: '1px solid #ffe58f',
+                  padding: 12,
+                  borderRadius: 4,
+                  marginTop: 8,
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: 12
+                }}>
+                  <label style={{ display: 'flex', flexDirection: 'column' }}>
+                    Sales Tax %:
+                    <input
+                      type="number"
+                      value={salesTaxRate}
+                      onChange={e => setSalesTaxRate(Number(e.target.value))}
+                      min="0"
+                      step="0.1"
+                      placeholder="0"
+                      style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column' }}>
+                    Service Charges %:
+                    <input
+                      type="number"
+                      value={serviceChargeRate}
+                      onChange={e => setServiceChargeRate(Number(e.target.value))}
+                      min="0"
+                      step="0.1"
+                      placeholder="0"
+                      style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column' }}>
+                    Discount (Amount):
+                    <input
+                      type="number"
+                      value={discount}
+                      onChange={e => setDiscount(Number(e.target.value))}
+                      min="0"
+                      step="0.01"
+                      placeholder="0"
+                      style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column' }}>
+                    Labour Charges (Fixed Amount):
+                    <input
+                      type="number"
+                      value={labourCharges}
+                      onChange={e => setLabourCharges(Number(e.target.value))}
+                      min="0"
+                      step="0.01"
+                      placeholder="0"
+                      style={{ marginTop: 4, padding: 6, borderRadius: 4, border: '1px solid #ddd' }}
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+
             {/* ADDED ITEMS TABLE */}
             {addedItems.length > 0 && (
               <div className="items-table-section">
@@ -641,11 +753,60 @@ function CreateEvent() {
                         });
                       });
                       if (addedItems.length > 0) {
-                        const total = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+                        const subtotal = addedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+                        const salesTaxAmount = subtotal * (salesTaxRate / 100);
+                        const serviceChargeAmount = subtotal * (serviceChargeRate / 100);
+                        const subtotalWithCharges = subtotal + salesTaxAmount + serviceChargeAmount + labourCharges;
+                        const discountAmount = discount;
+                        const total = subtotalWithCharges - discountAmount;
+
                         rows.push(
-                          <tr key="total-row" style={{ fontWeight: 'bold', background: '#fffbe6' }}>
-                            <td colSpan={5} style={{ textAlign: 'right' }}>Total</td>
-                            <td>${total.toFixed(2)}</td>
+                          <tr key="subtotal-row" style={{ fontWeight: 'bold', background: '#fffbe6' }}>
+                            <td colSpan={5} style={{ textAlign: 'right' }}>Subtotal</td>
+                            <td>${subtotal.toFixed(2)}</td>
+                            <td></td>
+                          </tr>
+                        );
+                        if (salesTaxRate > 0) {
+                          rows.push(
+                            <tr key="tax-row" style={{ background: '#f0f0f0' }}>
+                              <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Sales Tax ({salesTaxRate}%)</td>
+                              <td>${salesTaxAmount.toFixed(2)}</td>
+                              <td></td>
+                            </tr>
+                          );
+                        }
+                        if (serviceChargeRate > 0) {
+                          rows.push(
+                            <tr key="charge-row" style={{ background: '#f0f0f0' }}>
+                              <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Service Charges ({serviceChargeRate}%)</td>
+                              <td>${serviceChargeAmount.toFixed(2)}</td>
+                              <td></td>
+                            </tr>
+                          );
+                        }
+                        if (labourCharges > 0) {
+                          rows.push(
+                            <tr key="labour-row" style={{ background: '#f0f0f0' }}>
+                              <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Labour Charges</td>
+                              <td>${labourCharges.toFixed(2)}</td>
+                              <td></td>
+                            </tr>
+                          );
+                        }
+                        if (discount > 0) {
+                          rows.push(
+                            <tr key="discount-row" style={{ background: '#f0f0f0' }}>
+                              <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Discount</td>
+                              <td style={{color: '#e74c3c'}}>-${discountAmount.toFixed(2)}</td>
+                              <td></td>
+                            </tr>
+                          );
+                        }
+                        rows.push(
+                          <tr key="total-row" style={{ fontWeight: 'bold', background: '#e8f5e9' }}>
+                            <td colSpan={5} style={{ textAlign: 'right', fontSize: '1.1em' }}>Total</td>
+                            <td style={{fontSize: '1.1em', color: '#2e7d32'}}>${total.toFixed(2)}</td>
                             <td></td>
                           </tr>
                         );
